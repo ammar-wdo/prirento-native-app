@@ -11,6 +11,8 @@ import Feather from '@expo/vector-icons/Feather';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 
+
+
 // You can explore the built-in icon families and icons on the web at https://icons.expo.fyi/
 function TabBarIcon(props: {
   name: React.ComponentProps<typeof FontAwesome>['name'];
@@ -24,10 +26,11 @@ export default function TabLayout() {
 
   return (
     <Tabs
-    screenOptions={{tabBarActiveTintColor:'black'}}
+    screenOptions={{tabBarActiveTintColor:'black',tabBarStyle:{paddingBottom:5,paddingTop:5}}}
+    
     >
       <Tabs.Screen
-        name="index"
+        name="(home)"
         
         options={{
           headerShown:false,
