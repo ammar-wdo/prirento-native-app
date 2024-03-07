@@ -3,7 +3,7 @@ import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons'; // Using MaterialCommunityIcons for example
 import { Link } from 'expo-router';
 
-const CustomHeader = () => {
+const CustomHeader = ({cars}:{cars?:boolean}) => {
   return (
     <View style={styles.container}>
       {/* Account Image and Name Placeholder */}
@@ -15,7 +15,7 @@ const CustomHeader = () => {
       {/* Bell Icon for Notifications */}
 
 
-      <Link asChild href={'/(tabs)/(home)/notifications'}>
+      <Link asChild href={`/(tabs)/${cars ? 'cars' : '(home)'}/notifications`}>
       <TouchableOpacity onPress={() => {}}>
         <MaterialCommunityIcons name="bell" size={30} color="#000" />
       </TouchableOpacity>
@@ -31,6 +31,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingHorizontal: 15,
     height: 60, // Adjust based on your needs
+    backgroundColor:'white'
   },
   accountContainer: {
     flexDirection: 'row',
