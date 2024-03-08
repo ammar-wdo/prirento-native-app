@@ -40,6 +40,7 @@ export default function TabLayout() {
           headerShown:false,
           title: 'Home',
           
+          
           tabBarIcon: ({ color }) => <Feather name="home" size={20} color={color} />,
        
         }}

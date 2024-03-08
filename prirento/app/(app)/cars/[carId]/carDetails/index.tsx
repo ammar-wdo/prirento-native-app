@@ -5,6 +5,7 @@ import { useCustomQuery } from "@/hooks/custom-query.hook";
 import { SingleCarDetails } from "@/types";
 import CustomHeader from "@/components/custom-header";
 import { Ionicons } from "@expo/vector-icons";
+import { Colors } from "@/constants/Colors";
 
 const CarDetails = () => {
   const { carId } = useLocalSearchParams();
@@ -21,7 +22,7 @@ const CarDetails = () => {
   if (isLoading) {
     return (
       <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-        <ActivityIndicator size="large" color="#0000ff" />
+        <ActivityIndicator size="large" color={Colors.mainDark} />
       </View>
     );
   }
@@ -30,11 +31,7 @@ const CarDetails = () => {
 
   return (
     <View style={{ flex: 1 ,position:'relative'}}>
-   <CustomHeader/>
-   <Image source={{uri:data.car.gallary[0]}} style={{width:'100%',aspectRatio:2/1}} resizeMode="cover"/>
-   <TouchableOpacity style={{position:'absolute',top:80,left:20}} onPress={()=>router.push('/(app)/cars')}>
-    <Ionicons name="arrow-back" size={20} color={'white'}/>
-   </TouchableOpacity>
+
 
       <Text>{data?.car.carName}</Text>
     </View>

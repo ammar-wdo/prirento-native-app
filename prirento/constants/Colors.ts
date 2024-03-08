@@ -1,5 +1,6 @@
 
 
 export const  Colors = {
-mainDark:'#052206'
+mainDark:'#052206',
+golden:'#C6A046'
 };
