@@ -4,9 +4,9 @@ import { SafeAreaView } from 'react-native-safe-area-context'
 
 const index = () => {
   return (
-    <SafeAreaView>
+    <View>
       <Text>addCar</Text>
-    </SafeAreaView>
+    </View>
   )
 }
 

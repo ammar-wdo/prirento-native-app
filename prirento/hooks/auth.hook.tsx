@@ -3,9 +3,10 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { ReactNode, createContext, useContext, useEffect, useState } from "react";
 
-type User = {
+export type User = {
   email: string;
   logo: string;
+  name:string
   token: string;
 };
 
@@ -35,8 +36,9 @@ export const AuthProvider = ({children}:{children:ReactNode}) => {
       const storedUser = await AsyncStorage.getItem('user');
       if (storedUser) {
         setUser(JSON.parse(storedUser));
-        setLoading(false)
+       
       }
+      setLoading(false)
     };
 
     loadUser();
