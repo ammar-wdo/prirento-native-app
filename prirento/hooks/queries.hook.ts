@@ -3,6 +3,12 @@ import { useAuth } from "./auth.hook";
 import { CarCard, CarModel } from "@/types";
 import { fetcher } from "@/lib/utils";
 import { CarDetail, ComingCar } from "@/schemas";
+import { Platform } from 'react-native';
+
+const url = Platform.select({
+ios:'http://192.168.1.191:3001',
+android:'http://10.0.2.2:3001'
+}) 
 
 
 export const useCarsQuery = ()=>{
@@ -16,7 +22,7 @@ export const useCarsQuery = ()=>{
         success: boolean;
         cars: CarCard[];
         error?: string;
-      }>("http://10.0.2.2:3001/api/native/cars",user?.token),
+      }>(`${url}/api/native/cars`,user?.token),
     })
 
 }
@@ -35,7 +41,7 @@ export const useCarQuery = (carId:string)=>{
       success: boolean;
       car: ComingCar;
       error?: string;
-    }>( `http://10.0.2.2:3001/api/native/car/${carId}/details`,user?.token),
+    }>( `${url}/api/native/car/${carId}/details`,user?.token),
   })
 
 
@@ -52,7 +58,7 @@ export const useModelsQuery = ()=>{
       success: boolean;
       models: CarModel[];
       error?: string;
-    }>(`http://10.0.2.2:3001/api/native/models`,user?.token),
+    }>(`${url}/api/native/models`,user?.token),
   })
 
 

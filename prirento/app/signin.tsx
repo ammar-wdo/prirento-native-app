@@ -3,6 +3,7 @@ import {
   KeyboardAvoidingView,
   Platform,
   ScrollView,
+
   StyleSheet,
   Text,
   TextInput,
@@ -12,11 +13,12 @@ import React from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Colors } from "@/constants/Colors";
 import { FontAwesome5, Ionicons } from "@expo/vector-icons";
-import { StatusBar } from "expo-status-bar";
+
 import CustomButton from "@/components/custom-button";
 import { useLogin } from "@/hooks/login.hook";
 import { useAuth } from "@/hooks/auth.hook";
 import { Redirect } from "expo-router";
+import { StatusBar } from "expo-status-bar";
 
 const Signin = () => {
   const { errors, handleSubmit, onSubmit, register, setValue, isSubmitting } =
@@ -31,14 +33,17 @@ const Signin = () => {
     <KeyboardAvoidingView
    
       behavior={Platform.OS === "ios" ? "padding" : "height"}
-      style={{ flex: 1 }}
+      style={{ flex: 1}}
+
     
     >
       <SafeAreaView
-
+    
+edges={'top'}
       style={styles.container}>
-        <StatusBar style="light" />
+        <StatusBar  />
         <ScrollView
+        style={{backgroundColor:Colors.mainDark}}
           contentContainerStyle={styles.scrollViewContent}
           keyboardShouldPersistTaps="handled"
         >
@@ -115,9 +120,10 @@ const styles = StyleSheet.create({
   container: {
     display: "flex",
     justifyContent: "center",
+    
 
     flex: 1,
-    backgroundColor: Colors.mainDark,
+
   },
   first: {
     height: "40%",
@@ -125,18 +131,19 @@ const styles = StyleSheet.create({
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
+ 
   },
   second: {
 
 
     width: "100%",
-
+flex:1,
     backgroundColor: "white",
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
 
     padding: 20,
-    paddingBottom:40
+
   },
 
   input: {
@@ -172,6 +179,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   scrollViewContent: {
+    backgroundColor:Colors.mainDark,
     flexGrow: 1,
     alignItems: "center", // Center children horizontally
     justifyContent: "center", // Center children vertically if content is smaller than the screen
