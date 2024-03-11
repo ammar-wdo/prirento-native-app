@@ -5,47 +5,49 @@ import {
   Text,
   View,
 } from "react-native";
-import React from "react";
+import React, { useState } from "react";
 import { useLocalSearchParams, useRouter } from "expo-router";
-import { useCustomQuery } from "@/hooks/custom-query.hook";
-import { CarModel } from "@/types";
+
+
 import { Picker } from "@react-native-picker/picker";
 import { Controller } from "react-hook-form";
 
 import { Colors } from "@/constants/Colors";
 import FormWrapper from "@/components/form-wrapper";
 import Input from "@/components/Input";
-import { CarDetail, ComingCar } from "@/schemas";
+import { RefreshControl } from 'react-native';
 import { useCarEdit } from "@/hooks/car-edit.hook";
+import { useCarQuery, useModelsQuery } from "@/hooks/queries.hook";
 
 const CarDetails = () => {
   const { carId } = useLocalSearchParams();
   const router = useRouter();
+
+  const [refreshing, setRefreshing] = useState(false);
 
   // fetch car details
   const {
     data: carData,
     isLoading: carIsLoading,
     error: carError,
-  } = useCustomQuery<{
-    success: boolean;
-    car: ComingCar;
-    error?: string;
-  }>(
-    `details-${carId}`,
-    `http://10.0.2.2:3001/api/native/car/${carId}/details`
-  );
+    refetch:refetchCarDetails
+  } = useCarQuery(carId as string);
   // fetch brands
 
   const {
     data: modelsData,
     isLoading: modelsLoading,
     error: modelsError,
-  } = useCustomQuery<{
-    success: boolean;
-    models: CarModel[];
-    error?: string;
-  }>(`models`, `http://10.0.2.2:3001/api/native/models`);
+    refetch:refetchModels
+  } = useModelsQuery()
+
+   // Function to handle the refresh action
+   const onRefresh = React.useCallback(() => {
+    setRefreshing(true);
+    
+    Promise.all([refetchCarDetails(),refetchModels()])
+      .finally(() => setRefreshing(false)); // Stop the refreshing indicator
+  }, [carId]);
 
 
   const { form, onSubmit } = useCarEdit(carData?.car);
@@ -74,11 +76,18 @@ const CarDetails = () => {
       return 0;
     });
 
+    console.log('modelId',form.watch('carModelId'))
 
   return (
     <ScrollView
       style={{ flex: 1, backgroundColor: "white" }}
       contentContainerStyle={{ padding: 20 }}
+      refreshControl={
+        <RefreshControl
+          refreshing={refreshing}
+          onRefresh={onRefresh}
+        />
+      }
     >
       <FormWrapper title="Basic Informations">
         <View style={{ gap: 12 }}>
@@ -97,7 +106,7 @@ const CarDetails = () => {
                 name="carModelId"
                 render={({ field: { onChange, onBlur, value } }) => (
                   <Picker
-                    selectedValue={value}
+                    selectedValue={sortedModels.find(model=>model.id === value)?.id}
                     onValueChange={(itemValue, itemIndex) =>
                       onChange(itemValue)
                     }

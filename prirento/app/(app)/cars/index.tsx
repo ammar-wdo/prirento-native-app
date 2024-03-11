@@ -2,31 +2,39 @@ import {
   ActivityIndicator,
   FlatList,
   Image,
+  RefreshControl,
   StyleSheet,
   Text,
   View,
 } from "react-native";
-import React from "react";
+import React, { useState } from "react";
 import CustomHeader from "@/components/custom-header";
-import { SafeAreaView } from "react-native-safe-area-context";
-import { useCustomQuery } from "@/hooks/custom-query.hook";
-import { CarCard } from "@/types";
+
 
 
 import CarCardItem from "@/components/car-card";
 import { Colors } from "@/constants/Colors";
+import { useCarsQuery } from "@/hooks/queries.hook";
 
 const renderItemSeparator = () => {
   return <View style={styles.itemSeparator} />;
 };
 
 const index = () => {
-  const { data, isLoading, error } = useCustomQuery<{
-    success: boolean;
-    cars: CarCard[];
-    error?: string;
-  }>("cars", "http://10.0.2.2:3001/api/native/cars");
-  console.log("data", data);
+  const [refreshing, setRefreshing] = useState(false)
+const {data,isLoading,refetch:refetchCars} = useCarsQuery()
+
+const onRefresh = async () => {
+  try {
+    setRefreshing(true);
+    await refetchCars();
+  } catch (error) {
+    console.error("Failed to refetch cars:", error);
+    // Handle the error as needed
+  } finally {
+    setRefreshing(false); // Always stop the refreshing indicator
+  }
+};
 
   if (isLoading) {
     return (
@@ -41,6 +49,10 @@ const index = () => {
     <View style={styles.list}>
       <CustomHeader cars={true} />
       <FlatList
+      refreshControl={   <RefreshControl
+        refreshing={refreshing}
+        onRefresh={onRefresh}
+      />}
       style={styles.list}
         ItemSeparatorComponent={renderItemSeparator}
         keyExtractor={(item) => item.id.toString()}

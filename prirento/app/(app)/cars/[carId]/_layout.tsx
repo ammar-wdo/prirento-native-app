@@ -1,24 +1,20 @@
 import { ActivityIndicator, Image, SafeAreaView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import React from 'react'
 import { Slot, Stack, useLocalSearchParams, useRouter } from 'expo-router'
-import { useCustomQuery } from '@/hooks/custom-query.hook';
-import { SingleCarDetails } from '@/types';
+
+
 import { Colors } from '@/constants/Colors';
 import CustomHeader from '@/components/custom-header';
 import { Ionicons } from '@expo/vector-icons';
+import { CarDetail } from '@/schemas';
+import { useCarQuery } from '@/hooks/queries.hook';
 
 const _layout = () => {
     const { carId } = useLocalSearchParams();
     const router = useRouter()
 
-    const { data, isLoading, error } = useCustomQuery<{
-        success: boolean;
-        car: SingleCarDetails;
-        error?: string;
-      }>(
-        `details-${carId}`,
-        `http://10.0.2.2:3001/api/native/car/${carId}/details`
-      );
+  const {isLoading,data} = useCarQuery(carId as string)
+
       if (isLoading) {
         return (
           <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
