@@ -66,10 +66,10 @@ const ImageUploader: React.FC<ImageUploaderProps> = ({ onUploadSuccess }) => {
   return (
     <TouchableOpacity
       onPress={pickImage}
-      style={{alignItems:'center',width:'100%',marginBottom:12}}
+      style={{alignItems:'center',width:'100%',marginVertical:12,flexDirection:'row',justifyContent:'center',gap:3,backgroundColor:Colors.mainDark,padding:12,borderRadius:12}}
     >
-      <Ionicons name="image-outline" size={120} />
-      <Text style={{marginTop:-10,fontWeight:'600'}}>
+      <Ionicons name="image-outline" size={20} color={'white'} />
+      <Text style={{fontWeight:'600',color:'white'}}>
         Pick an image
       </Text>
     </TouchableOpacity>

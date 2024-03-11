@@ -23,8 +23,19 @@ export const carTypes = [
   "classics",
   "business",
 ] as const;
+
+export const carTypesString = [
+  "SUV",
+  "super_cars",
+  "sports",
+  "convertable",
+  "classics",
+  "business",
+]
 export const transmition = ["auto", "manual"] as const;
+export const transmitionString = ["auto", "manual"]
 export const electric = ["none", "fully_electric", "hybrid"] as const;
+export const electricString = ["none", "fully_electric", "hybrid"] ;
 export const carStatus = ["pending", "active"] as const;
 export const carColors = [
   "Black",

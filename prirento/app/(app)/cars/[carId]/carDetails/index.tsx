@@ -19,7 +19,7 @@ import Input from "@/components/Input";
 import { RefreshControl } from "react-native";
 import { useCarEdit } from "@/hooks/car-edit.hook";
 import { useCarQuery, useModelsQuery } from "@/hooks/queries.hook";
-import { carColors, carColorsMapper, carColorsString } from "@/schemas";
+import { carColors, carColorsMapper, carColorsString, carTypes, carTypesString, electricString, transmitionString } from "@/schemas";
 import CustomColorPickerModal from "@/components/custom-color-picker";
 import { FontAwesome5, Ionicons } from "@expo/vector-icons";
 import ImageUploader from "@/components/image-uploader";
@@ -78,13 +78,12 @@ const CarDetails = () => {
     [modelsData?.models]
   );
 
+  const handleImageDelete = (id: string) => {
+    const gallery = form.getValues("gallary");
+    const newGallary = gallery.filter((el) => el !== id);
 
-  const handleImageDelete = (id:string)=>{
-    const gallery = form.getValues('gallary')
-    const newGallary = gallery.filter(el=>el !==id)
-
-    form.setValue('gallary',newGallary)
-  }
+    form.setValue("gallary", newGallary);
+  };
 
   if (carIsLoading || modelsLoading) {
     return (
@@ -165,6 +164,7 @@ const CarDetails = () => {
         </View>
       </FormWrapper>
 
+      {/* apperance */}
       <View style={{ marginTop: 12 }}>
         <FormWrapper title="Appearance">
           {/* car colr */}
@@ -251,19 +251,27 @@ const CarDetails = () => {
               render={({ field: { onChange, onBlur, value } }) => (
                 <View style={{ width: "100%" }}>
                   <ImageUploader onUploadSuccess={onChange} />
-                  <View style={{ marginTop: 4, flexDirection: "row", gap: 5,flexWrap:'wrap',justifyContent:'space-between' }}>
+                  <View
+                    style={{
+                      marginTop: 4,
+                      flexDirection: "row",
+                      gap: 5,
+                      flexWrap: "wrap",
+                      justifyContent: "space-between",
+                    }}
+                  >
                     {form.watch("gallary").map((el, i) => (
                       <View
-                      key={i}
+                        key={i}
                         style={{
                           flex: 1,
-                          minWidth:'30%',
+                          minWidth: "30%",
                           aspectRatio: 2 / 1,
                           borderColor: Colors.border,
                           overflow: "hidden",
                           borderRadius: 10,
                           borderWidth: 1,
-                          position:'relative'
+                          position: "relative",
                         }}
                       >
                         <Image
@@ -272,9 +280,20 @@ const CarDetails = () => {
                           style={{ height: "100%", width: "100%" }}
                         />
                         <TouchableOpacity
-                        onPress={()=>handleImageDelete(el)}
-                        style={{position:'absolute',top:1,right:1,backgroundColor:'red',borderRadius:100,width:15,height:15,alignItems:'center',justifyContent:'center'}}>
-                          <Ionicons name="close" color={'white'} />
+                          onPress={() => handleImageDelete(el)}
+                          style={{
+                            position: "absolute",
+                            top: 1,
+                            right: 1,
+                            backgroundColor: "red",
+                            borderRadius: 100,
+                            width: 15,
+                            height: 15,
+                            alignItems: "center",
+                            justifyContent: "center",
+                          }}
+                        >
+                          <Ionicons name="close" color={"white"} />
                         </TouchableOpacity>
                       </View>
                     ))}
@@ -282,6 +301,131 @@ const CarDetails = () => {
                 </View>
               )}
             />
+          </View>
+        </FormWrapper>
+      </View>
+      {/* Specifications */}
+      <View style={{ marginTop: 12 }}>
+        <FormWrapper title="Specifications">
+          <View style={{ gap: 12 }}>
+            {/* engine */}
+            <Controller
+              control={form.control} // From useForm()
+              name="engine"
+              render={({ field: { onChange, onBlur, value } }) => (
+                <Input value={value} setValue={onChange} label="Engine" />
+              )}
+            />
+
+{/* transmission */}
+            <View style={{ gap: 2 }}>
+              <Text style={{ fontWeight: "800" }}>Transmission</Text>
+              <View
+                style={{
+                  borderColor: Colors.border,
+                  borderWidth: 1,
+                  borderRadius: 10,
+                  alignItems: "center",
+                }}
+              >
+                <Controller
+                  control={form.control} // From useForm()
+                  name="transmition"
+                  render={({ field: { onChange, onBlur, value } }) => (
+                    <Picker
+                      selectedValue={
+                        transmitionString?.find((model) => model === value)
+                      }
+                      onValueChange={(itemValue, itemIndex) =>
+                        onChange(itemValue)
+                      }
+                      style={{ width: "100%", height: 44 }}
+                    >
+                      {transmitionString?.map((el) => (
+                        <Picker.Item
+                          key={el}
+                          label={el}
+                          value={el}
+                        />
+                      ))}
+                    </Picker>
+                  )}
+                />
+              </View>
+            </View>
+            {/* electric */}
+
+            <View style={{ gap: 2 }}>
+              <Text style={{ fontWeight: "800" }}>Electric</Text>
+              <View
+                style={{
+                  borderColor: Colors.border,
+                  borderWidth: 1,
+                  borderRadius: 10,
+                  alignItems: "center",
+                }}
+              >
+                <Controller
+                  control={form.control} // From useForm()
+                  name="electric"
+                  render={({ field: { onChange, onBlur, value } }) => (
+                    <Picker
+                      selectedValue={
+                        electricString?.find((model) => model === value)
+                      }
+                      onValueChange={(itemValue, itemIndex) =>
+                        onChange(itemValue)
+                      }
+                      style={{ width: "100%", height: 44 }}
+                    >
+                      {electricString?.map((el) => (
+                        <Picker.Item
+                          key={el}
+                          label={el}
+                          value={el}
+                        />
+                      ))}
+                    </Picker>
+                  )}
+                />
+              </View>
+            </View>
+            {/* car type */}
+            <View style={{ gap: 2 }}>
+              <Text style={{ fontWeight: "800" }}>Car Type</Text>
+              <View
+                style={{
+                  borderColor: Colors.border,
+                  borderWidth: 1,
+                  borderRadius: 10,
+                  alignItems: "center",
+                }}
+              >
+                <Controller
+                  control={form.control} // From useForm()
+                  name="carType"
+                  render={({ field: { onChange, onBlur, value } }) => (
+                    <Picker
+                      selectedValue={
+                        carTypesString?.find((model) => model === value)
+                      }
+                      onValueChange={(itemValue, itemIndex) =>
+                        onChange(itemValue)
+                      }
+                      style={{ width: "100%", height: 44 }}
+                    >
+                      {carTypesString?.map((el) => (
+                        <Picker.Item
+                          key={el}
+                          label={el}
+                          value={el}
+                        />
+                      ))}
+                    </Picker>
+                  )}
+                />
+              </View>
+            </View>
           </View>
         </FormWrapper>
       </View>
