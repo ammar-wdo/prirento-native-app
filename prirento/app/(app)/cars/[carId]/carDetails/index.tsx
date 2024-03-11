@@ -19,10 +19,19 @@ import Input from "@/components/Input";
 import { RefreshControl } from "react-native";
 import { useCarEdit } from "@/hooks/car-edit.hook";
 import { useCarQuery, useModelsQuery } from "@/hooks/queries.hook";
-import { carColors, carColorsMapper, carColorsString, carTypes, carTypesString, electricString, transmitionString } from "@/schemas";
-import CustomColorPickerModal from "@/components/custom-color-picker";
+import {
+  carColorsMapper,
+  carColorsString,
+  carTypes,
+  carTypesString,
+  electricString,
+  transmitionString,
+} from "@/schemas";
+
 import { FontAwesome5, Ionicons } from "@expo/vector-icons";
 import ImageUploader from "@/components/image-uploader";
+import CustomItemsPickerModal from "@/components/custom-color-picker";
+import CustomModePickerModal from "@/components/model-picker";
 
 const CarDetails = () => {
   const { carId } = useLocalSearchParams();
@@ -32,6 +41,8 @@ const CarDetails = () => {
   const [isColorPickerVisible, setColorPickerVisible] = useState(false);
   const [isInteriorColorPickerVisible, setInteriorColorPickerVisible] =
     useState(false);
+
+  const [isModelPickerVisible, setModelPickerVisible] = useState(false);
 
   // fetch car details
   const {
@@ -107,38 +118,45 @@ const CarDetails = () => {
         <View style={{ gap: 12 }}>
           <View style={{ gap: 2 }}>
             <Text style={{ fontWeight: "800" }}>Car Model</Text>
-            <View
-              style={{
-                borderColor: Colors.border,
-                borderWidth: 1,
-                borderRadius: 10,
-                alignItems: "center",
-              }}
-            >
-              <Controller
-                control={form.control} // From useForm()
-                name="carModelId"
-                render={({ field: { onChange, onBlur, value } }) => (
-                  <Picker
-                    selectedValue={
-                      sortedModels?.find((model) => model.id === value)?.id
-                    }
-                    onValueChange={(itemValue, itemIndex) =>
-                      onChange(itemValue)
-                    }
-                    style={{ width: "100%", height: 44 }}
+
+            <Controller
+              control={form.control} // From useForm()
+              name="carModelId"
+              render={({ field: { onChange, onBlur, value } }) => (
+                <View>
+                  <TouchableOpacity
+                    onPress={() => setModelPickerVisible(true)}
+                    style={styles.colorPickerTrigger}
                   >
-                    {sortedModels?.map((model) => (
-                      <Picker.Item
-                        key={model.id}
-                        label={`${model.carBrand.brand} ${model.name}`}
-                        value={model.id}
-                      />
-                    ))}
-                  </Picker>
-                )}
-              />
-            </View>
+                    <Text>
+                      {
+                        modelsData.models.find((el) => el.id === value)
+                          ?.carBrand.brand
+                      }{" "}
+                      {modelsData.models.find((el) => el.id === value)?.name}
+                    </Text>
+                    {!!value && (
+                      <View
+                        style={{
+                          width: 30,
+                          height: 30,
+                          borderRadius: 100,
+                          backgroundColor: carColorsMapper[value],
+                        }}
+                      ></View>
+                    )}
+                    <FontAwesome5 name="caret-down" size={15} color={"#777"} />
+                  </TouchableOpacity>
+                  <CustomModePickerModal
+                    isVisible={isModelPickerVisible}
+                    items={modelsData.models} // Your colors array
+                    selectedItem={value}
+                    onSelectItem={onChange}
+                    onClose={() => setModelPickerVisible(false)}
+                  />
+                </View>
+              )}
+            />
           </View>
 
           <Controller
@@ -193,11 +211,12 @@ const CarDetails = () => {
                     )}
                     <FontAwesome5 name="caret-down" size={15} color={"#777"} />
                   </TouchableOpacity>
-                  <CustomColorPickerModal
+                  <CustomItemsPickerModal
                     isVisible={isColorPickerVisible}
-                    colors={carColorsString} // Your colors array
-                    selectedColor={value}
-                    onSelectColor={onChange}
+                    items={carColorsString} // Your colors array
+                    selectedItem={value}
+                    onSelectItem={onChange}
+                    isColor={true}
                     onClose={() => setColorPickerVisible(false)}
                   />
                 </View>
@@ -230,12 +249,13 @@ const CarDetails = () => {
                     )}
                     <FontAwesome5 name="caret-down" size={15} color={"#777"} />
                   </TouchableOpacity>
-                  <CustomColorPickerModal
+                  <CustomItemsPickerModal
                     isVisible={isInteriorColorPickerVisible}
-                    colors={carColorsString} // Your colors array
-                    selectedColor={value}
-                    onSelectColor={onChange}
+                    items={carColorsString} // Your colors array
+                    selectedItem={value}
+                    onSelectItem={onChange}
                     onClose={() => setInteriorColorPickerVisible(false)}
+                    isColor={true}
                   />
                 </View>
               )}
@@ -317,7 +337,7 @@ const CarDetails = () => {
               )}
             />
 
-{/* transmission */}
+            {/* transmission */}
             <View style={{ gap: 2 }}>
               <Text style={{ fontWeight: "800" }}>Transmission</Text>
               <View
@@ -333,20 +353,16 @@ const CarDetails = () => {
                   name="transmition"
                   render={({ field: { onChange, onBlur, value } }) => (
                     <Picker
-                      selectedValue={
-                        transmitionString?.find((model) => model === value)
-                      }
+                      selectedValue={transmitionString?.find(
+                        (model) => model === value
+                      )}
                       onValueChange={(itemValue, itemIndex) =>
                         onChange(itemValue)
                       }
                       style={{ width: "100%", height: 44 }}
                     >
                       {transmitionString?.map((el) => (
-                        <Picker.Item
-                          key={el}
-                          label={el}
-                          value={el}
-                        />
+                        <Picker.Item key={el} label={el} value={el} />
                       ))}
                     </Picker>
                   )}
@@ -370,20 +386,16 @@ const CarDetails = () => {
                   name="electric"
                   render={({ field: { onChange, onBlur, value } }) => (
                     <Picker
-                      selectedValue={
-                        electricString?.find((model) => model === value)
-                      }
+                      selectedValue={electricString?.find(
+                        (model) => model === value
+                      )}
                       onValueChange={(itemValue, itemIndex) =>
                         onChange(itemValue)
                       }
                       style={{ width: "100%", height: 44 }}
                     >
                       {electricString?.map((el) => (
-                        <Picker.Item
-                          key={el}
-                          label={el}
-                          value={el}
-                        />
+                        <Picker.Item key={el} label={el} value={el} />
                       ))}
                     </Picker>
                   )}
@@ -406,20 +418,16 @@ const CarDetails = () => {
                   name="carType"
                   render={({ field: { onChange, onBlur, value } }) => (
                     <Picker
-                      selectedValue={
-                        carTypesString?.find((model) => model === value)
-                      }
+                      selectedValue={carTypesString?.find(
+                        (model) => model === value
+                      )}
                       onValueChange={(itemValue, itemIndex) =>
                         onChange(itemValue)
                       }
                       style={{ width: "100%", height: 44 }}
                     >
                       {carTypesString?.map((el) => (
-                        <Picker.Item
-                          key={el}
-                          label={el}
-                          value={el}
-                        />
+                        <Picker.Item key={el} label={el} value={el} />
                       ))}
                     </Picker>
                   )}

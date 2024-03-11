@@ -5,19 +5,19 @@ import { Modal, View, TouchableOpacity, Text, StyleSheet, ScrollView } from 'rea
 
 interface CustomColorPickerModalProps {
   isVisible: boolean;
-  items: string[];
-  isColor?:boolean
+  items: {id:string,name:string,carBrand:{brand:string,logo:string}}[];
+
   selectedItem: string;
   onSelectItem: (color: string) => void;
   onClose: () => void;
 }
-const CustomItemsPickerModal: React.FC<CustomColorPickerModalProps> = ({
+const CustomModePickerModal: React.FC<CustomColorPickerModalProps> = ({
     isVisible,
     items,
     selectedItem,
     onSelectItem,
     onClose,
-    isColor
+
   }) => {
     return (
       <Modal visible={isVisible} animationType="slide" transparent={true}>
@@ -26,12 +26,12 @@ const CustomItemsPickerModal: React.FC<CustomColorPickerModalProps> = ({
           <ScrollView style={{width:'100%'}} >
             {items.map((item) => (
               <TouchableOpacity 
-                key={item} 
-                onPress={() => {onSelectItem(item);onClose()}} 
+                key={item.id} 
+                onPress={() => {onSelectItem(item.id);onClose()}} 
                 style={styles.colorOption}
               >
-             { isColor &&   <View style={[styles.colorCircle, { backgroundColor: carColorsMapper[item]  }]} />}
-                <Text style={styles.colorText}>{item}</Text>
+    
+                <Text style={styles.Text}>{item.carBrand.brand} {item.name}</Text>
               </TouchableOpacity>
             ))}
           </ScrollView>
@@ -81,12 +81,13 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     marginRight: 10,
   },
-  colorText: {
+  Text: {
     marginLeft: 10,
+    textTransform:'capitalize'
   },
   closeButton: {
     marginTop: 20,
   },
 });
 
-export default CustomItemsPickerModal;
+export default CustomModePickerModal;
