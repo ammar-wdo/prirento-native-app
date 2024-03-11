@@ -46,7 +46,27 @@ export const carColors = [
   "Other",
 ] as const;
 
-export const carColorsMapper = {
+export const carColorsString = [
+  "Black",
+  "White",
+  "Silver",
+  "Gray",
+  "Blue",
+  "Red",
+  "Brown",
+  "Green",
+  "Beige",
+  "Gold",
+  "Orange",
+  "Yellow",
+  "Purple",
+  "Maroon",
+  "Navy",
+  "Charcoal",
+  "Other",
+]
+
+export const carColorsMapper :{[key:string]:string} = {
   Black: "#000000",
   White: "#FFFFFF",
   Silver: "#C0C0C0",
