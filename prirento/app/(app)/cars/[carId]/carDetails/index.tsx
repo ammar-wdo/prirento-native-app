@@ -43,6 +43,9 @@ const CarDetails = () => {
     useState(false);
 
   const [isModelPickerVisible, setModelPickerVisible] = useState(false);
+  const [isTrasmissionPickerVisible, setTransmissionPickerVisible] = useState(false);
+  const [isElectricPickerVisible, setElectricPickerVisible] = useState(false);
+  const [isCarTypePickerVisible, setCarTypePickerVisible] = useState(false);
 
   // fetch car details
   const {
@@ -340,99 +343,96 @@ const CarDetails = () => {
             {/* transmission */}
             <View style={{ gap: 2 }}>
               <Text style={{ fontWeight: "800" }}>Transmission</Text>
-              <View
-                style={{
-                  borderColor: Colors.border,
-                  borderWidth: 1,
-                  borderRadius: 10,
-                  alignItems: "center",
-                }}
-              >
+            
                 <Controller
                   control={form.control} // From useForm()
                   name="transmition"
                   render={({ field: { onChange, onBlur, value } }) => (
-                    <Picker
-                      selectedValue={transmitionString?.find(
-                        (model) => model === value
-                      )}
-                      onValueChange={(itemValue, itemIndex) =>
-                        onChange(itemValue)
-                      }
-                      style={{ width: "100%", height: 44 }}
-                    >
-                      {transmitionString?.map((el) => (
-                        <Picker.Item key={el} label={el} value={el} />
-                      ))}
-                    </Picker>
+                    <View>
+                         <TouchableOpacity
+                    onPress={() => setTransmissionPickerVisible(true)}
+                    style={styles.colorPickerTrigger}
+                  >
+                    <Text>{form.watch("transmition") }</Text>
+                 
+                    <FontAwesome5 name="caret-down" size={15} color={"#777"} />
+                  </TouchableOpacity>
+                  <CustomItemsPickerModal
+                    isVisible={isTrasmissionPickerVisible}
+                    items={transmitionString} 
+                    selectedItem={value}
+                    onSelectItem={onChange}
+                  
+                    onClose={() => setTransmissionPickerVisible(false)}
+                  />
+                    </View>
+               
                   )}
                 />
-              </View>
+           
             </View>
             {/* electric */}
 
             <View style={{ gap: 2 }}>
               <Text style={{ fontWeight: "800" }}>Electric</Text>
-              <View
-                style={{
-                  borderColor: Colors.border,
-                  borderWidth: 1,
-                  borderRadius: 10,
-                  alignItems: "center",
-                }}
-              >
+            
                 <Controller
                   control={form.control} // From useForm()
                   name="electric"
                   render={({ field: { onChange, onBlur, value } }) => (
-                    <Picker
-                      selectedValue={electricString?.find(
-                        (model) => model === value
-                      )}
-                      onValueChange={(itemValue, itemIndex) =>
-                        onChange(itemValue)
-                      }
-                      style={{ width: "100%", height: 44 }}
-                    >
-                      {electricString?.map((el) => (
-                        <Picker.Item key={el} label={el} value={el} />
-                      ))}
-                    </Picker>
+                    <View>
+                         <TouchableOpacity
+                    onPress={() => setElectricPickerVisible(true)}
+                    style={styles.colorPickerTrigger}
+                  >
+                    <Text>{form.watch("electric") }</Text>
+                 
+                    <FontAwesome5 name="caret-down" size={15} color={"#777"} />
+                  </TouchableOpacity>
+                  <CustomItemsPickerModal
+                    isVisible={isElectricPickerVisible}
+                    items={electricString} 
+                    selectedItem={value}
+                    onSelectItem={onChange}
+                  
+                    onClose={() => setElectricPickerVisible(false)}
+                  />
+                    </View>
+               
                   )}
                 />
-              </View>
+           
             </View>
             {/* car type */}
             <View style={{ gap: 2 }}>
               <Text style={{ fontWeight: "800" }}>Car Type</Text>
-              <View
-                style={{
-                  borderColor: Colors.border,
-                  borderWidth: 1,
-                  borderRadius: 10,
-                  alignItems: "center",
-                }}
-              >
+            
                 <Controller
                   control={form.control} // From useForm()
                   name="carType"
                   render={({ field: { onChange, onBlur, value } }) => (
-                    <Picker
-                      selectedValue={carTypesString?.find(
-                        (model) => model === value
-                      )}
-                      onValueChange={(itemValue, itemIndex) =>
-                        onChange(itemValue)
-                      }
-                      style={{ width: "100%", height: 44 }}
-                    >
-                      {carTypesString?.map((el) => (
-                        <Picker.Item key={el} label={el} value={el} />
-                      ))}
-                    </Picker>
+                    <View>
+                         <TouchableOpacity
+                    onPress={() => setCarTypePickerVisible(true)}
+                    style={styles.colorPickerTrigger}
+                  >
+                    <Text>{form.watch("carType") }</Text>
+                 
+                    <FontAwesome5 name="caret-down" size={15} color={"#777"} />
+                  </TouchableOpacity>
+                  <CustomItemsPickerModal
+                    isVisible={isCarTypePickerVisible}
+                    items={carTypesString} 
+                    selectedItem={value}
+                    onSelectItem={onChange}
+                  
+                    onClose={() => setCarTypePickerVisible(false)}
+                  />
+                    </View>
+               
                   )}
                 />
-              </View>
+           
             </View>
           </View>
         </FormWrapper>
