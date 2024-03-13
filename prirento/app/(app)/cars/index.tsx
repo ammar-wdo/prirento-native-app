@@ -12,6 +12,7 @@ import CustomHeader from "@/components/custom-header";
 
 
 
+
 import CarCardItem from "@/components/car-card";
 import { Colors } from "@/constants/Colors";
 import { useCarsQuery } from "@/hooks/queries.hook";

@@ -5,9 +5,9 @@ import { fetcher } from "@/lib/utils";
 import { CarDetail, ComingCar } from "@/schemas";
 import { Platform } from 'react-native';
 
-const url = Platform.select({
-ios:'http://192.168.1.191:3001',
-android:'http://10.0.2.2:3001'
+export const url = Platform.select({
+ios:'http://192.168.1.191:3000',
+android:'http://10.0.2.2:3000'
 }) 
 
 

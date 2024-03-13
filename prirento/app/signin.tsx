@@ -99,6 +99,7 @@ edges={['top']}
 
               <CustomButton
                 loading={isSubmitting}
+                disabled={isSubmitting}
                 onPress={handleSubmit(onSubmit)}
                 title="Login"
                 style={{ backgroundColor: Colors.mainDark }}
