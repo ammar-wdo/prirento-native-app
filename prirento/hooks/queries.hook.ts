@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { useAuth } from "./auth.hook";
-import { CarCard, CarModel } from "@/types";
+import { CarCard, CarModel, Location } from "@/types";
 import { fetcher } from "@/lib/utils";
 import { CarDetail, ComingCar } from "@/schemas";
 import { Platform } from 'react-native';
@@ -59,6 +59,25 @@ export const useModelsQuery = ()=>{
       models: CarModel[];
       error?: string;
     }>(`${url}/api/native/models`,user?.token),
+  })
+
+
+}
+
+
+
+export const useLocatonsQuery = ()=>{
+
+
+  const {user} = useAuth()
+
+  return useQuery({
+ queryKey: ['locations'],
+    queryFn: () => fetcher<{
+      success: boolean;
+      locations: Location[];
+      error?: string;
+    }>(`${url}/api/native/locations`,user?.token),
   })
 
 

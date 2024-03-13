@@ -7,10 +7,10 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
+
 import React, { useMemo, useState } from "react";
 import { useLocalSearchParams, useRouter } from "expo-router";
 
-import { Picker } from "@react-native-picker/picker";
 import { Controller } from "react-hook-form";
 
 import { Colors } from "@/constants/Colors";
@@ -18,7 +18,11 @@ import FormWrapper from "@/components/form-wrapper";
 import Input from "@/components/Input";
 import { RefreshControl } from "react-native";
 import { useCarEdit } from "@/hooks/car-edit.hook";
-import { useCarQuery, useModelsQuery } from "@/hooks/queries.hook";
+import {
+  useCarQuery,
+  useLocatonsQuery,
+  useModelsQuery,
+} from "@/hooks/queries.hook";
 import {
   carColorsMapper,
   carColorsString,
@@ -32,6 +36,7 @@ import { FontAwesome5, Ionicons } from "@expo/vector-icons";
 import ImageUploader from "@/components/image-uploader";
 import CustomItemsPickerModal from "@/components/custom-color-picker";
 import CustomModePickerModal from "@/components/model-picker";
+import { CheckBox, Icon } from "@rneui/themed";
 
 const CarDetails = () => {
   const { carId } = useLocalSearchParams();
@@ -43,7 +48,8 @@ const CarDetails = () => {
     useState(false);
 
   const [isModelPickerVisible, setModelPickerVisible] = useState(false);
-  const [isTrasmissionPickerVisible, setTransmissionPickerVisible] = useState(false);
+  const [isTrasmissionPickerVisible, setTransmissionPickerVisible] =
+    useState(false);
   const [isElectricPickerVisible, setElectricPickerVisible] = useState(false);
   const [isCarTypePickerVisible, setCarTypePickerVisible] = useState(false);
 
@@ -63,6 +69,13 @@ const CarDetails = () => {
     refetch: refetchModels,
   } = useModelsQuery();
 
+  const {
+    data: locationsData,
+    isLoading: locationsLoading,
+    error: locationsError,
+    refetch: locationsRefetch,
+  } = useLocatonsQuery();
+
   // Function to handle the refresh action
 
   const { form, onSubmit } = useCarEdit(carData?.car);
@@ -72,14 +85,25 @@ const CarDetails = () => {
 
     try {
       // Await the refetch operations
-      await Promise.all([refetchCarDetails(), refetchModels()]);
+      await Promise.all([
+        refetchCarDetails(),
+        refetchModels(),
+        locationsRefetch(),
+      ]);
       form.reset();
     } catch (error) {
       console.error("Failed to refetch or reset form:", error);
     } finally {
       setRefreshing(false);
     }
-  }, [carData, modelsData, refetchCarDetails, refetchModels, form.reset]);
+  }, [
+    carData,
+    modelsData,
+    refetchCarDetails,
+    refetchModels,
+    locationsRefetch,
+    form.reset,
+  ]);
 
   const sortedModels = useMemo(
     () =>
@@ -99,15 +123,17 @@ const CarDetails = () => {
     form.setValue("gallary", newGallary);
   };
 
-  if (carIsLoading || modelsLoading) {
+  if (carIsLoading || modelsLoading || locationsLoading) {
     return (
       <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
         <ActivityIndicator size="large" color={Colors.mainDark} />
       </View>
     );
   }
-  if (!carData?.success || !modelsData?.success)
-    return <Text>{carData?.error || modelsData?.error}</Text>;
+  if (!carData?.success || !modelsData?.success || !locationsData?.success)
+    return (
+      <Text>{carData?.error || modelsData?.error || locationsData?.error}</Text>
+    );
 
   return (
     <ScrollView
@@ -343,96 +369,309 @@ const CarDetails = () => {
             {/* transmission */}
             <View style={{ gap: 2 }}>
               <Text style={{ fontWeight: "800" }}>Transmission</Text>
-            
-                <Controller
-                  control={form.control} // From useForm()
-                  name="transmition"
-                  render={({ field: { onChange, onBlur, value } }) => (
-                    <View>
-                         <TouchableOpacity
-                    onPress={() => setTransmissionPickerVisible(true)}
-                    style={styles.colorPickerTrigger}
-                  >
-                    <Text>{form.watch("transmition") }</Text>
-                 
-                    <FontAwesome5 name="caret-down" size={15} color={"#777"} />
-                  </TouchableOpacity>
-                  <CustomItemsPickerModal
-                    isVisible={isTrasmissionPickerVisible}
-                    items={transmitionString} 
-                    selectedItem={value}
-                    onSelectItem={onChange}
-                  
-                    onClose={() => setTransmissionPickerVisible(false)}
-                  />
-                    </View>
-               
-                  )}
-                />
-           
+
+              <Controller
+                control={form.control} // From useForm()
+                name="transmition"
+                render={({ field: { onChange, onBlur, value } }) => (
+                  <View>
+                    <TouchableOpacity
+                      onPress={() => setTransmissionPickerVisible(true)}
+                      style={styles.colorPickerTrigger}
+                    >
+                      <Text>{form.watch("transmition")}</Text>
+
+                      <FontAwesome5
+                        name="caret-down"
+                        size={15}
+                        color={"#777"}
+                      />
+                    </TouchableOpacity>
+                    <CustomItemsPickerModal
+                      isVisible={isTrasmissionPickerVisible}
+                      items={transmitionString}
+                      selectedItem={value}
+                      onSelectItem={onChange}
+                      onClose={() => setTransmissionPickerVisible(false)}
+                    />
+                  </View>
+                )}
+              />
             </View>
             {/* electric */}
 
             <View style={{ gap: 2 }}>
               <Text style={{ fontWeight: "800" }}>Electric</Text>
-            
-                <Controller
-                  control={form.control} // From useForm()
-                  name="electric"
-                  render={({ field: { onChange, onBlur, value } }) => (
-                    <View>
-                         <TouchableOpacity
-                    onPress={() => setElectricPickerVisible(true)}
-                    style={styles.colorPickerTrigger}
-                  >
-                    <Text>{form.watch("electric") }</Text>
-                 
-                    <FontAwesome5 name="caret-down" size={15} color={"#777"} />
-                  </TouchableOpacity>
-                  <CustomItemsPickerModal
-                    isVisible={isElectricPickerVisible}
-                    items={electricString} 
-                    selectedItem={value}
-                    onSelectItem={onChange}
-                  
-                    onClose={() => setElectricPickerVisible(false)}
-                  />
-                    </View>
-               
-                  )}
-                />
-           
+
+              <Controller
+                control={form.control} // From useForm()
+                name="electric"
+                render={({ field: { onChange, onBlur, value } }) => (
+                  <View>
+                    <TouchableOpacity
+                      onPress={() => setElectricPickerVisible(true)}
+                      style={styles.colorPickerTrigger}
+                    >
+                      <Text>{form.watch("electric")}</Text>
+
+                      <FontAwesome5
+                        name="caret-down"
+                        size={15}
+                        color={"#777"}
+                      />
+                    </TouchableOpacity>
+                    <CustomItemsPickerModal
+                      isVisible={isElectricPickerVisible}
+                      items={electricString}
+                      selectedItem={value}
+                      onSelectItem={onChange}
+                      onClose={() => setElectricPickerVisible(false)}
+                    />
+                  </View>
+                )}
+              />
             </View>
             {/* car type */}
             <View style={{ gap: 2 }}>
               <Text style={{ fontWeight: "800" }}>Car Type</Text>
-            
-                <Controller
-                  control={form.control} // From useForm()
-                  name="carType"
-                  render={({ field: { onChange, onBlur, value } }) => (
-                    <View>
-                         <TouchableOpacity
-                    onPress={() => setCarTypePickerVisible(true)}
-                    style={styles.colorPickerTrigger}
-                  >
-                    <Text>{form.watch("carType") }</Text>
-                 
-                    <FontAwesome5 name="caret-down" size={15} color={"#777"} />
-                  </TouchableOpacity>
-                  <CustomItemsPickerModal
-                    isVisible={isCarTypePickerVisible}
-                    items={carTypesString} 
-                    selectedItem={value}
-                    onSelectItem={onChange}
-                  
-                    onClose={() => setCarTypePickerVisible(false)}
-                  />
-                    </View>
-               
-                  )}
+
+              <Controller
+                control={form.control} // From useForm()
+                name="carType"
+                render={({ field: { onChange, onBlur, value } }) => (
+                  <View>
+                    <TouchableOpacity
+                      onPress={() => setCarTypePickerVisible(true)}
+                      style={styles.colorPickerTrigger}
+                    >
+                      <Text>{form.watch("carType")}</Text>
+
+                      <FontAwesome5
+                        name="caret-down"
+                        size={15}
+                        color={"#777"}
+                      />
+                    </TouchableOpacity>
+                    <CustomItemsPickerModal
+                      isVisible={isCarTypePickerVisible}
+                      items={carTypesString}
+                      selectedItem={value}
+                      onSelectItem={onChange}
+                      onClose={() => setCarTypePickerVisible(false)}
+                    />
+                  </View>
+                )}
+              />
+            </View>
+            {/* seats */}
+            <Controller
+              control={form.control} // From useForm()
+              name="seats"
+              render={({ field: { onChange, onBlur, value } }) => (
+                <Input
+                  value={value.toString()}
+                  setValue={onChange}
+                  label="Seats"
+                  numeric={true}
                 />
-           
+              )}
+            />
+            {/* doors */}
+            <Controller
+              control={form.control} // From useForm()
+              name="doors"
+              render={({ field: { onChange, onBlur, value } }) => (
+                <Input
+                  value={value.toString()}
+                  setValue={onChange}
+                  label="Doors"
+                  numeric={true}
+                />
+              )}
+            />
+          </View>
+        </FormWrapper>
+      </View>
+      {/* Rental details */}
+      <View style={{ marginTop: 12 }}>
+        <FormWrapper title="Rental details">
+          {/* seats */}
+          <Controller
+            control={form.control} // From useForm()
+            name="kmIncluded"
+            render={({ field: { onChange, onBlur, value } }) => (
+              <Input
+                value={value.toString()}
+                setValue={onChange}
+                label="Km Included"
+                numeric={true}
+              />
+            )}
+          />
+          {/* minimum renting hours */}
+          <View style={{ marginTop: 12 }}>
+            <Controller
+              control={form.control} // From useForm()
+              name="minimumHours"
+              render={({ field: { onChange, onBlur, value } }) => (
+                <Input
+                  value={(value || "").toString()}
+                  setValue={onChange}
+                  label="Minimum renting hours"
+                  numeric={true}
+                />
+              )}
+            />
+          </View>
+          {/* deposit */}
+          <View style={{ marginTop: 12 }}>
+            <Controller
+              control={form.control} // From useForm()
+              name="deposite"
+              render={({ field: { onChange, onBlur, value } }) => (
+                <Input
+                  value={(value || "").toString()}
+                  setValue={onChange}
+                  label="Deposit"
+                  numeric={true}
+                />
+              )}
+            />
+          </View>
+          {/* cool down time */}
+          <View style={{ marginTop: 12 }}>
+            <Controller
+              control={form.control} // From useForm()
+              name="coolDown"
+              render={({ field: { onChange, onBlur, value } }) => (
+                <Input
+                  value={(value || "").toString()}
+                  setValue={onChange}
+                  label="Cool down time (hours)"
+                  numeric={true}
+                />
+              )}
+            />
+          </View>
+          {/* Delivery fee */}
+          <View style={{ marginTop: 12 }}>
+            <Controller
+              control={form.control} // From useForm()
+              name="deleviryFee"
+              render={({ field: { onChange, onBlur, value } }) => (
+                <Input
+                  value={(value || "").toString()}
+                  setValue={onChange}
+                  label="Delivery fee"
+                  numeric={true}
+                />
+              )}
+            />
+          </View>
+        </FormWrapper>
+      </View>
+
+      {/* disable the car */}
+      <View style={{ marginTop: 12 }}>
+        <View
+          style={{
+            borderColor: Colors.border,
+            borderWidth: 1,
+            borderRadius: 10,
+          }}
+        >
+          <Controller
+            control={form.control} // From useForm()
+            name="disabled"
+            render={({ field: { onChange, onBlur, value } }) => (
+              <CheckBox
+                checked={!!value}
+                onPress={() => onChange(!value)}
+                size={20}
+                title={"Disable the car"}
+                iconType="material-community"
+                checkedIcon="checkbox-outline"
+                uncheckedIcon={"checkbox-blank-outline"}
+                checkedColor={Colors.mainDark}
+              />
+            )}
+          />
+          <Text
+            style={{
+              marginTop: -10,
+              fontSize: 10,
+              color: "gray",
+              paddingLeft: 25,
+              paddingBottom: 20,
+            }}
+          >
+            If checked, the car will not show on the website.
+          </Text>
+        </View>
+      </View>
+
+      <View style={{ marginTop: 12 }}>
+        <FormWrapper title="Locations">
+          <View style={{ flexDirection: "row", gap: 14 }}>
+            <View>
+              <Text style={{ fontWeight: "600" }}>Pick-up locations</Text>
+              <Controller
+                control={form.control} // From useForm()
+                name="pickupLocations"
+                render={({ field: { onChange, onBlur, value } }) => (
+                  <View>
+                    {locationsData?.locations.map((location) => (
+                      <CheckBox
+                        key={location.id}
+                        checked={value.includes(location.id)}
+                        onPress={() => {
+                          !value.includes(location.id)
+                            ? onChange([...value, location.id])
+                            : onChange(
+                                value.filter((el) => el !== location.id)
+                              );
+                        }}
+                        size={20}
+                        title={location.name}
+                        iconType="material-community"
+                        checkedIcon="checkbox-outline"
+                        uncheckedIcon={"checkbox-blank-outline"}
+                        checkedColor={Colors.mainDark}
+                      />
+                    ))}
+                  </View>
+                )}
+              />
+            </View>
+            <View>
+              <Text style={{ fontWeight: "600" }}>Drop-off locations</Text>
+              <Controller
+                control={form.control} // From useForm()
+                name="dropoffLocations"
+                render={({ field: { onChange, onBlur, value } }) => (
+                  <View>
+                    {locationsData?.locations.map((location) => (
+                      <CheckBox
+                        key={location.id}
+                        checked={value.includes(location.id)}
+                        onPress={() => {
+                          !value.includes(location.id)
+                            ? onChange([...value, location.id])
+                            : onChange(
+                                value.filter((el) => el !== location.id)
+                              );
+                        }}
+                        size={20}
+                        title={location.name}
+                        iconType="material-community"
+                        checkedIcon="checkbox-outline"
+                        uncheckedIcon={"checkbox-blank-outline"}
+                        checkedColor={Colors.mainDark}
+                      />
+                    ))}
+                  </View>
+                )}
+              />
             </View>
           </View>
         </FormWrapper>

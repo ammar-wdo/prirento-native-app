@@ -10,7 +10,7 @@ import {
   View,
 } from "react-native";
 import React from "react";
-import { SafeAreaView } from "react-native-safe-area-context";
+import { Edges, SafeAreaView } from "react-native-safe-area-context";
 import { Colors } from "@/constants/Colors";
 import { FontAwesome5, Ionicons } from "@expo/vector-icons";
 
@@ -38,8 +38,7 @@ const Signin = () => {
     
     >
       <SafeAreaView
-    
-edges={'top'}
+edges={['top']}
       style={styles.container}>
         <StatusBar  />
         <ScrollView

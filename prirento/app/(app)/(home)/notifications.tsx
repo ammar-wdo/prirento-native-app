@@ -4,7 +4,7 @@ import { SafeAreaView } from 'react-native-safe-area-context'
 
 export default function Notifications() {
   return (
-    <SafeAreaView>
+    <SafeAreaView edges={['bottom']}>
       <Text>notifications</Text>
     </SafeAreaView>
   )

@@ -8,7 +8,7 @@ export default function _layout() {
 
     <Stack>
     <Stack.Screen name='index' options={{headerShown:false}}/>
-    <Stack.Screen name='notifications' options={{headerTitleAlign:'center'}} />
+    <Stack.Screen name='notifications' options={{headerTitleAlign:'center',headerBackTitleVisible:false}} />
     </Stack>
 
   )

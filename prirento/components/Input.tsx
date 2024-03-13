@@ -4,7 +4,7 @@ import { Colors } from "@/constants/Colors";
 
 type Props = {
     label?:string
-  value: string;
+  value: string ;
   numeric?:boolean
   setValue: (value: string) => void;
 };
