@@ -1,9 +1,6 @@
 import React, { useState, useEffect } from "react";
 import {
-  Button,
-  Image,
-  View,
-  Platform,
+ 
   Alert,
   TouchableOpacity,
   Text,
@@ -36,6 +33,7 @@ const ImageUploader: React.FC<ImageUploaderProps> = ({ onUploadSuccess }) => {
   };
 
   const uploadImage = async (uri: string) => {
+    console.log('uri')
     const data = new FormData();
     data.append("file", uri); // Directly use the URI string
     data.append("upload_preset", "prirento");

@@ -5,8 +5,12 @@ import { useForm } from "react-hook-form";
 import { useEffect, useState } from "react";
 import { z } from "zod";
 import { carPricingsSchema } from "@/schemas";
-import { useRouter } from "expo-router";
+import { usePathname, useRouter } from "expo-router";
 import { Alert } from "react-native";
+import { poster } from "@/lib/utils";
+import { url } from "./queries.hook";
+import { useAuth } from "./auth.hook";
+import { useQueryClient } from "@tanstack/react-query";
 
 
 
@@ -43,10 +47,30 @@ export const usePricings = ({ pricings, hourPrice}: Props) => {
 
   const router = useRouter()
 
+  const {user} = useAuth()
+
+  const queryClient = useQueryClient()
+
+  const pathname = usePathname();
+  const carId = pathname.split("/")[2];
+
   async function onSubmit(values: z.infer<typeof carPricingsSchema>) {
     try {
    
-     Alert.alert(JSON.stringify(values))
+      const res = await poster<{ success: boolean; message?: string }>(
+        `${url}/api/native/car/${carId}/pricings`,
+        values,
+        user?.token
+      );
+
+      if (!res.success) {
+        Alert.alert(res.message || "error");
+      } else {
+         Alert.alert("Successfully Updated");
+        queryClient.invalidateQueries({ queryKey: ["cars"],exact:true });
+        queryClient.invalidateQueries({ queryKey: ["carDetails", carId] ,exact:true});
+        
+      }
 
       }
      catch (error) {

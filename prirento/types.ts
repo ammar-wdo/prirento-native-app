@@ -34,3 +34,23 @@ export type CarModel = {
 
   }
 }
+
+export type RecentCar = {
+id:string,
+carName:string,
+carImage:string,
+bookingsCount:number
+}
+
+export type BookingCard = {
+  id:string,
+  carId:string,
+  carName:string,
+  carImage:string,
+  total:number,
+  name:string,
+  bookingCode:string,
+  pickupLocation:string
+  dropoffLocation:string,
+  createdAt:Date
+}

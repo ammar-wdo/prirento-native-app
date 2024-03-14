@@ -9,10 +9,22 @@ import { poster } from "@/lib/utils";
 import { useAuth } from "./auth.hook";
 import { url } from "./queries.hook";
 import { ToastAndroid } from "react-native";
+import { useState } from "react";
 
 export const useCarEdit = (car: ComingCar | undefined) => {
   const usedPickups = car?.pickupLocations.map((el) => el.id);
   const usedDropoffs = car?.dropoffLocations.map((el) => el.id);
+
+  const [refreshing, setRefreshing] = useState(false);
+  const [isColorPickerVisible, setColorPickerVisible] = useState(false);
+  const [isInteriorColorPickerVisible, setInteriorColorPickerVisible] =
+    useState(false);
+
+  const [isModelPickerVisible, setModelPickerVisible] = useState(false);
+  const [isTrasmissionPickerVisible, setTransmissionPickerVisible] =
+    useState(false);
+  const [isElectricPickerVisible, setElectricPickerVisible] = useState(false);
+  const [isCarTypePickerVisible, setCarTypePickerVisible] = useState(false);
 
   const form = useForm<z.infer<typeof carSchema>>({
     resolver: zodResolver(carSchema),
@@ -63,10 +75,13 @@ export const useCarEdit = (car: ComingCar | undefined) => {
       if (!res.success) {
         Alert.alert(res.message || "error");
       } else {
-         Alert.alert("Successfully Updated");
-        queryClient.invalidateQueries({ queryKey: ["cars"],exact:true });
-        queryClient.invalidateQueries({ queryKey: ["carDetails", carId] ,exact:true});
-        router.back()
+        Alert.alert("Successfully Updated");
+        queryClient.invalidateQueries({ queryKey: ["cars"], exact: true });
+        queryClient.invalidateQueries({
+          queryKey: ["carDetails", carId],
+          exact: true,
+        });
+        router.back();
       }
     } catch (error) {
       console.warn(error);
@@ -74,5 +89,20 @@ export const useCarEdit = (car: ComingCar | undefined) => {
     }
   };
 
-  return { form, onSubmit ,usedPickups,usedDropoffs};
+  return {
+    form,
+    onSubmit,
+    usedPickups,
+    usedDropoffs,
+    refreshing,
+    setRefreshing,
+    isColorPickerVisible,
+    setColorPickerVisible,
+    isInteriorColorPickerVisible,
+    setInteriorColorPickerVisible,
+    isModelPickerVisible, setModelPickerVisible,
+    isTrasmissionPickerVisible, setTransmissionPickerVisible,
+    isElectricPickerVisible, setElectricPickerVisible,
+    isCarTypePickerVisible, setCarTypePickerVisible
+  };
 };

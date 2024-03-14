@@ -42,21 +42,6 @@ import { useQueryClient } from "@tanstack/react-query";
 
 const CarDetails = () => {
   const { carId } = useLocalSearchParams();
-  const router = useRouter();
-
-  const [refreshing, setRefreshing] = useState(false);
-  const [isColorPickerVisible, setColorPickerVisible] = useState(false);
-  const [isInteriorColorPickerVisible, setInteriorColorPickerVisible] =
-    useState(false);
-
-  const [isModelPickerVisible, setModelPickerVisible] = useState(false);
-  const [isTrasmissionPickerVisible, setTransmissionPickerVisible] =
-    useState(false);
-  const [isElectricPickerVisible, setElectricPickerVisible] = useState(false);
-  const [isCarTypePickerVisible, setCarTypePickerVisible] = useState(false);
-  const queryClient = useQueryClient();
-
-
 
   // fetch car details
   const {
@@ -83,14 +68,31 @@ const CarDetails = () => {
 
   // Function to handle the refresh action
 
-  const { form, onSubmit,usedDropoffs,usedPickups } = useCarEdit(carData?.car);
+  const {
+    form,
+    onSubmit,
+    usedDropoffs,
+    usedPickups,
+    isCarTypePickerVisible,
+    isColorPickerVisible,
+    isElectricPickerVisible,
+    isInteriorColorPickerVisible,
+    isModelPickerVisible,
+    isTrasmissionPickerVisible,
+    refreshing,
+    setCarTypePickerVisible,
+    setColorPickerVisible,
+    setElectricPickerVisible,
+    setInteriorColorPickerVisible,
+    setModelPickerVisible,
+    setRefreshing,
+    setTransmissionPickerVisible,
+  } = useCarEdit(carData?.car);
 
   const onRefresh = React.useCallback(async () => {
     setRefreshing(true);
 
     try {
-
-  
       // Await the refetch operations
       await Promise.all([
         refetchCarDetails(),
@@ -98,7 +100,11 @@ const CarDetails = () => {
         locationsRefetch(),
       ]);
 
-      form.reset({...carData?.car,pickupLocations:usedPickups,dropoffLocations:usedDropoffs});
+      form.reset({
+        ...carData?.car,
+        pickupLocations: usedPickups,
+        dropoffLocations: usedDropoffs,
+      });
     } catch (error) {
       console.error("Failed to refetch or reset form:", error);
     } finally {
@@ -213,11 +219,11 @@ const CarDetails = () => {
               />
             )}
           />
-            {form.formState.errors.year && (
-              <Text style={{ color: "red", fontSize: 10 }}>
-                {form.formState.errors.year.message}
-              </Text>
-            )}
+          {form.formState.errors.year && (
+            <Text style={{ color: "red", fontSize: 10 }}>
+              {form.formState.errors.year.message}
+            </Text>
+          )}
 
           <Controller
             control={form.control} // From useForm()
@@ -226,11 +232,11 @@ const CarDetails = () => {
               <Input value={value} setValue={onChange} label="Description" />
             )}
           />
-            {form.formState.errors.description && (
-              <Text style={{ color: "red", fontSize: 10 }}>
-                {form.formState.errors.description.message}
-              </Text>
-            )}
+          {form.formState.errors.description && (
+            <Text style={{ color: "red", fontSize: 10 }}>
+              {form.formState.errors.description.message}
+            </Text>
+          )}
         </View>
       </FormWrapper>
 
@@ -274,7 +280,7 @@ const CarDetails = () => {
                 </View>
               )}
             />
-              {form.formState.errors.colors && (
+            {form.formState.errors.colors && (
               <Text style={{ color: "red", fontSize: 10 }}>
                 {form.formState.errors.colors.message}
               </Text>
@@ -317,7 +323,7 @@ const CarDetails = () => {
                 </View>
               )}
             />
-              {form.formState.errors.interiorColor && (
+            {form.formState.errors.interiorColor && (
               <Text style={{ color: "red", fontSize: 10 }}>
                 {form.formState.errors.interiorColor.message}
               </Text>
@@ -383,7 +389,7 @@ const CarDetails = () => {
                 </View>
               )}
             />
-              {form.formState.errors.gallary && (
+            {form.formState.errors.gallary && (
               <Text style={{ color: "red", fontSize: 10 }}>
                 {form.formState.errors.gallary.message}
               </Text>
@@ -403,7 +409,7 @@ const CarDetails = () => {
                 <Input value={value} setValue={onChange} label="Engine" />
               )}
             />
-              {form.formState.errors.engine && (
+            {form.formState.errors.engine && (
               <Text style={{ color: "red", fontSize: 10 }}>
                 {form.formState.errors.engine.message}
               </Text>
@@ -440,11 +446,11 @@ const CarDetails = () => {
                   </View>
                 )}
               />
-                {form.formState.errors.transmition && (
-              <Text style={{ color: "red", fontSize: 10 }}>
-                {form.formState.errors.transmition.message}
-              </Text>
-            )}
+              {form.formState.errors.transmition && (
+                <Text style={{ color: "red", fontSize: 10 }}>
+                  {form.formState.errors.transmition.message}
+                </Text>
+              )}
             </View>
             {/* electric */}
 
@@ -478,11 +484,11 @@ const CarDetails = () => {
                   </View>
                 )}
               />
-                {form.formState.errors.electric && (
-              <Text style={{ color: "red", fontSize: 10 }}>
-                {form.formState.errors.electric.message}
-              </Text>
-            )}
+              {form.formState.errors.electric && (
+                <Text style={{ color: "red", fontSize: 10 }}>
+                  {form.formState.errors.electric.message}
+                </Text>
+              )}
             </View>
             {/* car type */}
             <View style={{ gap: 2 }}>
@@ -515,11 +521,11 @@ const CarDetails = () => {
                   </View>
                 )}
               />
-                {form.formState.errors.carType && (
-              <Text style={{ color: "red", fontSize: 10 }}>
-                {form.formState.errors.carType.message}
-              </Text>
-            )}
+              {form.formState.errors.carType && (
+                <Text style={{ color: "red", fontSize: 10 }}>
+                  {form.formState.errors.carType.message}
+                </Text>
+              )}
             </View>
             {/* seats */}
             <Controller
@@ -534,7 +540,7 @@ const CarDetails = () => {
                 />
               )}
             />
-              {form.formState.errors.seats && (
+            {form.formState.errors.seats && (
               <Text style={{ color: "red", fontSize: 10 }}>
                 {form.formState.errors.seats.message}
               </Text>
@@ -552,7 +558,7 @@ const CarDetails = () => {
                 />
               )}
             />
-              {form.formState.errors.doors && (
+            {form.formState.errors.doors && (
               <Text style={{ color: "red", fontSize: 10 }}>
                 {form.formState.errors.doors.message}
               </Text>
@@ -576,11 +582,11 @@ const CarDetails = () => {
               />
             )}
           />
-            {form.formState.errors.kmIncluded && (
-              <Text style={{ color: "red", fontSize: 10 }}>
-                {form.formState.errors.kmIncluded.message}
-              </Text>
-            )}
+          {form.formState.errors.kmIncluded && (
+            <Text style={{ color: "red", fontSize: 10 }}>
+              {form.formState.errors.kmIncluded.message}
+            </Text>
+          )}
           {/* minimum renting hours */}
           <View style={{ marginTop: 12 }}>
             <Controller
@@ -595,7 +601,7 @@ const CarDetails = () => {
                 />
               )}
             />
-              {form.formState.errors.minimumHours && (
+            {form.formState.errors.minimumHours && (
               <Text style={{ color: "red", fontSize: 10 }}>
                 {form.formState.errors.minimumHours.message}
               </Text>
@@ -615,7 +621,7 @@ const CarDetails = () => {
                 />
               )}
             />
-              {form.formState.errors.deposite && (
+            {form.formState.errors.deposite && (
               <Text style={{ color: "red", fontSize: 10 }}>
                 {form.formState.errors.deposite.message}
               </Text>
@@ -635,7 +641,7 @@ const CarDetails = () => {
                 />
               )}
             />
-              {form.formState.errors.coolDown && (
+            {form.formState.errors.coolDown && (
               <Text style={{ color: "red", fontSize: 10 }}>
                 {form.formState.errors.coolDown.message}
               </Text>
@@ -655,7 +661,7 @@ const CarDetails = () => {
                 />
               )}
             />
-              {form.formState.errors.deleviryFee && (
+            {form.formState.errors.deleviryFee && (
               <Text style={{ color: "red", fontSize: 10 }}>
                 {form.formState.errors.deleviryFee.message}
               </Text>
@@ -735,11 +741,11 @@ const CarDetails = () => {
                   </View>
                 )}
               />
-                {form.formState.errors.pickupLocations && (
-              <Text style={{ color: "red", fontSize: 10 }}>
-                {form.formState.errors.pickupLocations.message}
-              </Text>
-            )}
+              {form.formState.errors.pickupLocations && (
+                <Text style={{ color: "red", fontSize: 10 }}>
+                  {form.formState.errors.pickupLocations.message}
+                </Text>
+              )}
             </View>
             <View>
               <Text style={{ fontWeight: "600" }}>Drop-off locations</Text>
@@ -770,11 +776,11 @@ const CarDetails = () => {
                   </View>
                 )}
               />
-                {form.formState.errors.dropoffLocations && (
-              <Text style={{ color: "red", fontSize: 10 }}>
-                {form.formState.errors.dropoffLocations.message}
-              </Text>
-            )}
+              {form.formState.errors.dropoffLocations && (
+                <Text style={{ color: "red", fontSize: 10 }}>
+                  {form.formState.errors.dropoffLocations.message}
+                </Text>
+              )}
             </View>
           </View>
         </FormWrapper>
