@@ -33,3 +33,44 @@ export const fetcher = async <T>(url: string,token?: string): Promise<T> => {
 
     return response.data;
 };
+
+
+
+export function timeFromNow(targetDateStr: string): string {
+  const targetDate = new Date(targetDateStr);
+  const now = new Date();
+
+  // Calculate the difference in milliseconds
+  let diff = now.getTime() - targetDate.getTime();
+
+  // Calculate time differences
+  const seconds = Math.floor(diff / 1000);
+  const minutes = Math.floor(seconds / 60);
+  const hours = Math.floor(minutes / 60);
+  const days = Math.floor(hours / 24);
+
+  if (days > 0) {
+    return `${days} day${days > 1 ? 's' : ''} ago`;
+  } else if (hours > 0) {
+    return `${hours} hour${hours > 1 ? 's' : ''} ago`;
+  } else if (minutes > 0) {
+    return `${minutes} minute${minutes > 1 ? 's' : ''} ago`;
+  } else {
+    return `${seconds} second${seconds > 1 ? 's' : ''} ago`;
+  }
+  
+}
+
+export function getCurrentMonthYear(): string {
+  const now: Date = new Date();
+  const months: string[] = [
+    "January", "February", "March", "April", "May", "June",
+    "July", "August", "September", "October", "November", "December"
+  ];
+  const month: string = months[now.getMonth()];
+  const year: number = now.getFullYear();
+
+  return `${month} ${year}`;
+}
+
+

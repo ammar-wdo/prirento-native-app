@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { useAuth } from "./auth.hook";
-import { BookingCard, CarCard, CarModel, Location, RecentCar } from "@/types";
+import { BookingCard, BookingInfo, CarCard, CarModel, Location, RecentCar } from "@/types";
 import { fetcher } from "@/lib/utils";
 import { CarDetail, ComingCar } from "@/schemas";
 import { Platform } from 'react-native';
@@ -114,6 +114,24 @@ export const useRecentBookingsQuery = ()=>{
       bookings: BookingCard[];
       error?: string;
     }>(`${url}/api/native/bookings?take=10`,user?.token),
+  })
+
+}
+
+
+
+export const useBookingsInfoQuery = ()=>{
+
+
+  const {user} = useAuth()
+
+  return useQuery({
+    queryKey: ['bookingsInfo'],
+    queryFn: () => fetcher<{
+      success: boolean;
+      bookingsInfo: BookingInfo;
+      error?: string;
+    }>(`${url}/api/native/bookings/info`,user?.token),
   })
 
 }

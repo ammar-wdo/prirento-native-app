@@ -2,13 +2,19 @@ import { Image, StyleSheet, Text, View } from "react-native";
 import React from "react";
 import { BookingCard } from "@/types";
 import { Colors } from "@/constants/Colors";
+import { timeFromNow } from "@/lib/utils";
+
 
 type Props = {
   booking: BookingCard;
 };
 const BookingCardComponent = ({ booking }: Props) => {
+
+
+const time = timeFromNow(booking.createdAt)
+
   return (
-    <View style={{flexDirection:'row',gap:20,padding:12,borderBottomColor:Colors.border,borderBottomWidth:0.7}}>
+    <View style={{flexDirection:'row',gap:14,padding:12,borderBottomColor:Colors.border,borderBottomWidth:0.7}}>
       {/* image */}
 
       <View style={{ width: 80 }}>
@@ -81,7 +87,11 @@ const BookingCardComponent = ({ booking }: Props) => {
       </View>
 
       {/* total and date */}
-      <View style={{marginLeft:'auto'}}><Text style={{fontSize:14,fontWeight:'500'}}>AED {booking.total}</Text></View>
+      <View style={{marginLeft:'auto'}}>
+        <Text style={{fontSize:14,fontWeight:'500'}}>AED {booking.total.toFixed(2)}</Text>
+        <Text style={{fontSize:10,color:'gray',marginLeft:'auto',marginTop:5}}>{time}</Text>
+      
+      </View>
     </View>
   );
 };

@@ -52,5 +52,10 @@ export type BookingCard = {
   bookingCode:string,
   pickupLocation:string
   dropoffLocation:string,
-  createdAt:Date
+  createdAt:string
+}
+
+export type BookingInfo = {
+  total:number,
+  count:number
 }
