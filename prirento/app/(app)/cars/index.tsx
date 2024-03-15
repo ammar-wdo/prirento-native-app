@@ -6,14 +6,17 @@ import {
   ScrollView,
   StyleSheet,
   Text,
+  TextInput,
   View,
 } from "react-native";
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
 import CustomHeader from "@/components/custom-header";
 
 import CarCardItem from "@/components/car-card";
 import { Colors } from "@/constants/Colors";
 import { useCarsQuery } from "@/hooks/queries.hook";
+import { Ionicons } from "@expo/vector-icons";
+import { useRouter } from "expo-router";
 
 const renderItemSeparator = () => {
   return <View style={styles.itemSeparator} />;
@@ -21,6 +24,7 @@ const renderItemSeparator = () => {
 
 const index = () => {
   const [refreshing, setRefreshing] = useState(false);
+  const [query, setQuery] = useState("");
   const { data, isLoading, refetch: refetchCars } = useCarsQuery();
 
   const onRefresh = async () => {
@@ -35,6 +39,13 @@ const index = () => {
     }
   };
 
+  const filteredData = useMemo(() => {
+    return data?.cars.filter((el) => {
+      if (!query) return true;
+      return el.carName.toLocaleLowerCase().includes(query.toLocaleLowerCase());
+    });
+  }, [query, data?.cars]);
+const router = useRouter()
   return (
     <View style={styles.list}>
       <CustomHeader cars={true} />
@@ -54,6 +65,38 @@ const index = () => {
           <Text>{data?.error}</Text>{" "}
         </ScrollView>
       ) : (
+        <View style={{flex:1}}>
+            <View
+          style={{
+            margin: 10,
+            alignItems: "center",
+            flexDirection: "row",
+            gap: 8,
+          }}
+        >
+          <Ionicons name="arrow-back" size={20} onPress={()=>router.back()}/>
+          <View
+            style={{
+              borderWidth: 0.7,
+              borderRadius: 100,
+              borderColor: Colors.border2,
+              flex: 1,
+              padding: 6,
+              paddingHorizontal:14,
+              flexDirection: "row",
+              alignItems:'center',
+              gap:4
+            }}
+          >
+            <Ionicons name="search" />
+            <TextInput
+              value={query}
+              onChangeText={(text) => setQuery(text)}
+              style={{ flex: 1 }}
+              placeholder="Search by car model"
+            />
+          </View>
+        </View>
         <FlatList
           refreshControl={
             <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
@@ -62,12 +105,19 @@ const index = () => {
           ItemSeparatorComponent={renderItemSeparator}
           keyExtractor={(item) => item.id.toString()}
           contentContainerStyle={styles.listContentContainer}
-          data={data.cars}
+          data={filteredData}
           renderItem={({ item }) => <CarCardItem car={item} />}
+          ListEmptyComponent={
+            !isLoading && (
+              <Text style={styles.emptyListText}>No such car</Text>
+            )
+          }
         />
+        </View>
+      
       )}
 
-      <Text></Text>
+ 
     </View>
   );
 };
@@ -85,5 +135,11 @@ const styles = StyleSheet.create({
   listContentContainer: {
     paddingHorizontal: 10,
     paddingTop: 10,
+  },
+  emptyListText: {
+    textAlign: "center",
+    marginTop: 20,
+    fontSize: 18,
+    color: 'gray',
   },
 });
