@@ -14,7 +14,7 @@ const BookingCardComponent = ({ booking }: Props) => {
 const time = timeFromNow(booking.createdAt)
 
   return (
-    <View style={{flexDirection:'row',gap:14,padding:12,borderBottomColor:Colors.border,borderBottomWidth:0.7}}>
+    <View style={{flexDirection:'row',gap:10,padding:12,borderBottomColor:Colors.border,borderBottomWidth:0.7}}>
       {/* image */}
 
       <View style={{ width: 80 }}>
@@ -26,13 +26,15 @@ const time = timeFromNow(booking.createdAt)
 
       {/* info */}
 
-      <View>
+      <View style={{flex:1}}>
         <Text
           style={{
            marginTop:-3,
             fontSize: 19,
             textTransform: "capitalize",
           }}
+          numberOfLines={1}
+          ellipsizeMode="tail"
         >
           {booking.name}
         </Text>
@@ -45,6 +47,8 @@ const time = timeFromNow(booking.createdAt)
             marginTop:5
 
           }}
+          numberOfLines={1}
+          ellipsizeMode="tail"
         >
           {booking.carName}
         </Text>
@@ -57,6 +61,8 @@ const time = timeFromNow(booking.createdAt)
             marginTop:5
 
           }}
+          numberOfLines={1}
+          ellipsizeMode="tail"
         >
           #{booking.bookingCode}
         </Text>
@@ -69,8 +75,10 @@ const time = timeFromNow(booking.createdAt)
             marginTop:5
 
           }}
+          numberOfLines={2}
+          ellipsizeMode="tail"
         >
-          Pick-up Location:{booking.pickupLocation}
+          Start Date:{new Date(booking.startDate).toLocaleTimeString()}
         </Text>
         <Text
           style={{
@@ -81,8 +89,10 @@ const time = timeFromNow(booking.createdAt)
             marginTop:3
 
           }}
+          numberOfLines={2}
+          ellipsizeMode="tail"
         >
-          Drop-off Location: {booking.dropoffLocation || booking.pickupLocation}
+         End Date: {new Date(booking.endDate).toLocaleString()}
         </Text>
       </View>
 

@@ -52,10 +52,22 @@ export type BookingCard = {
   bookingCode:string,
   pickupLocation:string
   dropoffLocation:string,
-  createdAt:string
+  createdAt:string,
+  startDate:string,
+  endDate:string
+}
+
+
+
+export type BookingsChart = {
+  payLater:number,
+  createdAt:string,
+  startDate:string,
+  endDate:string,
 }
 
 export type BookingInfo = {
   total:number,
-  count:number
+  count:number,
+  bookings:BookingsChart[]
 }

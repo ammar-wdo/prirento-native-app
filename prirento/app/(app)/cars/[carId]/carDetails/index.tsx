@@ -146,8 +146,10 @@ const CarDetails = () => {
   }
   if (!carData?.success || !modelsData?.success || !locationsData?.success)
     return (
-      <Text>{carData?.error || modelsData?.error || locationsData?.error}</Text>
+      <Text>{modelsData?.error}</Text>
     );
+
+    console.log('errors',carData?.error || modelsData?.error || locationsData?.error)
 
   return (
     <ScrollView
@@ -157,7 +159,15 @@ const CarDetails = () => {
         <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
       }
     >
-      <FormWrapper title="Basic Informations">
+
+      {
+        (carIsLoading || modelsLoading || locationsLoading) ?   <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+        <ActivityIndicator size="large" color={Colors.mainDark} />
+      </View>
+      :(!carData?.success || !modelsData?.success || !locationsData?.success) ? <View>  <Text>{modelsData?.error}</Text></View>
+      :
+      <View>
+ <FormWrapper title="Basic Informations">
         <View style={{ gap: 12 }}>
           <View style={{ gap: 2 }}>
             <Text style={{ fontWeight: "800" }}>Car Model</Text>
@@ -173,10 +183,10 @@ const CarDetails = () => {
                   >
                     <Text>
                       {
-                        modelsData.models.find((el) => el.id === value)
+                        sortedModels?.find((el) => el.id === value)
                           ?.carBrand.brand
                       }{" "}
-                      {modelsData.models.find((el) => el.id === value)?.name}
+                      {sortedModels?.find((el) => el.id === value)?.name}
                     </Text>
                     {!!value && (
                       <View
@@ -192,7 +202,7 @@ const CarDetails = () => {
                   </TouchableOpacity>
                   <CustomModePickerModal
                     isVisible={isModelPickerVisible}
-                    items={modelsData.models} // Your colors array
+                    items={sortedModels!} // Your colors array
                     selectedItem={value}
                     onSelectItem={onChange}
                     onClose={() => setModelPickerVisible(false)}
@@ -794,6 +804,9 @@ const CarDetails = () => {
         textStyle={{ fontWeight: "600" }}
       />
       <Text>{JSON.stringify(form.formState.errors)}</Text>
+      </View>
+      }
+     
     </ScrollView>
   );
 };

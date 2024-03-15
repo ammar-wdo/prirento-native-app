@@ -2,7 +2,7 @@ import {
   FlatList,
   RefreshControl,
   ScrollView,
-  StyleSheet,
+
   Text,
   View,
 } from "react-native";
@@ -17,11 +17,12 @@ import { useState } from "react";
 import { useQueryClient } from "@tanstack/react-query";
 import RecentCarCard from "@/components/recent-car-card";
 import { Colors } from "@/constants/Colors";
-import { Feather, FontAwesome5, Ionicons } from "@expo/vector-icons";
+import {  Ionicons } from "@expo/vector-icons";
 
 import BookingCardComponent from "@/components/bookings-card";
-import { boolean } from "zod";
+
 import { getCurrentMonthYear } from "@/lib/utils";
+
 
 export default function TabOneScreen() {
   const [refreshing, setRefreshing] = useState(false);
@@ -93,6 +94,7 @@ export default function TabOneScreen() {
             </View>
           ) : (
             <View style={{ borderWidth: 0.7, borderColor: Colors.border2,        borderRadius:7 }}>
+              {/* <BarChartComponent bookings={BookingsInfoData.bookingsInfo.bookings}  /> */}
               <View style={{ padding: 10 }}>
                 <View
                   style={{
@@ -191,7 +193,7 @@ export default function TabOneScreen() {
                     </View>
                     <View style={{ gap: 4 }}>
                       <Text style={{ fontSize: 18, color: "gray" ,fontWeight:'500'}}>
-                        {BookingsInfoData.bookingsInfo.total.toFixed(2)}
+                        {BookingsInfoData.bookingsInfo.total}
                       </Text>
                       <Text style={{ fontSize: 16, color: "#777" }}>Sales</Text>
                     </View>

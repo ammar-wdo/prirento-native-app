@@ -143,6 +143,7 @@ flex:1,
     borderTopRightRadius: 20,
 
     padding: 20,
+    paddingBottom:60
 
   },
 

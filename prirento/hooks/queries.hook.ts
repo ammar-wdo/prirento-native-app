@@ -4,6 +4,7 @@ import { BookingCard, BookingInfo, CarCard, CarModel, Location, RecentCar } from
 import { fetcher } from "@/lib/utils";
 import { CarDetail, ComingCar } from "@/schemas";
 import { Platform } from 'react-native';
+import { GET_BOOKINGS, GET_BOOKINS_INFO, GET_CARS, GET_CAR_DETAILS, GET_LOCATIONS, GET_MODELS, GET_RECENT_BOOKINGS, GET_RECENT_CARS } from "@/links";
 
 export const url = Platform.select({
 ios:'http://192.168.1.191:3000',
@@ -22,7 +23,7 @@ export const useCarsQuery = ()=>{
         success: boolean;
         cars: CarCard[];
         error?: string;
-      }>(`${url}/api/native/cars`,user?.token),
+      }>(GET_CARS,user?.token),
     })
 
 }
@@ -41,7 +42,7 @@ export const useCarQuery = (carId:string)=>{
       success: boolean;
       car: ComingCar;
       error?: string;
-    }>( `${url}/api/native/car/${carId}/details`,user?.token),
+    }>(GET_CAR_DETAILS(carId),user?.token),
   })
 
 
@@ -58,7 +59,7 @@ export const useModelsQuery = ()=>{
       success: boolean;
       models: CarModel[];
       error?: string;
-    }>(`${url}/api/native/models`,user?.token),
+    }>(GET_MODELS,user?.token),
   })
 
 
@@ -77,7 +78,7 @@ export const useLocatonsQuery = ()=>{
       success: boolean;
       locations: Location[];
       error?: string;
-    }>(`${url}/api/native/locations`,user?.token),
+    }>(GET_LOCATIONS,user?.token),
   })
 
 
@@ -96,7 +97,7 @@ export const useRecentCarsQuery = ()=>{
       success: boolean;
       cars: RecentCar[];
       error?: string;
-    }>(`${url}/api/native/cars/recent`,user?.token),
+    }>(GET_RECENT_CARS,user?.token),
   })
 
 }
@@ -113,7 +114,25 @@ export const useRecentBookingsQuery = ()=>{
       success: boolean;
       bookings: BookingCard[];
       error?: string;
-    }>(`${url}/api/native/bookings?take=10`,user?.token),
+    }>(GET_RECENT_BOOKINGS,user?.token),
+  })
+
+}
+
+
+
+export const useBookingsQuery = ()=>{
+
+
+  const {user} = useAuth()
+
+  return useQuery({
+    queryKey: ['bookings'],
+    queryFn: () => fetcher<{
+      success: boolean;
+      bookings: BookingCard[];
+      error?: string;
+    }>(GET_BOOKINGS,user?.token),
   })
 
 }
@@ -131,7 +150,7 @@ export const useBookingsInfoQuery = ()=>{
       success: boolean;
       bookingsInfo: BookingInfo;
       error?: string;
-    }>(`${url}/api/native/bookings/info`,user?.token),
+    }>(GET_BOOKINS_INFO,user?.token),
   })
 
 }
