@@ -2,7 +2,7 @@ import { Image, StyleSheet, Text, View } from "react-native";
 import React from "react";
 import { BookingCard } from "@/types";
 import { Colors } from "@/constants/Colors";
-import { timeFromNow } from "@/lib/utils";
+import { formatDate, timeFromNow } from "@/lib/utils";
 
 
 type Props = {
@@ -78,7 +78,7 @@ const time = timeFromNow(booking.createdAt)
           numberOfLines={2}
           ellipsizeMode="tail"
         >
-          Start Date:{new Date(booking.startDate).toLocaleTimeString()}
+          Start Date:{formatDate(new Date(booking.startDate))}
         </Text>
         <Text
           style={{
@@ -92,7 +92,7 @@ const time = timeFromNow(booking.createdAt)
           numberOfLines={2}
           ellipsizeMode="tail"
         >
-         End Date: {new Date(booking.endDate).toLocaleString()}
+         End Date: {formatDate(new Date(booking.endDate))}
         </Text>
       </View>
 
