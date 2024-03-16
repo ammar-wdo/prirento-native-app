@@ -94,3 +94,9 @@ export function getCurrentMonthYear(): string {
 }
 
 
+export const capitalizer = (value:string)=>{
+
+return `${value.charAt(0).toUpperCase()}${value.slice(1)}`
+}
+
+

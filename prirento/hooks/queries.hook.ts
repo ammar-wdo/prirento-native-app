@@ -40,7 +40,7 @@ export const useCarQuery = (carId:string)=>{
  queryKey: ['carDetails', carId],
     queryFn: () => fetcher<{
       success: boolean;
-      car: ComingCar;
+      car: ComingCar &{brand:string,model:string};
       error?: string;
     }>(GET_CAR_DETAILS(carId),user?.token),
   })

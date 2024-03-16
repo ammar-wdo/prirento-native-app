@@ -149,6 +149,7 @@ export type Booking = {
 
   
   carName  :string
+  carImage: string
 
   createdAt :string
 }

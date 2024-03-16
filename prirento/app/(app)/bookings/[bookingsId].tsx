@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import {
   ActivityIndicator,
+  Image,
   Platform,
   RefreshControl,
   ScrollView,
@@ -14,9 +15,10 @@ import { useQueryClient } from "@tanstack/react-query";
 import { Ionicons } from "@expo/vector-icons";
 import { Colors } from "@/constants/Colors";
 import BookingDetail from "@/components/booking-detail";
-import { formatDate, timeFromNow } from "@/lib/utils";
-import BookingCardComponent from "@/components/bookings-card";
+import { capitalizer, formatDate, timeFromNow } from "@/lib/utils";
+import {LinearGradient} from  'expo-linear-gradient';
 import BookingDetailCard from "@/components/booking-details-card";
+import CustomHeader from "@/components/custom-header";
 
 const Separator = () => (
   <View
@@ -70,37 +72,57 @@ const BookingDetails = () => {
           <Text>{data?.error}</Text>
         ) : (
           <ScrollView style={styles.detailsContainer}>
-            <View
-              style={{
-                flexDirection: "row",
-                alignItems: "center",
+            <CustomHeader />
+            <View style={{ width: "100%", aspectRatio: 2 / 1 }}>
+              <Image
+                source={{ uri: data.bookingDetails.carImage }}
+                style={{ width: "100%", height: "100%" }}
+                resizeMode="cover"
+              />
+              <LinearGradient
+                colors={["rgba(0,0,0,0.9)", "transparent", "rgba(0,0,0,0.9)"]}
+                start={{ x: 0, y: 0 }}
+                
+                end={{ x: 0, y: 1 }}
+                style={{ width: "100%", height: "100%", position: "absolute" }}
+              />
 
-                marginTop: 30,
-                borderBottomWidth: 1,
-                borderColor: Colors.border2,
-                paddingBottom: 12,
-              }}
-            >
               <Ionicons
                 size={30}
                 name="arrow-back"
+                color={"white"}
+                style={{ position: "absolute", top: 20, left: 20 }}
                 onPress={() => router.push("/(app)/bookings")}
               />
-              <Text
+              <View
                 style={{
-                  flex: 1,
-                  textAlign: "center",
-                  fontWeight: "600",
-                  fontSize: 20,
-                  marginRight: 20,
+                  position: "absolute",
+                  bottom: 5,
+                  left: 10,
+                  padding: 10,
                 }}
               >
-                {data.bookingDetails.bookingCode}
-              </Text>
+                <Text
+                  style={{ color: "white", fontSize: 20, fontWeight: "700" }}
+                >
+                  {capitalizer(data.bookingDetails.carName)}
+                </Text>
+                <Text
+                  style={{
+                    flex: 1,
+
+                    fontWeight: "300",
+                    color: "white",
+                    fontSize: 15,
+                  }}
+                >
+                  #{data.bookingDetails.bookingCode}
+                </Text>
+              </View>
             </View>
 
             {/* bookings details */}
-            <View style={{ flex: 1, marginTop: 12 }}>
+            <View style={{ flex: 1, marginTop: 12, padding: 12 }}>
               <BookingDetailCard title="Driver's Details">
                 <BookingDetail
                   title="First name"
@@ -246,7 +268,7 @@ const BookingDetails = () => {
                   <Separator />
                   {data.bookingDetails.adminRules.map((rule) => (
                     <BookingDetail
-                    key={rule.id}
+                      key={rule.id}
                       title={rule.label}
                       description={rule.valueToPay.toFixed(2)}
                       prefix="AED"
@@ -255,7 +277,7 @@ const BookingDetails = () => {
                   {!!data.bookingDetails.adminRules.length && <Separator />}
                   {data.bookingDetails.extraOptions.map((option) => (
                     <BookingDetail
-                    key={option.id}
+                      key={option.id}
                       title={option.label}
                       description={option.price.toFixed(2)}
                       prefix="AED"
@@ -302,7 +324,6 @@ const styles = StyleSheet.create({
   scrollViewContent: {
     flexGrow: 1, // Ensure contentContainer grows to fit the screen
     backgroundColor: "white",
-    padding: 12,
   },
   loadingContainer: {
     flex: 1,
