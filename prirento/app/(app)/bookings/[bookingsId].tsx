@@ -80,7 +80,7 @@ const BookingDetails = () => {
                 resizeMode="cover"
               />
               <LinearGradient
-                colors={["rgba(0,0,0,0.9)", "transparent", "rgba(0,0,0,0.9)"]}
+                colors={["rgba(0,0,0,0.4)", "transparent", "rgba(0,0,0,0.7)"]}
                 start={{ x: 0, y: 0 }}
                 
                 end={{ x: 0, y: 1 }}
@@ -88,7 +88,7 @@ const BookingDetails = () => {
               />
 
               <Ionicons
-                size={30}
+                size={20}
                 name="arrow-back"
                 color={"white"}
                 style={{ position: "absolute", top: 20, left: 20 }}
