@@ -10,10 +10,10 @@ const BookingDetailCard = ({ children, title }: Props) => {
     <View style={{borderWidth:0.7,borderColor:Colors.border2,borderRadius:12,overflow:'hidden'}}>
       <Text
         style={{
-          fontWeight: "600",
-          fontSize: 20,
+          fontWeight: "700",
+          fontSize: 16,
           textTransform: "capitalize",
-          paddingVertical: 20,
+          paddingVertical: 14,
           paddingHorizontal:10,
           backgroundColor: Colors.secondaryGreen,
           color: "white",
