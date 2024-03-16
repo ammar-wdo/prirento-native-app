@@ -68,7 +68,7 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
-        name="bookings/index"
+        name="bookings"
         
         options={{
           headerShown:false,

@@ -10,3 +10,4 @@ export const GET_LOCATIONS = MAIN_BACKEND + '/api/native/locations'
 export const GET_MODELS = MAIN_BACKEND + '/api/native/models'
 export const GET_CARS= MAIN_BACKEND + '/api/native/cars'
 export const GET_CAR_DETAILS = (carId:string)=> MAIN_BACKEND + `/api/native/car/${carId}/details`
+export const GET_BOOKING_DETAILS = (bookingId:string)=> MAIN_BACKEND + `/api/native/bookings/${bookingId}`

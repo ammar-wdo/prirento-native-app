@@ -1,4 +1,5 @@
 import {
+  ActivityIndicator,
   FlatList,
   RefreshControl,
   ScrollView,
@@ -72,7 +73,7 @@ const router = useRouter()
             gap: 8,
           }}
         >
-          <Ionicons name="arrow-back" size={20} onPress={()=>router.back()}/>
+          <Ionicons name="arrow-back" size={20} onPress={()=>router.push('/(app)/(home)')}/>
           <View
             style={{
               borderWidth: 0.7,
@@ -119,7 +120,11 @@ const router = useRouter()
 
           <View style={{ flex: 1 }}>
             {BookingsLoading ? (
-              <Text>Loading bookings...</Text>
+              <View style={{   flex: 1,
+                justifyContent: "center",
+                alignItems: "center",}}>
+              <ActivityIndicator size="large" color={Colors.mainDark} />
+            </View>
             ) : BookingsError ? (
               <Text>Something went wrong</Text>
             ) : !BookingsData?.success ? (

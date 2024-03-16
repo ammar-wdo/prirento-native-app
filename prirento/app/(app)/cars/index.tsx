@@ -65,7 +65,7 @@ const router = useRouter()
           <Text>{data?.error}</Text>{" "}
         </ScrollView>
       ) : (
-        <View style={{flex:1}}>
+        <View style={{flex:1,backgroundColor:'white'}}>
             <View
           style={{
             margin: 10,

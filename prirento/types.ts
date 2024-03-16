@@ -71,3 +71,84 @@ export type BookingInfo = {
   count:number,
   bookings:BookingsChart[]
 }
+
+
+
+export type CarExtraOptions = {
+  id: string;
+  label: string;
+  description: string;
+  price: number;
+  status: 'active' | 'pending';
+  logo: string;
+  carId: string;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+export type CarSuperAdminRule = {
+  id: string;
+  label: string;
+  description: string;
+  type: 'fixed' | 'percentage';
+  value: number;
+  valueToPay:number
+  mandatory: boolean;
+  applyToAll: boolean;
+  carId: string | null;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+
+export type Booking = {
+  firstName:string
+  lastName:string
+  email:string
+  contactNumber:string
+  countryOfResidance:string
+
+  billingAddress :string
+  billingFirstName   :string
+  billingLastname:string
+  billingContactNumber:string
+  billingCountry :string
+  billingCity    :string
+  billingZipcode :string
+
+  business?:boolean
+  companyName?:string
+  companyVat ?:string
+
+  startDate :string
+  endDate   :string
+
+  pickupLocation :string
+  dropoffLocation?:string
+
+  extraOptions:CarExtraOptions[]
+  adminRules:CarSuperAdminRule[]
+
+  subtotal       :number
+  reservationFee :number
+  discount       :number
+  deliveryFee?   :number
+  total          :number
+  payNow         :number
+  payLater       :number
+  deposit         :number
+
+  bookingCode:string
+
+  terms:boolean
+
+
+  paymentMethod :'card' | 'paypal'
+  paymentStatus :"PENDING" | "SUCCEEDED" | "EXPIRED" | "CANCELED"
+  bookingStatus :"ACTIVE"| "REFUND_REQUEST" | "REFUNDED" | "CANCELED"
+
+  
+  carName  :string
+
+  createdAt :string
+}

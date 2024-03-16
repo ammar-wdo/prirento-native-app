@@ -67,7 +67,7 @@ const CarDetails = () => {
   } = useLocatonsQuery();
 
   // Function to handle the refresh action
-
+  const clientQuery = useQueryClient();
   const {
     form,
     onSubmit,
@@ -99,7 +99,7 @@ const CarDetails = () => {
         refetchModels(),
         locationsRefetch(),
       ]);
-
+      clientQuery.invalidateQueries({queryKey:['carDetails',carId]})
       form.reset({
         ...carData?.car,
         pickupLocations: usedPickups,
@@ -137,19 +137,7 @@ const CarDetails = () => {
     form.setValue("gallary", newGallary);
   };
 
-  if (carIsLoading || modelsLoading || locationsLoading) {
-    return (
-      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-        <ActivityIndicator size="large" color={Colors.mainDark} />
-      </View>
-    );
-  }
-  if (!carData?.success || !modelsData?.success || !locationsData?.success)
-    return (
-      <Text>{modelsData?.error}</Text>
-    );
 
-    console.log('errors',carData?.error || modelsData?.error || locationsData?.error)
 
   return (
     <ScrollView

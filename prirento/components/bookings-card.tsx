@@ -1,8 +1,9 @@
-import { Image, StyleSheet, Text, View } from "react-native";
+import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import React from "react";
 import { BookingCard } from "@/types";
 import { Colors } from "@/constants/Colors";
 import { formatDate, timeFromNow } from "@/lib/utils";
+import { useRouter } from "expo-router";
 
 
 type Props = {
@@ -12,9 +13,10 @@ const BookingCardComponent = ({ booking }: Props) => {
 
 
 const time = timeFromNow(booking.createdAt)
-
+const router = useRouter()
   return (
-    <View style={{flexDirection:'row',gap:10,padding:12,borderBottomColor:Colors.border,borderBottomWidth:0.7}}>
+    <TouchableOpacity onPress={()=>router.push(`/(app)/bookings/${booking.id}`)}>
+  <View style={{flexDirection:'row',gap:10,padding:12,borderBottomColor:Colors.border,borderBottomWidth:0.7}}>
       {/* image */}
 
       <View style={{ width: 80 }}>
@@ -103,6 +105,8 @@ const time = timeFromNow(booking.createdAt)
       
       </View>
     </View>
+    </TouchableOpacity>
+  
   );
 };
 

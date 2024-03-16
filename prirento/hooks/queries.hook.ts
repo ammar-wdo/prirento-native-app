@@ -1,10 +1,10 @@
 import { useQuery } from "@tanstack/react-query";
 import { useAuth } from "./auth.hook";
-import { BookingCard, BookingInfo, CarCard, CarModel, Location, RecentCar } from "@/types";
+import { Booking, BookingCard, BookingInfo, CarCard, CarModel, Location, RecentCar } from "@/types";
 import { fetcher } from "@/lib/utils";
 import { CarDetail, ComingCar } from "@/schemas";
 import { Platform } from 'react-native';
-import { GET_BOOKINGS, GET_BOOKINS_INFO, GET_CARS, GET_CAR_DETAILS, GET_LOCATIONS, GET_MODELS, GET_RECENT_BOOKINGS, GET_RECENT_CARS } from "@/links";
+import { GET_BOOKINGS, GET_BOOKING_DETAILS, GET_BOOKINS_INFO, GET_CARS, GET_CAR_DETAILS, GET_LOCATIONS, GET_MODELS, GET_RECENT_BOOKINGS, GET_RECENT_CARS } from "@/links";
 
 export const url = Platform.select({
 ios:'http://192.168.1.191:3000',
@@ -151,6 +151,24 @@ export const useBookingsInfoQuery = ()=>{
       bookingsInfo: BookingInfo;
       error?: string;
     }>(GET_BOOKINS_INFO,user?.token),
+  })
+
+}
+
+
+
+export const useBookingDetailsQuery = (bookingId:string)=>{
+
+
+  const {user} = useAuth()
+
+  return useQuery({
+    queryKey: ['bookingDetails',bookingId],
+    queryFn: () => fetcher<{
+      success: boolean;
+      bookingDetails: Booking;
+      error?: string;
+    }>(GET_BOOKING_DETAILS(bookingId),user?.token),
   })
 
 }

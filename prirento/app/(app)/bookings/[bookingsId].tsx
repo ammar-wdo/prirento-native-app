@@ -1,0 +1,315 @@
+import React, { useState } from "react";
+import {
+  ActivityIndicator,
+  Platform,
+  RefreshControl,
+  ScrollView,
+  StyleSheet,
+  Text,
+  View,
+} from "react-native";
+import { useLocalSearchParams, useRouter } from "expo-router";
+import { useBookingDetailsQuery } from "@/hooks/queries.hook";
+import { useQueryClient } from "@tanstack/react-query";
+import { Ionicons } from "@expo/vector-icons";
+import { Colors } from "@/constants/Colors";
+import BookingDetail from "@/components/booking-detail";
+import { formatDate, timeFromNow } from "@/lib/utils";
+import BookingCardComponent from "@/components/bookings-card";
+import BookingDetailCard from "@/components/booking-details-card";
+
+const Separator = () => (
+  <View
+    style={{
+      borderTopWidth: 0.7,
+      borderColor: Colors.border2,
+      marginVertical: 10,
+    }}
+  />
+);
+
+const BookingDetails = () => {
+  const { bookingsId } = useLocalSearchParams();
+  const { data, isLoading, error, refetch } = useBookingDetailsQuery(
+    bookingsId as string
+  );
+  const [refreshing, setRefreshing] = useState(false);
+  const queryClient = useQueryClient();
+  const router = useRouter();
+
+  const onRefresh = async () => {
+    setRefreshing(true);
+    try {
+      await refetch();
+      queryClient.invalidateQueries({
+        queryKey: ["bookingDetails", bookingsId],
+      });
+    } catch (error) {
+      console.error("Failed to refetch:", error);
+    } finally {
+      setRefreshing(false);
+    }
+  };
+
+  return (
+    <View style={styles.container}>
+      <ScrollView
+        style={styles.scrollView}
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        }
+        contentContainerStyle={styles.scrollViewContent}
+      >
+        {isLoading ? (
+          <View style={styles.loadingContainer}>
+            <ActivityIndicator size="large" color={Colors.mainDark} />
+          </View>
+        ) : error ? (
+          <Text>Something went wrong</Text>
+        ) : !data?.success ? (
+          <Text>{data?.error}</Text>
+        ) : (
+          <ScrollView style={styles.detailsContainer}>
+            <View
+              style={{
+                flexDirection: "row",
+                alignItems: "center",
+
+                marginTop: 30,
+                borderBottomWidth: 1,
+                borderColor: Colors.border2,
+                paddingBottom: 12,
+              }}
+            >
+              <Ionicons
+                size={30}
+                name="arrow-back"
+                onPress={() => router.push("/(app)/bookings")}
+              />
+              <Text
+                style={{
+                  flex: 1,
+                  textAlign: "center",
+                  fontWeight: "600",
+                  fontSize: 20,
+                  marginRight: 20,
+                }}
+              >
+                {data.bookingDetails.bookingCode}
+              </Text>
+            </View>
+
+            {/* bookings details */}
+            <View style={{ flex: 1, marginTop: 12 }}>
+              <BookingDetailCard title="Driver's Details">
+                <BookingDetail
+                  title="First name"
+                  description={data.bookingDetails.firstName}
+                />
+                <Separator />
+                <BookingDetail
+                  title="last name"
+                  description={data.bookingDetails.lastName}
+                />
+                <Separator />
+                <BookingDetail
+                  title="contact number"
+                  description={data.bookingDetails.contactNumber}
+                />
+                <Separator />
+                <BookingDetail
+                  title="country"
+                  description={data.bookingDetails.countryOfResidance}
+                />
+              </BookingDetailCard>
+              {/* Driver ddetails */}
+              <View style={{ marginTop: 25 }}>
+                <BookingDetailCard title="Billing details">
+                  <BookingDetail
+                    title="first name"
+                    description={data.bookingDetails.billingFirstName}
+                  />
+                  <Separator />
+                  <BookingDetail
+                    title="last name"
+                    description={data.bookingDetails.billingLastname}
+                  />
+                  <Separator />
+                  <BookingDetail
+                    title="contact number"
+                    description={`+${data.bookingDetails.billingContactNumber}`}
+                  />
+                  <Separator />
+                  <BookingDetail
+                    title="country"
+                    description={data.bookingDetails.billingCountry}
+                  />
+                  <Separator />
+                  <BookingDetail
+                    title="city"
+                    description={data.bookingDetails.billingCity}
+                  />
+                  <Separator />
+                  <BookingDetail
+                    title="address"
+                    description={data.bookingDetails.billingAddress}
+                  />
+                  <Separator />
+                  <BookingDetail
+                    title="postcode"
+                    description={data.bookingDetails.billingZipcode}
+                  />
+                </BookingDetailCard>
+              </View>
+              <View style={{ marginTop: 25 }}>
+                <BookingDetailCard title="booking details">
+                  <BookingDetail
+                    title="booking type"
+                    description={
+                      data.bookingDetails.companyName ? "Business" : "Personal"
+                    }
+                  />
+                  <Separator />
+                  <BookingDetail
+                    title="booking date"
+                    description={timeFromNow(data.bookingDetails.createdAt)}
+                  />
+                  <Separator />
+                  <BookingDetail
+                    title="pick-up date"
+                    description={formatDate(
+                      new Date(data.bookingDetails.startDate)
+                    )}
+                  />
+                  <Separator />
+                  <BookingDetail
+                    title="drop-off date"
+                    description={formatDate(
+                      new Date(data.bookingDetails.endDate)
+                    )}
+                  />
+                  <Separator />
+                  <BookingDetail
+                    title="pick-up location"
+                    description={data.bookingDetails.pickupLocation}
+                  />
+                  <Separator />
+                  <BookingDetail
+                    title="drop-off date"
+                    description={
+                      data.bookingDetails.dropoffLocation ||
+                      data.bookingDetails.pickupLocation
+                    }
+                  />
+                </BookingDetailCard>
+              </View>
+              <View style={{ marginTop: 25 }}>
+                <BookingDetailCard title="payment details">
+                  <BookingDetail
+                    title="payment method"
+                    description={data.bookingDetails.paymentMethod}
+                  />
+                  <BookingDetail
+                    title="payment status"
+                    description={data.bookingDetails.paymentStatus}
+                  />
+                  <Separator />
+                  <BookingDetail
+                    title="car rental price"
+                    description={data.bookingDetails.subtotal.toFixed(2)}
+                    prefix="AED"
+                  />
+                  <BookingDetail
+                    title="reservation fee"
+                    description={data.bookingDetails.reservationFee.toFixed(2)}
+                    prefix="AED"
+                  />
+                  <BookingDetail
+                    title="refundable deposit"
+                    description={data.bookingDetails.deposit.toFixed(2)}
+                    prefix="AED"
+                  />
+                  <Separator />
+                  <BookingDetail
+                    title="discount"
+                    description={data.bookingDetails.discount.toFixed(2)}
+                    prefix="AED"
+                  />
+                  <Separator />
+                  <BookingDetail
+                    title="delivery fee"
+                    description={(data.bookingDetails.deliveryFee || 0).toFixed(
+                      2
+                    )}
+                    prefix="AED"
+                  />
+                  <Separator />
+                  {data.bookingDetails.adminRules.map((rule) => (
+                    <BookingDetail
+                    key={rule.id}
+                      title={rule.label}
+                      description={rule.valueToPay.toFixed(2)}
+                      prefix="AED"
+                    />
+                  ))}
+                  {!!data.bookingDetails.adminRules.length && <Separator />}
+                  {data.bookingDetails.extraOptions.map((option) => (
+                    <BookingDetail
+                    key={option.id}
+                      title={option.label}
+                      description={option.price.toFixed(2)}
+                      prefix="AED"
+                    />
+                  ))}
+
+                  {!!data.bookingDetails.extraOptions.length && <Separator />}
+                  <BookingDetail
+                    title="total amount"
+                    description={data.bookingDetails.total.toFixed(2)}
+                    prefix="AED"
+                  />
+                  <Separator />
+                  <BookingDetail
+                    title="pay now"
+                    description={data.bookingDetails.payNow.toFixed(2)}
+                    prefix="AED"
+                  />
+                  <BookingDetail
+                    title="pay later"
+                    description={data.bookingDetails.payLater.toFixed(2)}
+                    prefix="AED"
+                  />
+                </BookingDetailCard>
+              </View>
+            </View>
+          </ScrollView>
+        )}
+      </ScrollView>
+    </View>
+  );
+};
+
+export default BookingDetails;
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: "white", // Ensure the background color covers the entire screen
+  },
+  scrollView: {
+    flex: 1,
+  },
+  scrollViewContent: {
+    flexGrow: 1, // Ensure contentContainer grows to fit the screen
+    backgroundColor: "white",
+    padding: 12,
+  },
+  loadingContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  detailsContainer: {
+    // Adjust styles as needed
+  },
+});
