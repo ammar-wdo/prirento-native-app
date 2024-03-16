@@ -29,7 +29,8 @@ const router = useRouter()
       {/* info */}
 
       <View style={{flex:1}}>
-        <Text
+      <View style={{width:'100%',flexDirection:'row',justifyContent:'space-between'}}>
+      <Text
           style={{
            marginTop:-3,
             fontSize: 19,
@@ -40,6 +41,14 @@ const router = useRouter()
         >
           {booking.name}
         </Text>
+         {/* total and date */}
+      <View style={{marginLeft:'auto'}}>
+        <Text style={{fontSize:14,fontWeight:'500'}}>AED {booking.total.toFixed(2)}</Text>
+        <Text style={{fontSize:10,color:'gray',marginLeft:'auto',marginTop:5}}>{time}</Text>
+      
+      </View>
+  </View>
+       
         <Text
           style={{
             fontWeight: "400",
@@ -98,12 +107,7 @@ const router = useRouter()
         </Text>
       </View>
 
-      {/* total and date */}
-      <View style={{marginLeft:'auto'}}>
-        <Text style={{fontSize:14,fontWeight:'500'}}>AED {booking.total.toFixed(2)}</Text>
-        <Text style={{fontSize:10,color:'gray',marginLeft:'auto',marginTop:5}}>{time}</Text>
-      
-      </View>
+     
     </View>
     </TouchableOpacity>
   
