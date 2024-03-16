@@ -57,11 +57,12 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
-        name="addCar/index"
+        name="addCar"
         
         options={{
           headerShown:false,
           title: 'Add Car',
+          
           
           tabBarIcon: ({ color }) => <Feather name="plus-circle" size={20} color={color} />,
    

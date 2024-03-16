@@ -7,7 +7,7 @@ type Props = {
 };
 const BookingDetailCard = ({ children, title }: Props) => {
   return (
-    <View style={{borderWidth:0.7,borderColor:Colors.border2}}>
+    <View style={{borderWidth:0.7,borderColor:Colors.border2,borderRadius:12,overflow:'hidden'}}>
       <Text
         style={{
           fontWeight: "600",
