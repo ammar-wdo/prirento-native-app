@@ -73,7 +73,7 @@ const router = useRouter()
             gap: 8,
           }}
         >
-          <Ionicons name="arrow-back" size={20} onPress={()=>router.push('/(app)/(home)')}/>
+          <Ionicons name="arrow-back" size={20} onPress={()=>router.push('/(app)')}/>
           <View
             style={{
               borderWidth: 0.7,

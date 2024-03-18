@@ -13,7 +13,7 @@ const _layout = () => {
           title: "Add New Car",
           headerTitleAlign: "center",
           headerBackVisible: true,
-          headerLeft:()=><Ionicons size={20} name="arrow-back" onPress={()=>router.push('/(app)/(home)')} />
+          headerLeft:()=><Ionicons size={20} name="arrow-back" onPress={()=>router.push('/(app)')} />
         }}
       />
     </Stack>

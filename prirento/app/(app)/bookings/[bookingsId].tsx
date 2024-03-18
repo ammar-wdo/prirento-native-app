@@ -7,6 +7,7 @@ import {
   ScrollView,
   StyleSheet,
   Text,
+  TouchableOpacity,
   View,
 } from "react-native";
 import { useLocalSearchParams, useRouter } from "expo-router";
@@ -16,7 +17,7 @@ import { Ionicons } from "@expo/vector-icons";
 import { Colors } from "@/constants/Colors";
 import BookingDetail from "@/components/booking-detail";
 import { capitalizer, formatDate, timeFromNow } from "@/lib/utils";
-import {LinearGradient} from  'expo-linear-gradient';
+import { LinearGradient } from "expo-linear-gradient";
 import BookingDetailCard from "@/components/booking-details-card";
 import CustomHeader from "@/components/custom-header";
 
@@ -82,18 +83,16 @@ const BookingDetails = () => {
               <LinearGradient
                 colors={["rgba(0,0,0,0.4)", "transparent", "rgba(0,0,0,0.7)"]}
                 start={{ x: 0, y: 0 }}
-                
                 end={{ x: 0, y: 1 }}
                 style={{ width: "100%", height: "100%", position: "absolute" }}
               />
-
-              <Ionicons
-                size={20}
-                name="arrow-back"
-                color={"white"}
+              <TouchableOpacity
+                onPress={() => router.replace("/(app)/bookings")}
                 style={{ position: "absolute", top: 20, left: 20 }}
-                onPress={() => router.push("/(app)/bookings")}
-              />
+              >
+                <Ionicons size={20} name="arrow-back" color={"white"} />
+              </TouchableOpacity>
+
               <View
                 style={{
                   position: "absolute",

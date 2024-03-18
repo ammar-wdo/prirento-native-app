@@ -27,7 +27,7 @@ const Signin = () => {
 
   if (loading) return null;
 
-  if (user) return <Redirect href="/(app)/(home)" />;
+  if (user) return <Redirect href="/(app)" />;
 
   return (
     <KeyboardAvoidingView
@@ -37,9 +37,7 @@ const Signin = () => {
 
     
     >
-      <SafeAreaView
-edges={['top']}
-      style={styles.container}>
+
         <StatusBar  />
         <ScrollView
         style={{backgroundColor:Colors.mainDark}}
@@ -48,7 +46,7 @@ edges={['top']}
         >
           <View style={styles.first}>
             <Image
-              source={require("../assets/images/logo.png")}
+              source={require("../../assets/images/logo.png")}
               style={styles.logo}
               resizeMode="contain"
             />
@@ -108,7 +106,7 @@ edges={['top']}
             </View>
           </View>
         </ScrollView>
-      </SafeAreaView>
+   
     </KeyboardAvoidingView>
   );
 };

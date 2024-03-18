@@ -1,7 +1,7 @@
 import React from 'react';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 import Ionicons from '@expo/vector-icons/Ionicons';
-import {  Redirect, Tabs } from 'expo-router';
+import {  Redirect, Tabs, useRouter } from 'expo-router';
 
 import { useColorScheme } from '@/components/useColorScheme';
 
@@ -24,8 +24,8 @@ function TabBarIcon(props: {
 export default function TabLayout() {
   const colorScheme = useColorScheme();
   const { user } = useAuth();
-
-  if(!user) return <Redirect href="/signin" />;
+const router = useRouter()
+  if(!user) return <Redirect href="/(modals)/signin" />;
 
 
   return (
@@ -34,7 +34,7 @@ export default function TabLayout() {
     
     >
       <Tabs.Screen
-        name="(home)"
+        name="index"
         
         options={{
           headerShown:false,
@@ -80,11 +80,14 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
-        name="settings"
+        name="settings/index"
         
         options={{
-          headerShown:false,
-          title: 'Settings',
+          title: "Settings",
+            headerTitleAlign: "center",
+            headerLeft: () => (
+              <Ionicons name="chevron-back" onPress={() => router.back()} size={25}/>
+            ),
           
           tabBarIcon: ({ color }) => <Ionicons name="settings-outline" size={20} color={color} />,
    

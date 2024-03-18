@@ -212,3 +212,14 @@ export const carSchema = z
 
   export type CarDetail = z.infer<typeof carSchema>
   export type ComingCar = Omit<CarDetail, 'pickupLocations' | 'dropoffLocations'> & {pickupLocations:{id:string,name:string}[],dropoffLocations:{id:string,name:string}[],pricings:number[],hourlyPrice:number}
+
+
+  export const carExtraOptionsSchema = z.object({
+    label: requiredString,
+    description: requiredString,
+    price: requiredNumber
+      .refine((val) => val, "Required field")
+      .refine((val) => val > 0, "Enter positive value"),
+  
+    logo: requiredString,
+  });

@@ -2,9 +2,10 @@ import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import React from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import SettingsElement from "@/components/settings-element";
-import { useRouter } from "expo-router";
+import { Stack, useRouter } from "expo-router";
 import { Colors } from "@/constants/Colors";
 import { useAuth } from "@/hooks/auth.hook";
+import { Ionicons } from "@expo/vector-icons";
 
 const index = () => {
   const router = useRouter();
@@ -12,24 +13,25 @@ const index = () => {
   const { signout } = useAuth();
   return (
     <View style={{ padding: 12, flex: 1, backgroundColor: "white" }}>
+ 
       <SettingsElement
         title="Notifications"
-        push={() => router.push("/settings/notifications")}
+        push={() => router.push("/(modals)/notifications")}
       />
       <SettingsElement
         title="Terms & Conditions"
-        push={() => router.push("/settings/terms")}
+        push={() => router.push("/(modals)/terms")}
       />
       <SettingsElement
         title="Privacy Policy"
-        push={() => router.push("/settings/privacy")}
+        push={() => router.push("/(modals)/privacy")}
       />
       <SettingsElement
         title="Help & Support"
-        push={() => router.push("/settings/help")}
+        push={() => router.push("/(modals)/help")}
       />
       <TouchableOpacity
-      onPress={signout}
+        onPress={signout}
         style={{
           marginTop: 25,
           borderWidth: 0.7,

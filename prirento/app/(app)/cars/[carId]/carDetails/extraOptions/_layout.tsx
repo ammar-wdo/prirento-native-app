@@ -6,16 +6,7 @@ const _layout = () => {
   return (
     <Stack>
       <Stack.Screen name="index" options={{ headerShown: false }} />
-      <Stack.Screen
-        name="[bookingsId]"
-        options={{
-          headerTitleAlign: "center",
-          headerBackTitleVisible: false,
-        headerShown:false,
-    
-       
-        }}
-      />
+   
     </Stack>
   );
 };

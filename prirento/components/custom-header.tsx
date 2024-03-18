@@ -3,10 +3,11 @@ import { View, Text, TouchableOpacity, StyleSheet, Image } from 'react-native';
 import { Feather, MaterialCommunityIcons } from '@expo/vector-icons'; // Using MaterialCommunityIcons for example
 import { Link } from 'expo-router';
 import { useAuth } from '@/hooks/auth.hook';
+import { Colors } from '@/constants/Colors';
 
 const CustomHeader = ({cars}:{cars?:boolean}) => {
 
-  const {user,signout} = useAuth()
+  const {user} = useAuth()
 
   return (
     <View style={styles.container}>
@@ -17,19 +18,14 @@ const CustomHeader = ({cars}:{cars?:boolean}) => {
         <Text style={styles.accountName}>{user?.name}</Text>
         <Text style={styles.email}>{user?.email}</Text>
         </View>
-        <TouchableOpacity onPress={signout}>
-          <Text>
-          logout
-          </Text>
-    
-        </TouchableOpacity>
+   
    
       </View>
 
       {/* Bell Icon for Notifications */}
 
 
-      <Link asChild href={`/(app)/${cars ? 'cars' : '(home)'}/notifications`}>
+      <Link asChild href={`/(modals)/notifications`}>
       <TouchableOpacity onPress={() => {}}>
         <Feather name="bell" size={30} color="#000" />
       </TouchableOpacity>
@@ -45,7 +41,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingHorizontal: 15,
     height: 60,
-    backgroundColor:'white'
+    backgroundColor:'white',
+    borderBottomWidth:1,
+    borderColor:Colors.border2
   },
   accountContainer: {
     flexDirection: 'row',
