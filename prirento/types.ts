@@ -147,11 +147,23 @@ export type ExtraOption = {
   label: string;
   description: string;
   price: number;
-  status: "avtive" | "pending";
+  status: "active" | "pending";
   logo: string;
 
   carId: string;
 
   createdAt: string;
   updatedAt: string;
+};
+
+export type Notification = {
+  id: string;
+  message: string;
+  carName: string;
+  isRead:boolean,
+  type: "BOOKING" | "EXPIRE";
+  booking: {
+    id: string;
+  };
+  createdAt:string
 };

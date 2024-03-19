@@ -13,3 +13,4 @@ export const GET_CAR_DETAILS = (carId:string)=> MAIN_BACKEND + `/api/native/car/
 export const GET_BOOKING_DETAILS = (bookingId:string)=> MAIN_BACKEND + `/api/native/bookings/${bookingId}`
 export const GET_CAR_EXTRA_OPTIONS = (carId:string)=> MAIN_BACKEND + `/api/native/car/${carId}/extraOptions`
 export const GET_CAR_EXTRA_OPTIONS_DETAILS = (carId:string,optionId:string)=> MAIN_BACKEND + `/api/native/car/${carId}/extraOptions/${optionId}`
+export const GET_NOTIFICATIONS= MAIN_BACKEND + '/api/native/notifications'

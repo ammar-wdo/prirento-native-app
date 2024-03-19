@@ -10,7 +10,7 @@ type Props = {
 };
 const Input = ({ value, setValue,label ,numeric}: Props) => {
   return <View style={{gap:2}}>
-    {label && <Text style={{fontWeight:'800',textTransform:'capitalize'}}>{label}</Text>}
+    {!!label && <Text style={{fontWeight:'800',textTransform:'capitalize'}}>{label}</Text>}
     <TextInput value={value} onChangeText={setValue} 
   style={{padding:10,borderWidth:1,borderColor:Colors.border,borderRadius:10}}
   keyboardType={numeric ? 'numeric' : 'default'}

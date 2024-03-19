@@ -127,7 +127,7 @@ const ExtraOtions = () => {
                 <Text style={{ textTransform: "uppercase" }}>AED</Text>{" "}
                 {el.price.toFixed(2)}
               </Text>
-              <Text style={{ color: "gray", textTransform: "capitalize" }}>
+              <Text style={[{textTransform: "capitalize" },el.status==='active' ? styles.active : styles.pending]}>
                 {el.status}
               </Text>
               <TouchableOpacity
@@ -163,4 +163,11 @@ const ExtraOtions = () => {
 
 export default ExtraOtions;
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  active:{
+    color:Colors.secondaryGreen
+  },
+  pending:{
+    color:'yellow'
+  }
+});

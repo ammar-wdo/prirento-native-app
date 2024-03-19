@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   ActivityIndicator,
   Image,
@@ -16,10 +16,12 @@ import { useQueryClient } from "@tanstack/react-query";
 import { Ionicons } from "@expo/vector-icons";
 import { Colors } from "@/constants/Colors";
 import BookingDetail from "@/components/booking-detail";
-import { capitalizer, formatDate, timeFromNow } from "@/lib/utils";
+import { capitalizer, fetcher, formatDate, timeFromNow } from "@/lib/utils";
 import { LinearGradient } from "expo-linear-gradient";
 import BookingDetailCard from "@/components/booking-details-card";
 import CustomHeader from "@/components/custom-header";
+import { GET_NOTIFICATIONS } from "@/links";
+import { useAuth } from "@/hooks/auth.hook";
 
 const Separator = () => (
   <View
@@ -53,6 +55,26 @@ const BookingDetails = () => {
       setRefreshing(false);
     }
   };
+
+const {user} = useAuth()
+
+  useEffect(()=>{
+const setRead = async ()=>{
+  try {
+    const res = await fetcher<{success:boolean,error?:string}>(GET_NOTIFICATIONS + '/' + bookingsId,user?.token)
+    console.log('notification responde',res)
+    if(res.success){
+     queryClient.invalidateQueries({queryKey:['notifications']})
+    }
+  } catch (error) {
+    console.log(error)
+  }
+
+}
+
+setRead()
+
+  },[bookingsId])
 
   return (
     <View style={styles.container}>

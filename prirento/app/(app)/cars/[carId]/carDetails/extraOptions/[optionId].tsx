@@ -7,7 +7,7 @@ import {
   Text,
   View,
 } from "react-native";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Stack, useLocalSearchParams, usePathname } from "expo-router";
 import { useCarExtraOptionsDetailsQuery } from "@/hooks/queries.hook";
 import { useCarExtraOptions } from "@/hooks/car-extraOptions.hook";
@@ -47,6 +47,12 @@ const OptionId = () => {
     }
   }, [data?.extraOption, refetch, form.reset]);
 
+  useEffect(() => {
+    if (data?.extraOption) {
+      form.reset(data?.extraOption);
+    }
+  }, [data?.extraOption]);
+
   return (
     <ScrollView
       style={{ flex: 1, backgroundColor: "white" }}
@@ -63,7 +69,8 @@ const OptionId = () => {
           headerBackTitleVisible: false,
         }}
       />
-      {isLoading ? (
+
+      {!!isLoading ? (
         <View
           style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
         >
@@ -71,13 +78,12 @@ const OptionId = () => {
         </View>
       ) : !data?.success ? (
         <View>
- 
           <Text>{data?.error}</Text>
         </View>
       ) : (
         <View>
           <Controller
-            control={form.control} // From useForm()
+            control={form.control}
             name="label"
             render={({ field: { onChange, onBlur, value } }) => (
               <Input value={value} setValue={onChange} label="Label" />
@@ -85,7 +91,7 @@ const OptionId = () => {
           />
           <View style={{ marginTop: 12 }}>
             <Controller
-              control={form.control} // From useForm()
+              control={form.control}
               name="description"
               render={({ field: { onChange, onBlur, value } }) => (
                 <Input value={value} setValue={onChange} label="Description" />
@@ -94,7 +100,7 @@ const OptionId = () => {
           </View>
           <View style={{ marginTop: 12 }}>
             <Controller
-              control={form.control} // From useForm()
+              control={form.control}
               name="price"
               render={({ field: { onChange, onBlur, value } }) => (
                 <Input
@@ -104,32 +110,33 @@ const OptionId = () => {
                   numeric={true}
                 />
               )}
-              
             />
           </View>
           <View style={{ marginTop: 12 }}>
             <Controller
-              control={form.control} // From useForm()
+              control={form.control}
               name="logo"
               render={({ field: { onChange, onBlur, value } }) => (
                 <View style={{}}>
                   <Text style={{ fontWeight: "800" }}>Logo</Text>
                   <ImageUploader onUploadSuccess={onChange} />
-                  {!!value && (
-                    <Image
-                      source={{ uri: value }}
-                      style={{
-                        width: "100%",
-                        aspectRatio: 2 / 1,
-                        marginTop: 12,
-                        borderWidth: 0.7,
-                        borderColor: Colors.border2,
-                        borderRadius: 8,
-                     
-                      }}
-                      resizeMode="contain"
-                    />
-                  )}
+
+                  <Image
+                    source={{
+                      uri:
+                        value ||
+                        "../../../../../../assets/images/placeholder.jpeg",
+                    }}
+                    style={{
+                      width: "100%",
+                      aspectRatio: 2 / 1,
+                      marginTop: 12,
+                      borderWidth: 0.7,
+                      borderColor: Colors.border2,
+                      borderRadius: 8,
+                    }}
+                    resizeMode="contain"
+                  />
                 </View>
               )}
             />

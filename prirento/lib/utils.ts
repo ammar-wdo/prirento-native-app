@@ -6,7 +6,7 @@ import { API_SECRET } from '@env';
 
 
 export const fetcher = async <T>(url: string,token?: string): Promise<T> => {
- console.log('token',token)
+
     const response = await axios.get<T>(url, {
       headers: {
         "api-Secret": API_SECRET,
