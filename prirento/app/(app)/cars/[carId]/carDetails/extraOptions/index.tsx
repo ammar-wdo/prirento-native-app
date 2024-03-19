@@ -18,6 +18,7 @@ import { useQueryClient } from "@tanstack/react-query";
 import { ExtraOption } from "@/types";
 
 import { useCarExtraOptions } from "@/hooks/car-extraOptions.hook";
+import ExtraOptionCard from "@/components/extra-option-card";
 
 
 const ExtraOtions = () => {
@@ -101,59 +102,7 @@ const ExtraOtions = () => {
         </Text>
       ) : (
         extraOptions.extraOptions.map((el) => (
-          <View
-            key={el.id}
-            style={{
-              borderWidth: 0.7,
-              borderColor: Colors.border2,
-              borderRadius: 5,
-              padding: 8,
-              marginBottom: 12,
-            }}
-          >
-            <Image
-              source={{ uri: el.logo }}
-              style={{ width: "100%", aspectRatio: 2 / 1, borderRadius: 5 }}
-              resizeMode="contain"
-            />
-            <View>
-              <Text style={{ textTransform: "capitalize", fontWeight: "500" }}>
-                {el.label}
-              </Text>
-              <Text style={{ color: "gray", textTransform: "capitalize" }}>
-                {el.description}
-              </Text>
-              <Text style={{ color: "gray", textTransform: "capitalize" }}>
-                <Text style={{ textTransform: "uppercase" }}>AED</Text>{" "}
-                {el.price.toFixed(2)}
-              </Text>
-              <Text style={[{textTransform: "capitalize" },el.status==='active' ? styles.active : styles.pending]}>
-                {el.status}
-              </Text>
-              <TouchableOpacity
-                style={{
-                  marginTop: 10,
-                  backgroundColor: Colors.secondaryGreen,
-                  borderRadius: 5,
-                  padding: 8,
-                }}
-                onPress={() => {
-     router.push(`/(app)/cars/${carId}/carDetails/extraOptions/${el.id}`)
-      
-                }}
-              >
-                <Text
-                  style={{
-                    color: "white",
-                    textAlign: "center",
-                    fontWeight: "500",
-                  }}
-                >
-                  Edit
-                </Text>
-              </TouchableOpacity>
-            </View>
-          </View>
+       <ExtraOptionCard el={el} carId={carId}  key={el.id}/>
         ))
       )}
 
@@ -163,11 +112,4 @@ const ExtraOtions = () => {
 
 export default ExtraOtions;
 
-const styles = StyleSheet.create({
-  active:{
-    color:Colors.secondaryGreen
-  },
-  pending:{
-    color:'yellow'
-  }
-});
+

@@ -50,6 +50,7 @@ export type BookingCard = {
   createdAt: string;
   startDate: string;
   endDate: string;
+
 };
 
 export type BookingsChart = {

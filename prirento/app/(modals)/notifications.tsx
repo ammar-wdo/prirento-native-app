@@ -74,6 +74,8 @@ const Notifications = () => {
           />
         </View>
       )}
+
+  
     </View>
   );
 };
@@ -86,7 +88,8 @@ const styles = StyleSheet.create({
     width: "100%",
   },
   itemSeparator: {
-    height: 20,
+   borderBottomWidth:0.7,
+   borderColor:Colors.border2
   },
   listContentContainer: {
   

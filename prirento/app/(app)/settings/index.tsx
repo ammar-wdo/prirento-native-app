@@ -13,7 +13,12 @@ const index = () => {
   const { signout } = useAuth();
   return (
     <View style={{ padding: 12, flex: 1, backgroundColor: "white" }}>
- 
+ <Stack.Screen    options={{
+          title: "Settings",
+          headerTitleAlign: "center",
+          headerBackVisible: true,
+          headerLeft:()=><Ionicons size={20} name="arrow-back" onPress={()=>router.push('/(app)')} />
+        }} />
       <SettingsElement
         title="Notifications"
         push={() => router.push("/(modals)/notifications")}

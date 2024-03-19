@@ -27,15 +27,23 @@ const NotificationCard = ({item}:{item:Notification}) => {
       {item.type === "BOOKING" ? (
         <AntDesign name="checkcircle" color={"green"} size={25} />
       ) : (
-        <MaterialIcons name="error" color={"red"} />
+        <MaterialIcons name="error" color={"red"} size={25} />
       )}
     </View>
     <View style={{ gap: 12, flex: 1 }}>
-      <Text style={{ fontWeight: "600" }}>
+        <View style={{flexDirection:'row',justifyContent:'space-between',alignItems:'center'}}>
+        <Text style={{ fontWeight: "600" }}>
         {item.type === "BOOKING"
-          ? "New booking has been bade"
+          ? "New booking has been made"
           : "Booking has been canceled"}
       </Text>
+        <View>
+      <Text style={{ fontSize: 10, color: "gray" }}>
+        {timeFromNow(item.createdAt)}
+      </Text>
+    </View>
+        </View>
+     
       <Text style={{ color: "gray" }}>
         {item.message}{" "}
         <Text
@@ -48,11 +56,7 @@ const NotificationCard = ({item}:{item:Notification}) => {
         Check Booking
       </Text>
     </View>
-    <View>
-      <Text style={{ fontSize: 10, color: "gray" }}>
-        {timeFromNow(item.createdAt)}
-      </Text>
-    </View>
+   
   </View>
     </TouchableOpacity>
 

@@ -66,7 +66,9 @@ const router = useRouter()
         </ScrollView>
       ) : (
         <View style={{flex:1,backgroundColor:'white'}}>
-            <View
+         
+        <FlatList
+        ListHeaderComponent={()=>   <View
           style={{
             margin: 10,
             alignItems: "center",
@@ -96,8 +98,7 @@ const router = useRouter()
               placeholder="Search by car model"
             />
           </View>
-        </View>
-        <FlatList
+        </View>}
           refreshControl={
             <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
           }

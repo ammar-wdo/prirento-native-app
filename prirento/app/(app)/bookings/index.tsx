@@ -54,7 +54,7 @@ const index = () => {
       return el.bookingCode.includes(query);
     });
   }, [query, BookingsData?.bookings]);
-const router = useRouter()
+  const router = useRouter();
   return (
     <View style={{ flex: 1 }}>
       <CustomHeader />
@@ -67,76 +67,94 @@ const router = useRouter()
       >
         <View
           style={{
-            margin: 10,
-            alignItems: "center",
-            flexDirection: "row",
-            gap: 8,
-          }}
-        >
-          <Ionicons name="arrow-back" size={20} onPress={()=>router.push('/(app)')}/>
-          <View
-            style={{
-              borderWidth: 0.7,
-              borderRadius: 100,
-              borderColor: Colors.border2,
-              flex: 1,
-              padding: 6,
-              paddingHorizontal:14,
-              flexDirection: "row",
-              alignItems:'center',
-              gap:4
-            }}
-          >
-            <Ionicons name="search" />
-            <TextInput
-              value={query}
-              onChangeText={(text) => setQuery(text)}
-              style={{ flex: 1 }}
-              placeholder="Search by booking code"
-            />
-          </View>
-        </View>
-        <View
-          style={{
             borderColor: Colors.border2,
             borderWidth: 0.7,
             flex: 1,
             borderRadius: 5,
           }}
         >
-          <View
-            style={{
-              borderColor: Colors.border2,
-              borderBottomWidth: 0.7,
-              flexDirection: "row",
-              alignItems: "center",
-              gap: 5,
-              padding: 5,
-            }}
-          >
-            <Ionicons name="car-sport-outline" size={30} color={"gray"} />
-            <Text style={{ color: "gray", fontSize: 16 }}>Bookings</Text>
-          </View>
-
           <View style={{ flex: 1 }}>
             {BookingsLoading ? (
-              <View style={{   flex: 1,
-                justifyContent: "center",
-                alignItems: "center",}}>
-              <ActivityIndicator size="large" color={Colors.mainDark} />
-            </View>
-            ) : BookingsError ? (
+              <View
+                style={{
+                  flex: 1,
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
+              >
+                <ActivityIndicator size="large" color={Colors.mainDark} />
+              </View>
+            ) : !!BookingsError ? (
               <Text>Something went wrong</Text>
             ) : !BookingsData?.success ? (
               <Text>{BookingsData?.error}</Text>
             ) : (
               <View style={{ gap: 4, flex: 1 }}>
                 <FlatList
-                    ListEmptyComponent={
-                      !BookingsLoading && (
-                        <Text style={styles.emptyListText}>No such booking</Text>
-                      )
-                    }
+                  ListHeaderComponent={() => (
+                    <View>
+                    
+                      <View
+                        style={{
+                          margin: 10,
+                          alignItems: "center",
+                          flexDirection: "row",
+                          gap: 8,
+                        }}
+                      >
+                        <Ionicons
+                          name="arrow-back"
+                          size={20}
+                          onPress={() => router.push("/(app)")}
+                        />
+                        <View
+                          style={{
+                            borderWidth: 0.7,
+                            borderRadius: 100,
+                            borderColor: Colors.border2,
+                            flex: 1,
+                            padding: 6,
+                            paddingHorizontal: 14,
+                            flexDirection: "row",
+                            alignItems: "center",
+                            gap: 4,
+                          }}
+                        >
+                          <Ionicons name="search" />
+                          <TextInput
+                            value={query}
+                            onChangeText={(text) => setQuery(text)}
+                            style={{ flex: 1 }}
+                            placeholder="Search by booking code"
+                          />
+                        </View>
+                      </View>
+                      <View
+                        style={{
+                          borderColor: Colors.border2,
+                          borderBottomWidth: 0.7,
+                          flexDirection: "row",
+                          alignItems: "center",
+                          gap: 5,
+                          padding: 5,
+                        }}
+                      >
+                        <Ionicons
+                          name="car-sport-outline"
+                          size={30}
+                          color={"gray"}
+                        />
+                        <Text style={{ color: "gray", fontSize: 16 }}>
+                          Bookings
+                        </Text>
+                      </View>
+                    </View>
+                  )}
+                  ListEmptyComponent={
+                    !BookingsLoading && (
+                      <Text style={styles.emptyListText}>No such booking</Text>
+                    )
+                  }
                   refreshControl={
                     <RefreshControl
                       refreshing={refreshing}
@@ -179,6 +197,6 @@ const styles = StyleSheet.create({
     textAlign: "center",
     marginTop: 20,
     fontSize: 18,
-    color: 'gray',
+    color: "gray",
   },
 });

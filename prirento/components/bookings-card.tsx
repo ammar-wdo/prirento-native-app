@@ -33,6 +33,7 @@ const router = useRouter()
       <Text
           style={{
            marginTop:-3,
+           flex:1,
             fontSize: 19,
             textTransform: "capitalize",
           }}
@@ -105,6 +106,8 @@ const router = useRouter()
         >
          End Date: {formatDate(new Date(booking.endDate))}
         </Text>
+
+      
       </View>
 
      
@@ -116,4 +119,7 @@ const router = useRouter()
 
 export default BookingCardComponent;
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+
+
+});

@@ -83,11 +83,9 @@ const router = useRouter()
         name="settings/index"
         
         options={{
+
           title: "Settings",
-            headerTitleAlign: "center",
-            headerLeft: () => (
-              <Ionicons name="chevron-back" onPress={() => router.back()} size={25}/>
-            ),
+         headerShown:false,
           
           tabBarIcon: ({ color }) => <Ionicons name="settings-outline" size={20} color={color} />,
    

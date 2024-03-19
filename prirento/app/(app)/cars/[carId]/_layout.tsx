@@ -34,8 +34,10 @@ const _layout = () => {
   if (!data?.success) return <Text>{data?.error}</Text>;
 
   return (
-    <SafeAreaView style={{ flex: 1 }}>
-      <CustomHeader cars={true} />
+    <View style={{flex:1}}>
+          <CustomHeader cars={true} />
+   <SafeAreaView style={{ flex: 1 }}>
+  
       <View style={{ position: "relative" }}>
         <Image
           source={{ uri: data.car.gallary[0] }}
@@ -69,6 +71,8 @@ const _layout = () => {
 
       <Slot />
     </SafeAreaView>
+    </View>
+ 
   );
 };
 
