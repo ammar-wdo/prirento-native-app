@@ -17,6 +17,7 @@ import { Controller } from "react-hook-form";
 import Input from "@/components/Input";
 import ImageUploader from "@/components/image-uploader";
 import { Colors } from "@/constants/Colors";
+import CustomButton from "@/components/custom-button";
 
 const OptionId = () => {
   const pathname = usePathname();
@@ -141,6 +142,8 @@ const OptionId = () => {
               )}
             />
           </View>
+
+          <CustomButton title={data?.extraOption ? 'Update' : 'Create'} loading={form.formState.isSubmitting} onPress={form.handleSubmit(onSubmit)} style={{backgroundColor:Colors.mainDark,marginTop:15}}/>
         </View>
       )}
     </ScrollView>
