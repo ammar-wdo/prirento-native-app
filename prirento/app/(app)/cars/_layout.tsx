@@ -7,7 +7,7 @@ export default function _layout() {
     <Stack>
     <Stack.Screen name='index' options={{headerShown:false}}/>
   
-    <Stack.Screen name='[carId]' options={{headerShown:false,presentation:'modal',animation:'slide_from_bottom'}}/>
+    <Stack.Screen name='[carId]' options={{headerShown:false}}/>
     </Stack>
   )
 }

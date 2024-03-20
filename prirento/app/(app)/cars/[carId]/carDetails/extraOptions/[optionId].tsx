@@ -7,8 +7,13 @@ import {
   Text,
   View,
 } from "react-native";
-import React, { useEffect, useState } from "react";
-import { Stack, useLocalSearchParams, usePathname } from "expo-router";
+import React, { useEffect, useLayoutEffect, useState } from "react";
+import {
+  Stack,
+  useLocalSearchParams,
+  useNavigation,
+  usePathname,
+} from "expo-router";
 import { useCarExtraOptionsDetailsQuery } from "@/hooks/queries.hook";
 import { useCarExtraOptions } from "@/hooks/car-extraOptions.hook";
 import { useQueryClient } from "@tanstack/react-query";
@@ -30,7 +35,7 @@ const OptionId = () => {
     optionId as string
   );
 
-  const { form, onSubmit } = useCarExtraOptions(data?.extraOption);
+  const { form, onSubmit } = useCarExtraOptions(data?.extraOption, carId);
   const [refreshing, setRefreshing] = useState(false);
   const queryClient = useQueryClient();
   const onRefresh = React.useCallback(async () => {
@@ -47,12 +52,46 @@ const OptionId = () => {
       setRefreshing(false);
     }
   }, [data?.extraOption, refetch, form.reset]);
-
+  const navigation = useNavigation();
   useEffect(() => {
     if (data?.extraOption) {
       form.reset(data?.extraOption);
     }
   }, [data?.extraOption]);
+
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      title: optionId === "new" ? "Add new Extra Option" : "Edit Extra Option",
+      headerTitleAlign: "center",
+      headerBackTitleVisible: false,
+    });
+  }, []);
+
+  if (isLoading) {
+    return (
+      <View
+        style={{
+          flex: 1,
+          backgroundColor: "white",
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+      >
+        <ActivityIndicator size="large" color={Colors.mainDark} />
+      </View>
+    );
+  }
+
+  if (!data?.success) return;
+  <ScrollView
+    style={{ flex: 1, backgroundColor: "white" }}
+    contentContainerStyle={{ padding: 20 }}
+    refreshControl={
+      <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+    }
+  >
+    <Text>{data?.error}</Text>
+  </ScrollView>;
 
   return (
     <ScrollView
@@ -62,90 +101,82 @@ const OptionId = () => {
         <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
       }
     >
-      <Stack.Screen
-        options={{
-          title:
-            optionId === "new" ? "Add new Extra Option" : "Edit Extra Option",
-          headerTitleAlign: "center",
-          headerBackTitleVisible: false,
-        }}
-      />
-
-      {!!isLoading ? (
-        <View
-          style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
-        >
-          <ActivityIndicator size="large" color={Colors.mainDark} />
-        </View>
-      ) : !data?.success ? (
-        <View>
-          <Text>{data?.error}</Text>
-        </View>
-      ) : (
-        <View>
+      <View>
+        {/* <Controller
+          control={form.control}
+          name="label"
+          render={({ field: { onChange, onBlur, value } }) => (
+            <View>
+              <Input value={value} setValue={onChange} label="Label" />
+            </View>
+          )}
+        />
+        <View style={{ marginTop: 12 }}>
           <Controller
             control={form.control}
-            name="label"
+            name="description"
             render={({ field: { onChange, onBlur, value } }) => (
-              <Input value={value} setValue={onChange} label="Label" />
+              <View>
+
+                <Input value={value} setValue={onChange} label="Description" />
+              </View>
             )}
           />
-          <View style={{ marginTop: 12 }}>
-            <Controller
-              control={form.control}
-              name="description"
-              render={({ field: { onChange, onBlur, value } }) => (
-                <Input value={value} setValue={onChange} label="Description" />
-              )}
-            />
-          </View>
-          <View style={{ marginTop: 12 }}>
-            <Controller
-              control={form.control}
-              name="price"
-              render={({ field: { onChange, onBlur, value } }) => (
+        </View>
+        <View style={{ marginTop: 12 }}>
+          <Controller
+            control={form.control}
+            name="price"
+            render={({ field: { onChange, onBlur, value } }) => (
+              <View>
+
                 <Input
                   value={(value || "").toString()}
                   setValue={onChange}
                   label="Price"
                   numeric={true}
                 />
-              )}
-            />
-          </View>
-          <View style={{ marginTop: 12 }}>
-            <Controller
-              control={form.control}
-              name="logo"
-              render={({ field: { onChange, onBlur, value } }) => (
-                <View style={{}}>
-                  <Text style={{ fontWeight: "800" }}>Logo</Text>
-                  <ImageUploader onUploadSuccess={onChange} />
-
-                  <Image
-                    source={{
-                      uri:
-                        value ||
-                        "../../../../../../assets/images/placeholder.jpeg",
-                    }}
-                    style={{
-                      width: "100%",
-                      aspectRatio: 2 / 1,
-                      marginTop: 12,
-                      borderWidth: 0.7,
-                      borderColor: Colors.border2,
-                      borderRadius: 8,
-                    }}
-                    resizeMode="contain"
-                  />
-                </View>
-              )}
-            />
-          </View>
-
-          <CustomButton title={data?.extraOption ? 'Update' : 'Create'} loading={form.formState.isSubmitting} onPress={form.handleSubmit(onSubmit)} style={{backgroundColor:Colors.mainDark,marginTop:15}}/>
+              </View>
+            )}
+          />
         </View>
-      )}
+        <View style={{ marginTop: 12 }}>
+          <Controller
+            control={form.control}
+            name="logo"
+            render={({ field: { onChange, onBlur, value } }) => (
+              <View style={{ width: "100%" }}>
+                <Text style={{ fontWeight: "800" }}>Logo</Text>
+                <ImageUploader onUploadSuccess={onChange} />
+
+                <Image
+                  source={
+                    value
+                      ? { uri: value }
+                      : require("../../../../../../assets/images/placeholder.jpeg")
+                  }
+                  style={{
+                    width: "100%",
+                    aspectRatio: 2 / 1,
+                    marginTop: 12,
+                    borderWidth: 0.7,
+                    borderColor: Colors.border2,
+                    borderRadius: 8,
+                  }}
+                  resizeMode="cover"
+                />
+              </View>
+            )}
+          />
+        </View> */}
+
+        <CustomButton
+          title={!!data?.extraOption ? "Update" : "Create"}
+          loading={form.formState.isSubmitting}
+          onPress={form.handleSubmit(onSubmit)}
+          style={{ backgroundColor: Colors.mainDark, marginTop: 15 }}
+        />
+      </View>
     </ScrollView>
   );
 };

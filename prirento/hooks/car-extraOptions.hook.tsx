@@ -6,11 +6,17 @@ import { carExtraOptionsSchema } from "@/schemas";
 
 
 import { ExtraOption } from "@/types";
+import { fetcher, poster } from "@/lib/utils";
+import { GET_CAR_EXTRA_OPTIONS, GET_CAR_EXTRA_OPTIONS_DETAILS } from "@/links";
+import { useAuth } from "./auth.hook";
+import { useRouter } from "expo-router";
+import { Alert } from "react-native";
+import { useQueryClient } from "@tanstack/react-query";
 
 
-export const useCarExtraOptions = (extraOption : ExtraOption | undefined) => {
+export const useCarExtraOptions = (extraOption : ExtraOption | undefined,carId:string) => {
 
-
+const {user} = useAuth()
     console.log('Extra Option',extraOption)
   const form = useForm<z.infer<typeof carExtraOptionsSchema>>({
     resolver: zodResolver(carExtraOptionsSchema),
@@ -22,12 +28,35 @@ export const useCarExtraOptions = (extraOption : ExtraOption | undefined) => {
       logo: extraOption?.logo || "",
     },
   });
+const router = useRouter()
 
 
+const queryClient = useQueryClient()
   async function onSubmit(values: z.infer<typeof carExtraOptionsSchema>) {
     try {
+
+      let res
+
+      if(extraOption){
+ res = await poster<{success:boolean,error?:string}>(GET_CAR_EXTRA_OPTIONS_DETAILS(carId,extraOption.id),values,user?.token)
+
+
+      }else{
+         res = await poster<{success:boolean,error?:string}>(GET_CAR_EXTRA_OPTIONS(carId),values,user?.token)
+       
+
+      }
+      console.log('res',res)
+      if(res.success){
+        queryClient.invalidateQueries({queryKey:['extraOptions', carId]})
+        router.back()
+        Alert.alert(extraOption ? 'Successfully Updated' : 'Successfully Created')
+        }else if(res.error){
+          Alert.alert(res.error)
+        }
     } catch (error) {
       console.log(error);
+  
     }
   }
 

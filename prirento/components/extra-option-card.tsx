@@ -37,10 +37,12 @@ const ExtraOptionCard = ({el,carId}:Props) => {
         {el.price.toFixed(2)}
       </Text>
         </View>
-     
-      <Text style={[{textTransform: "capitalize" },el.status==='active' ? styles.active : styles.pending]}>
+     <View style={el.status==='active' ? styles.active : styles.pending}>
+     <Text style={{textTransform: "capitalize" ,color:'white',fontSize:10}}>
         {el.status}
       </Text>
+     </View>
+    
       <TouchableOpacity
         style={{
           marginTop: 10,
@@ -78,7 +80,7 @@ const styles = StyleSheet.create({
       paddingVertical:3,
       paddingHorizontal:12,
       borderRadius:100,
-      fontSize:10
+      
     },
     pending:{
       backgroundColor:'orange',
@@ -86,6 +88,6 @@ const styles = StyleSheet.create({
       paddingVertical:3,
       paddingHorizontal:12,
       borderRadius:100,
-      fontSize:10
+ 
     }
   });

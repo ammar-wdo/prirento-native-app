@@ -65,6 +65,7 @@ const setRead = async ()=>{
     console.log('notification responde',res)
     if(res.success){
      queryClient.invalidateQueries({queryKey:['notifications']})
+     queryClient.invalidateQueries({queryKey:['notificationsCount']})
     }
   } catch (error) {
     console.log(error)

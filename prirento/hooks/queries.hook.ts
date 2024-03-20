@@ -4,7 +4,7 @@ import { Booking, BookingCard, BookingInfo, CarCard, CarModel, ExtraOption, Loca
 import { fetcher } from "@/lib/utils";
 import { CarDetail, ComingCar } from "@/schemas";
 import { Platform } from 'react-native';
-import { GET_BOOKINGS, GET_BOOKING_DETAILS, GET_BOOKINS_INFO, GET_CARS, GET_CAR_DETAILS, GET_CAR_EXTRA_OPTIONS, GET_CAR_EXTRA_OPTIONS_DETAILS, GET_LOCATIONS, GET_MODELS, GET_NOTIFICATIONS, GET_RECENT_BOOKINGS, GET_RECENT_CARS } from "@/links";
+import { GET_BOOKINGS, GET_BOOKING_DETAILS, GET_BOOKINS_INFO, GET_CARS, GET_CAR_DETAILS, GET_CAR_EXTRA_OPTIONS, GET_CAR_EXTRA_OPTIONS_DETAILS, GET_LOCATIONS, GET_MODELS, GET_NOTIFICATIONS, GET_NOTIFICATIONS_COUNT, GET_RECENT_BOOKINGS, GET_RECENT_CARS } from "@/links";
 import { isEnabled } from "react-native/Libraries/Performance/Systrace";
 
 export const url = Platform.select({
@@ -208,7 +208,7 @@ export const useCarExtraOptionsDetailsQuery = (carId:string,optionId:string)=>{
     
     
     >(GET_CAR_EXTRA_OPTIONS_DETAILS(carId,optionId),user?.token),
-    enabled:!!(carId && optionId)
+
   })
 
 
@@ -230,8 +230,29 @@ export const useNotifications = ()=>{
     }
   
     
-    
     >(GET_NOTIFICATIONS,user?.token),
+ 
+  })
+}
+
+
+
+export const useNotificationsCount = ()=>{
+
+
+  const {user} = useAuth()
+
+  return useQuery({
+ queryKey: ['notificationsCount'],
+    queryFn: () => fetcher<{
+      success: boolean;
+      count:number;
+      error?: string;
+      
+    }
+ 
+    >(GET_NOTIFICATIONS_COUNT,user?.token),
+    refetchInterval:60000
  
   })
 
