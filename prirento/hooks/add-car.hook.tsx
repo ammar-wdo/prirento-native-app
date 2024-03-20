@@ -58,12 +58,12 @@ export const useAddCar = () => {
   const router = useRouter();
   const { user } = useAuth();
   const queryClient = useQueryClient();
-  const { carId } = useLocalSearchParams();
+
 
   const onSubmit = async (data: z.infer<typeof carSchema>) => {
     try {
       const res = await poster<{ success: boolean; message?: string }>(
-        `${url}/api/native/car/${carId}/edit`,
+        `${url}/api/native/car`,
         data,
         user?.token
       );
@@ -71,13 +71,10 @@ export const useAddCar = () => {
       if (!res.success) {
         Alert.alert(res.message || "error");
       } else {
-        Alert.alert("Successfully Updated");
+        Alert.alert("Successfully Created");
         queryClient.invalidateQueries({ queryKey: ["cars"], exact: true });
-        queryClient.invalidateQueries({
-          queryKey: ["carDetails", carId],
-          exact: true,
-        });
-        router.back();
+     
+        router.push('/(app)/cars');
       }
     } catch (error) {
       console.warn(error);
