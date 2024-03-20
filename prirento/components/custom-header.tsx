@@ -10,7 +10,7 @@ const CustomHeader = ({ cars }: { cars?: boolean }) => {
   const { user } = useAuth();
 
   const { data } = useNotificationsCount();
-
+console.log(data)
   return (
     <View style={styles.container}>
       {/* Account Image and Name Placeholder */}

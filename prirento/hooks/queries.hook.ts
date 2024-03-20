@@ -231,7 +231,7 @@ export const useNotifications = ()=>{
   
     
     >(GET_NOTIFICATIONS,user?.token),
- 
+ refetchOnMount:'always'
   })
 }
 

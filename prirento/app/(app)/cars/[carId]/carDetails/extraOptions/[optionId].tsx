@@ -101,8 +101,8 @@ const OptionId = () => {
         <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
       }
     >
-      <View>
-        {/* <Controller
+      {/* <View>
+        <Controller
           control={form.control}
           name="label"
           render={({ field: { onChange, onBlur, value } }) => (
@@ -168,7 +168,7 @@ const OptionId = () => {
               </View>
             )}
           />
-        </View> */}
+        </View>
 
         <CustomButton
           title={!!data?.extraOption ? "Update" : "Create"}
@@ -176,7 +176,7 @@ const OptionId = () => {
           onPress={form.handleSubmit(onSubmit)}
           style={{ backgroundColor: Colors.mainDark, marginTop: 15 }}
         />
-      </View>
+      </View> */}
     </ScrollView>
   );
 };
