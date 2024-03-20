@@ -1,6 +1,7 @@
 
 
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useQueryClient } from "@tanstack/react-query";
 import { ReactNode, createContext, useContext, useEffect, useState } from "react";
 
 export type User = {
@@ -30,6 +31,8 @@ export const AuthProvider = ({children}:{children:ReactNode}) => {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true)
 
+  const queryClient = useQueryClient()
+
   useEffect(() => {
     // Load the user from AsyncStorage when the app starts
     const loadUser = async () => {
@@ -51,6 +54,7 @@ export const AuthProvider = ({children}:{children:ReactNode}) => {
 }
 
 const signout =async ()=>{
+  queryClient.clear()
     setUser(null)
     await AsyncStorage.removeItem('user')
 }
