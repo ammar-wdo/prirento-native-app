@@ -21,7 +21,7 @@ const _layout = () => {
       }}
     >
       <TopTabs.Screen name="index" options={{ title: "Edit" }} />
-      <TopTabs.Screen name={`pricings`} options={{ title: "Pricing"}} />
+      <TopTabs.Screen name="pricings" options={{ title: "Pricing"}} />
       <TopTabs.Screen name="availability" options={{ title: "Availability" }} />
       <TopTabs.Screen
         name="extraOptions"

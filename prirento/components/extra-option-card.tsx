@@ -6,9 +6,11 @@ import { useRouter } from 'expo-router'
 
 type Props = {
     el:ExtraOption,
-    carId:string
+    carId:string,
+    setOpen:()=>void
+    setExtraOptionModal:(el:ExtraOption)=>void
 }
-const ExtraOptionCard = ({el,carId}:Props) => {
+const ExtraOptionCard = ({el,carId,setExtraOptionModal,setOpen}:Props) => {
     const router = useRouter()
   return (
     <View
@@ -52,7 +54,8 @@ const ExtraOptionCard = ({el,carId}:Props) => {
           flex:1
         }}
         onPress={() => {
-router.push(`/(app)/cars/${carId}/carDetails/extraOptions/${el.id}`)
+setExtraOptionModal(el)
+setOpen()
 
         }}
       >

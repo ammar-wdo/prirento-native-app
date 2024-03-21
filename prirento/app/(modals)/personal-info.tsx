@@ -91,6 +91,11 @@ const PersonalInfo = () => {
             <Input value={value} setValue={onChange} label="Email" />
           )}
         />
+           {form.formState.errors.email && (
+                <Text style={{ color: "red", fontSize: 10 }}>
+                  {form.formState.errors.email.message}
+                </Text>
+              )}
         <View style={{ marginTop: 12 }}>
           <Controller
             control={form.control}
@@ -99,6 +104,11 @@ const PersonalInfo = () => {
               <Input value={value} setValue={onChange} label="Address" />
             )}
           />
+             {form.formState.errors.address && (
+                <Text style={{ color: "red", fontSize: 10 }}>
+                  {form.formState.errors.address.message}
+                </Text>
+              )}
         </View>
       </FormWrapper>
       {/* contact details */}
@@ -116,6 +126,11 @@ const PersonalInfo = () => {
               />
             )}
           />
+             {form.formState.errors.phoneNumber && (
+                <Text style={{ color: "red", fontSize: 10 }}>
+                  {form.formState.errors.phoneNumber.message}
+                </Text>
+              )}
           <View style={{ marginTop: 12 }}>
             <Controller
               control={form.control}
@@ -129,6 +144,11 @@ const PersonalInfo = () => {
                 />
               )}
             />
+               {form.formState.errors.whatsApp && (
+                <Text style={{ color: "red", fontSize: 10 }}>
+                  {form.formState.errors.whatsApp.message}
+                </Text>
+              )}
           </View>
         </FormWrapper>
       </View>
@@ -157,6 +177,11 @@ const PersonalInfo = () => {
                 />
                 </View> : <Text style={{fontWeight:'600',textTransform:'capitalize',marginVertical:5,textAlign:'center',fontSize:25,color:'gray'}}>No Logo </Text>}
           <ImageUploader onUploadSuccess={(el)=>onChange(el)} />
+          {form.formState.errors.logo && (
+                <Text style={{ color: "red", fontSize: 10 }}>
+                  {form.formState.errors.logo.message}
+                </Text>
+              )}
               </View>
               )}
             />
@@ -184,6 +209,11 @@ const PersonalInfo = () => {
                 )) : <Text style={{fontWeight:'600',textTransform:'capitalize',marginVertical:5,textAlign:'center',width:'100%', fontSize:25,color:'gray'}}>No Images</Text>}
 
 <ImageUploader onUploadSuccess={(el)=>onChange([...value,el])} />
+{form.formState.errors.gallary && (
+                <Text style={{ color: "red", fontSize: 10 }}>
+                  {form.formState.errors.gallary.message}
+                </Text>
+              )}
               </View>
             )}
           />

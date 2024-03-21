@@ -138,6 +138,7 @@ export const useCompanyHook = ({ company }: Props) => {
     } catch (error) {
       console.log(error);
     }
+ 
   }
 
   const setter = (day: Day, type: "openTime" | "closeTime", value: string) => {
