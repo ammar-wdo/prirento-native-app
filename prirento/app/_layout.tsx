@@ -5,6 +5,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { SafeAreaView } from "react-native-safe-area-context";
 import Toast from "react-native-toast-message";
 import { Ionicons } from "@expo/vector-icons";
+import { ModalProvider } from "@/hooks/modal-hook";
 
 
 const queryClient = new QueryClient();
@@ -16,6 +17,7 @@ export default function RootLayoutNav() {
   const router = useRouter()
 
   return (
+    <ModalProvider>
     <QueryClientProvider client={queryClient}>
 
 
@@ -84,5 +86,6 @@ export default function RootLayoutNav() {
       </AuthProvider>
   
     </QueryClientProvider>
+    </ModalProvider>
   );
 }

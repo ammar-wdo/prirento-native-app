@@ -20,6 +20,7 @@ import {
   import { useCarExtraOptions } from "@/hooks/car-extraOptions.hook";
   import ExtraOptionCard from "@/components/extra-option-card";
   import ExtraOptionsModal from "@/components/extra-options-modal";
+import { useModal } from "@/hooks/modal-hook";
   
   const ExtraOtions = () => {
     const pathname = usePathname();
@@ -49,7 +50,7 @@ import {
       }
     }, [extraOptions, refetchExtraOptions]);
   
-    const [open, setOpen] = useState(false);
+ const {open,control} = useModal()
     const [extraOptionModal, setExttraOptionModal] = useState<
       ExtraOption | undefined
     >(undefined);
@@ -70,7 +71,7 @@ import {
             marginBottom: 20,
           }}
           onPress={() => {
-            setOpen(true);
+            control(true);
             setExttraOptionModal(undefined);
           }}
         >
@@ -105,7 +106,7 @@ import {
         ) : (
           extraOptions.extraOptions.map((el) => (
             <ExtraOptionCard
-              setOpen={() => setOpen(true)}
+              setOpen={() => control(true)}
               setExtraOptionModal={(el: ExtraOption) => setExttraOptionModal(el)}
               el={el}
               carId={carId}
@@ -116,7 +117,7 @@ import {
         <ExtraOptionsModal
           extraOption={extraOptionModal}
           isVisible={open}
-          onClose={() => setOpen(false)}
+          onClose={() => control(false)}
           carId={carId}
         />
       </ScrollView>

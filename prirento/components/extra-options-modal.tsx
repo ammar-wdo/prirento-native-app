@@ -15,38 +15,32 @@ import {
 import Input from "./Input";
 import { Image } from "react-native";
 import ImageUploader from "./image-uploader";
-
+import CustomButton from "./custom-button";
+import { Colors } from "@/constants/Colors";
 
 interface CustomColorPickerModalProps {
   isVisible: boolean;
-  carId:string
-extraOption:ExtraOption|undefined
-onClose:()=>void
-
-
-
- 
+  carId: string;
+  extraOption: ExtraOption | undefined;
+  onClose: () => void;
 }
 const ExtraOptionsModal: React.FC<CustomColorPickerModalProps> = ({
   isVisible,
-extraOption,
-carId,
-
+  extraOption,
+  carId,
 
   onClose,
 }) => {
+  const { form, onSubmit } = useCarExtraOptions(extraOption, carId);
 
-    const {form,onSubmit} = useCarExtraOptions(extraOption,carId)
-
-  useEffect(()=>{
-    if(extraOption){
-      form.reset(extraOption)
-    }else{
-      form.reset({description:'',label:'',logo:'',price:0})
+  useEffect(() => {
+    if (extraOption) {
+      form.reset(extraOption);
+    } else {
+      form.reset({ description: "", label: "", logo: "", price: 0 });
     }
-  },[extraOption])
+  }, [extraOption]);
 
-    
   return (
     <Modal visible={isVisible} animationType="slide" transparent={true}>
       <View style={styles.modalOverlay}>
@@ -66,7 +60,6 @@ carId,
             </Text>
 
             <View style={{ marginTop: 12 }}>
-
               <View>
                 <Controller
                   control={form.control} // From useForm()
@@ -76,43 +69,68 @@ carId,
                   )}
                 />
               </View>
-              <View style={{marginTop:8}}>
-              <Controller
-                control={form.control} // From useForm()
-                name="description"
-                render={({ field: { onChange, onBlur, value } }) => (
-                  <Input
-                    value={value}
-                    setValue={onChange}
-                    label="Description"
-                    
-                  />
-                )}
+              <View style={{ marginTop: 8 }}>
+                <Controller
+                  control={form.control} // From useForm()
+                  name="description"
+                  render={({ field: { onChange, onBlur, value } }) => (
+                    <Input
+                      value={value}
+                      setValue={onChange}
+                      label="Description"
+                    />
+                  )}
+                />
+              </View>
+              <View style={{ marginTop: 8 }}>
+                <Controller
+                  control={form.control} // From useForm()
+                  name="price"
+                  render={({ field: { onChange, onBlur, value } }) => (
+                    <Input
+                      value={(value || "").toString()}
+                      setValue={onChange}
+                      label="price"
+                      numeric={true}
+                    />
+                  )}
+                />
+              </View>
+              <View style={{ marginTop: 8 }}>
+                <Controller
+                  control={form.control} // From useForm()
+                  name="logo"
+                  render={({ field: { onChange, onBlur, value } }) => (
+                    <View style={{ width: "100%" }}>
+                      <Text style={{ fontWeight: "800" }}>Logo</Text>
+                      {!!value && (
+                        <Image
+                          source={{ uri: value }}
+                          style={{
+                            width: 200,
+                            aspectRatio: 2 / 1.4,
+                            alignSelf: "center",
+                            borderRadius: 12,
+                          }}
+                          resizeMode="contain"
+                        />
+                      )}
+                      <ImageUploader
+                        onUploadSuccess={(value) =>
+                          form.setValue("logo", value)
+                        }
+                      />
+                    </View>
+                  )}
+                />
+              </View>
+              <CustomButton
+              onPress={form.handleSubmit(onSubmit)}
+                title={extraOption ? "Update" : "Create"}
+                loading={form.formState.isSubmitting}
+                disabled={form.formState.isSubmitting}
+                style={{backgroundColor:Colors.mainDark}}
               />
-              </View>
-              <View style={{marginTop:8}}>
-              <Controller
-                control={form.control} // From useForm()
-                name="price"
-                render={({ field: { onChange, onBlur, value } }) => (
-                  <Input
-                    value={(value || '').toString()}
-                    setValue={onChange}
-                    label="price"
-                    numeric={true}
-                    
-                  />
-                )}
-              />
-              </View>
-              <View style={{marginTop:12}}>
-                <Text style={{fontWeight:'800'}}>Logo</Text>
-              <Image source={{uri:extraOption?.logo}} />
-              <ImageUploader onUploadSuccess={(value)=>form.setValue('logo',value)} />
-              </View>
-            
-
-              <Text>{extraOption?.label}</Text>
             </View>
           </ScrollView>
           <TouchableOpacity onPress={onClose} style={styles.closeButton}>

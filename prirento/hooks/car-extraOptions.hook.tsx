@@ -12,6 +12,7 @@ import { useAuth } from "./auth.hook";
 import { useRouter } from "expo-router";
 import { Alert } from "react-native";
 import { useQueryClient } from "@tanstack/react-query";
+import { useModal } from "./modal-hook";
 
 
 export const useCarExtraOptions = (extraOption : ExtraOption | undefined,carId:string) => {
@@ -30,7 +31,7 @@ const {user} = useAuth()
   });
 const router = useRouter()
 
-
+const {control} = useModal()
 const queryClient = useQueryClient()
   async function onSubmit(values: z.infer<typeof carExtraOptionsSchema>) {
     try {
@@ -49,7 +50,7 @@ const queryClient = useQueryClient()
       console.log('res',res)
       if(res.success){
         queryClient.invalidateQueries({queryKey:['extraOptions', carId]})
-        router.back()
+       control(false)
         Alert.alert(extraOption ? 'Successfully Updated' : 'Successfully Created')
         }else if(res.error){
           Alert.alert(res.error)
