@@ -1,7 +1,7 @@
 import React from "react";
 import { View, Text, TouchableOpacity, StyleSheet, Image } from "react-native";
 import { Feather, MaterialCommunityIcons } from "@expo/vector-icons"; // Using MaterialCommunityIcons for example
-import { Link } from "expo-router";
+import { Link, useRouter } from "expo-router";
 import { useAuth } from "@/hooks/auth.hook";
 import { Colors } from "@/constants/Colors";
 import { useNotificationsCount } from "@/hooks/queries.hook";
@@ -11,9 +11,11 @@ const CustomHeader = ({ cars }: { cars?: boolean }) => {
 
   const { data } = useNotificationsCount();
 console.log(data)
+const router = useRouter()
   return (
     <View style={styles.container}>
       {/* Account Image and Name Placeholder */}
+      <TouchableOpacity  onPress={()=>router.push('/(modals)/personal-info')}>
       <View style={styles.accountContainer}>
         <Image
           style={styles.logo}
@@ -27,6 +29,8 @@ console.log(data)
           <Text style={styles.email}>{user?.email}</Text>
         </View>
       </View>
+      </TouchableOpacity>
+  
 
       {/* Bell Icon for Notifications */}
 

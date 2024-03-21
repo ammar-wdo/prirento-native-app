@@ -15,3 +15,4 @@ export const GET_CAR_EXTRA_OPTIONS = (carId:string)=> MAIN_BACKEND + `/api/nativ
 export const GET_CAR_EXTRA_OPTIONS_DETAILS = (carId:string,optionId:string)=> MAIN_BACKEND + `/api/native/car/${carId}/extraOptions/${optionId}`
 export const GET_NOTIFICATIONS= MAIN_BACKEND + '/api/native/notifications'
 export const GET_NOTIFICATIONS_COUNT= MAIN_BACKEND + '/api/native/notifications/count'
+export const GET_COMPANY = MAIN_BACKEND + '/api/native/company'

@@ -67,7 +67,7 @@ const OptionId = () => {
     });
   }, []);
 
-  if (isLoading) {
+  if (!!isLoading) {
     return (
       <View
         style={{
@@ -82,8 +82,7 @@ const OptionId = () => {
     );
   }
 
-  if (!data?.success) return;
-  <ScrollView
+ if (!data?.success){ return  (<ScrollView
     style={{ flex: 1, backgroundColor: "white" }}
     contentContainerStyle={{ padding: 20 }}
     refreshControl={
@@ -91,9 +90,9 @@ const OptionId = () => {
     }
   >
     <Text>{data?.error}</Text>
-  </ScrollView>;
+  </ScrollView>);}
 
-  return (
+return (
     <ScrollView
       style={{ flex: 1, backgroundColor: "white" }}
       contentContainerStyle={{ padding: 20 }}
@@ -101,7 +100,7 @@ const OptionId = () => {
         <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
       }
     >
-      {/* <View>
+      <View>
         <Controller
           control={form.control}
           name="label"
@@ -176,10 +175,10 @@ const OptionId = () => {
           onPress={form.handleSubmit(onSubmit)}
           style={{ backgroundColor: Colors.mainDark, marginTop: 15 }}
         />
-      </View> */}
+      </View>
     </ScrollView>
   );
-};
+}
 
 export default OptionId;
 

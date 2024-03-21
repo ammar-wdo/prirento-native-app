@@ -25,9 +25,9 @@ const Signin = () => {
     useLogin();
   const { user, loading } = useAuth();
 
-  if (loading) return null;
+  if (!!loading) return null;
 
-  if (user) return <Redirect href="/(app)" />;
+  if (!!user) return <Redirect href="/(app)" />;
 
   return (
     <KeyboardAvoidingView

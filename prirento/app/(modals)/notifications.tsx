@@ -48,7 +48,8 @@ const Notifications = () => {
           refreshControl={
             <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
           }
-          style={{ flex: 1, alignItems: "center", justifyContent: "center" }}
+          style={{ flex: 1}}
+          contentContainerStyle={{ alignItems: 'center', justifyContent: 'center' }}
         >
           <Text>{data?.error}</Text>{" "}
         </ScrollView>

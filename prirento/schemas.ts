@@ -223,3 +223,47 @@ export const carSchema = z
   
     logo: requiredString,
   });
+
+
+  const dayOpeningTimeSchema = z.object({
+    openTime: z.string().min(1, "Open time is required"),
+    closeTime: z.string().min(1, "Close time is required"),
+    closed: z.boolean(),
+  });
+
+
+  const newPassword = z.string().min(8, { message: "Enter at least 8 chars" });
+
+  export const companySchema = z.object({
+    email: requiredString.min(2, "E-mail is required").email(),
+    password: z.string().min(8, "Password should be at least 8 chars"),
+    newPassword: z
+      .union([z.string(), z.undefined()])
+      .refine(
+        (val) => !val || newPassword.safeParse(val).success,
+        "Enter at least 8 chars"
+      ),
+    address: requiredString,
+    phoneNumber: requiredString.refine((value) => {
+      const phoneRegex = /^(?:[0-9]){1,3}(?:[ -]*[0-9]){6,14}$/;
+      return phoneRegex.test(value);
+    }, "Invalid phone number"),
+    whatsApp: requiredString.refine((value) => {
+      const phoneRegex = /^(?:[0-9]){1,3}(?:[ -]*[0-9]){6,14}$/;
+      return phoneRegex.test(value);
+    }, "Invalid phone number"),
+    logo: z.string().min(1, "You should upload a logo"),
+    gallary: z.array(requiredString),
+    away: z.coerce.boolean(),
+    openingTime: z.object({
+      Monday: dayOpeningTimeSchema,
+      Tuesday: dayOpeningTimeSchema,
+      Wednesday: dayOpeningTimeSchema,
+      Thursday: dayOpeningTimeSchema,
+      Friday: dayOpeningTimeSchema,
+      Saturday: dayOpeningTimeSchema,
+      Sunday: dayOpeningTimeSchema,
+    }),
+  });
+
+  export type Company = z.infer<typeof companySchema>

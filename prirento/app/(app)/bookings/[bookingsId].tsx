@@ -95,7 +95,7 @@ setRead()
         ) : !data?.success ? (
           <Text>{data?.error}</Text>
         ) : (
-          <ScrollView style={styles.detailsContainer}>
+          <ScrollView >
             <CustomHeader />
             <View style={{ width: "100%", aspectRatio: 2 / 1 }}>
               <Image
@@ -352,7 +352,5 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
   },
-  detailsContainer: {
-    // Adjust styles as needed
-  },
+
 });
