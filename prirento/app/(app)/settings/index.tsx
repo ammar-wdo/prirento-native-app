@@ -6,11 +6,13 @@ import { Stack, useRouter } from "expo-router";
 import { Colors } from "@/constants/Colors";
 import { useAuth } from "@/hooks/auth.hook";
 import { Ionicons } from "@expo/vector-icons";
+import { useModal } from "@/hooks/modal-hook";
+import ExitModal from "@/components/exit-modal";
 
 const index = () => {
   const router = useRouter();
 
-  const { signout } = useAuth();
+const {logout,setLogout} = useModal()
   return (
     <View style={{ padding: 12, flex: 1, backgroundColor: "white" }}>
  <Stack.Screen    options={{
@@ -36,7 +38,7 @@ const index = () => {
         push={() => router.push("/(modals)/help")}
       />
       <TouchableOpacity
-        onPress={signout}
+        onPress={()=>setLogout(true)}
         style={{
           marginTop: 25,
           borderWidth: 0.7,
@@ -48,6 +50,7 @@ const index = () => {
       >
         <Text style={{ textAlign: "center", fontWeight: "500" }}>Sign Out</Text>
       </TouchableOpacity>
+      <ExitModal isVisible={logout} onClose={()=>setLogout(false)} />
     </View>
   );
 };

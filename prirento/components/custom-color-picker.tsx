@@ -20,7 +20,7 @@ const CustomItemsPickerModal: React.FC<CustomColorPickerModalProps> = ({
     isColor
   }) => {
     return (
-      <Modal visible={isVisible} animationType="slide" transparent={true}>
+      <Modal visible={isVisible} animationType="fade" transparent={true}>
         <View style={styles.modalOverlay}>
           <View style={styles.modalContent}>
           <ScrollView style={{width:'100%'}} >
@@ -49,7 +49,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: 'rgba(0,0,0,0.5)',
+    backgroundColor: 'rgba(0,0,0,0.7)',
   },
   colorOption: {
     flexDirection: 'row',

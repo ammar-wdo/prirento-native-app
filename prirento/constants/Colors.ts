@@ -6,5 +6,7 @@ golden:'#C6A046',
 border:'#D1D5DB',
 border2:'#DCDCDC',
 secondaryGreen:'#0C460E',
-lightBackground:'#E4F4FE'
+lightBackground:'#E4F4FE',
+lightGray:'#F1F1F1'
+
 };

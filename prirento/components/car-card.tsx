@@ -32,9 +32,9 @@ const CarCardItem = ({ car }: { car: CarCard }) => {
             <Text style={styles.year}>{car.year}</Text>
           </View>
           {/* Corrected style application syntax */}
-          <View style={[styles.statusContainer, statusMapper[car.status]]}>
+        { !!car.isPending ? <View style={[styles.statusContainer, {backgroundColor:'orange'}]}><Text style={styles.status}>Pending</Text></View> :  <View style={[styles.statusContainer, statusMapper[car.status]]}>
             <Text style={styles.status}>{car.status}</Text>
-          </View>
+          </View>}
         </View>
       </View>
     </TouchableOpacity>

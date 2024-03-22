@@ -4,6 +4,7 @@ export type CarCard = {
   year: string;
   image: string;
   status: "Booked" | "Blocked" | "Available";
+  isPending:boolean
 };
 
 export type CarTypes =

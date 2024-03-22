@@ -20,10 +20,14 @@ import { Ionicons } from "@expo/vector-icons";
 import ImageUploader from "@/components/image-uploader";
 import CustomButton from "@/components/custom-button";
 import { CheckBox } from "@rneui/base";
+import { useModal } from "@/hooks/modal-hook";
+import PasswordModal from "@/components/password-modal";
+import ExitModal from "@/components/exit-modal";
 
 const PersonalInfo = () => {
   const { data, isLoading, error, refetch } = useCompany();
   const { form, onSubmit,out } = useCompanyHook({ company: data?.company });
+  const {setLogout,logout} = useModal()
 
   const [refreshing, setRefreshing] = useState(false);
   const onRefresh = React.useCallback(async () => {
@@ -39,7 +43,7 @@ const PersonalInfo = () => {
       setRefreshing(false);
     }
   }, []);
-
+  const {passwordControl,passwordOpen} = useModal()
   useEffect(() => {
     if (data?.company) {
       form.reset(data.company);
@@ -75,6 +79,7 @@ const PersonalInfo = () => {
   }
   
 
+
   return (
     <ScrollView
       style={{ flex: 1, backgroundColor: "white" }}
@@ -83,6 +88,22 @@ const PersonalInfo = () => {
         <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
       }
     >
+<View style={{flexDirection:'row',justifyContent:'space-between',marginVertical:10,}}>
+<TouchableOpacity style={{flexDirection:'row'}} onPress={()=>passwordControl(true)}>
+        <View style={{padding:10,borderRadius:5,borderWidth:0.7,borderColor:Colors.secondaryGreen,flexDirection:'row',gap:5,alignItems:'center'}}>
+          <Ionicons name="key-outline" color={Colors.secondaryGreen} size={20}/>
+          <Text style={{color:Colors.secondaryGreen}}>Change Password</Text>
+        </View>
+      </TouchableOpacity>
+
+      <TouchableOpacity style={{flexDirection:'row'}} onPress={()=>setLogout(true)}>
+      <View style={{padding:10,borderRadius:5,borderWidth:0.7,borderColor:'red',gap:5,alignItems:'center'}}>
+          <Ionicons name="exit-outline" color={'red'} size={20} />
+        
+        </View>
+      </TouchableOpacity>
+</View>
+    
       <FormWrapper title="Personal Details">
         <Controller
           control={form.control}
@@ -249,6 +270,8 @@ const PersonalInfo = () => {
         </View>
         <CustomButton disabled={form.formState.isSubmitting} title="Update" style={{backgroundColor:Colors.mainDark,marginTop:12}} loading={form.formState.isSubmitting} onPress={form.handleSubmit(onSubmit)} />
       </View>
+      <PasswordModal isVisible={passwordOpen} onClose={()=>passwordControl(false)}/>
+      <ExitModal isVisible={logout} onClose={()=>setLogout(false)} />
     </ScrollView>
   );
 };

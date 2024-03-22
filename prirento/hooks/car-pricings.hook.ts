@@ -15,12 +15,13 @@ import { useQueryClient } from "@tanstack/react-query";
 
 
 type Props = {
+  success:boolean | undefined
   pricings: number[];
   hourPrice: number | null;
 
 };
 
-export const usePricings = ({ pricings, hourPrice}: Props) => {
+export const usePricings = ({ pricings, hourPrice,success}: Props) => {
   const form = useForm<z.infer<typeof carPricingsSchema>>({
     resolver: zodResolver(carPricingsSchema),
     defaultValues: {
@@ -30,20 +31,21 @@ export const usePricings = ({ pricings, hourPrice}: Props) => {
   });
 
   useEffect(() => {
-    if (pricings) {
+ if(!success) return
+
       const requiredLength = 14;
-      const arrayLength = form.getValues("pricings").length;
+      const arrayLength = form.getValues("pricings")?.length || 0
 
       if (arrayLength >= requiredLength) return;
 
       const remainigLength = requiredLength - arrayLength;
       const remainigArray = Array(remainigLength).fill(0);
 
-      const newArray = [...form.getValues("pricings"), ...remainigArray];
+      const newArray = [...form.getValues("pricings") || [], ...remainigArray];
 
       form.setValue("pricings", newArray);
-    }
-  }, [pricings]);
+    
+  }, [success]);
 
   const router = useRouter()
 

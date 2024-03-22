@@ -71,7 +71,7 @@ const Signin = () => {
                   }
                 />
               </View>
-              {errors.email && <Text>{errors.email.message}</Text>}
+              {errors.email && <Text style={{color:'red'}}>{errors.email.message}</Text>}
               <Text>Password</Text>
               <View style={styles.inputWrapper}>
                 <FontAwesome5 size={20} name="key" />
@@ -84,7 +84,7 @@ const Signin = () => {
                   secureTextEntry
                 />
               </View>
-              {errors.password && <Text>{errors.password.message}</Text>}
+              {errors.password && <Text style={{color:'red'}}>{errors.password.message}</Text>}
               <Text
                 style={{
                   alignSelf: "flex-end",

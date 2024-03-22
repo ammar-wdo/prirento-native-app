@@ -34,6 +34,7 @@ const Pricing = () => {
   } = useCarQuery(carId as string);
 
   const { form, onSubmit, addRow, deleteRow, setValue } = usePricings({
+    success:carData?.success,
     hourPrice: carData?.car?.hourlyPrice!,
     pricings: carData?.car?.pricings!,
   });
@@ -65,7 +66,7 @@ const Pricing = () => {
   }
   if (!carData?.success) return <Text>{carData?.error}</Text>;
 
-  return (
+  if(!!carData.car) return (
     <ScrollView
       style={{ flex: 1, backgroundColor: "white" }}
       contentContainerStyle={{ padding: 20 }}
@@ -78,7 +79,7 @@ const Pricing = () => {
         name="hourPrice"
         render={({ field: { onChange, onBlur, value } }) => (
           <Input
-            value={value.toString()}
+            value={(value || '').toString()}
             setValue={onChange}
             label="Hourly Price"
             numeric={true}
@@ -91,15 +92,16 @@ const Pricing = () => {
         </Text>
       )}
       {/* pricings */}
-      <View style={{ marginTop: 12 }}>
+     <View style={{ marginTop: 12 }}>
         <Controller
           control={form.control} // From useForm()
           name="pricings"
           render={({ field: { onChange, onBlur, value } }) => (
             <View>
-              {value.map((price, i) => (
+              {(!!value &&  !!value?.length) &&  value.map((price, i) => (
                 <PriceInput
                   deleteRow={deleteRow}
+                  numeric={true}
                   key={i}
                   value={value[i].toString()}
                   index={i.toString()}
@@ -118,30 +120,34 @@ const Pricing = () => {
       <TouchableOpacity
         onPress={addRow}
         style={{
+          marginTop:12,
           flexDirection: "row",
           alignItems: "center",
           gap: 12,
-          backgroundColor: "#777",
+          backgroundColor:Colors.secondaryGreen,
           justifyContent: "center",
           padding: 12,
           borderRadius: 6,
+         
+         
         }}
       >
         <Feather name="plus" color={"white"} />
-        <Text style={{ color: "white" }}>Add new day</Text>
+        <Text style={{ color: "white",fontWeight:'600', fontSize:14 }}>Add new day</Text>
       </TouchableOpacity>
       <CustomButton
       disabled={form.formState.isSubmitting}
         loading={form.formState.isSubmitting}
         onPress={form.handleSubmit(onSubmit)}
         title="Update Pricings"
-        textStyle={{ fontWeight: "600" }}
+        textStyle={{ fontWeight: "600",fontSize:14 }}
         style={{
           backgroundColor: Colors.secondaryGreen,
           marginTop: 12,
           padding: 12,
           borderRadius: 6,
         }}
+      
       />
     </ScrollView>
   );

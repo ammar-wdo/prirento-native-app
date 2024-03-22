@@ -4,7 +4,9 @@ import { Colors } from '@/constants/Colors'
 
 const FormWrapper = ({children,title}:{children:ReactNode,title:string}) => {
   return (
-    <View style={{borderColor:Colors.border,borderWidth:1,borderRadius:10,padding:14}}>
+    <View style={{  borderWidth: 0.7,
+      borderColor: Colors.border2,
+      borderRadius: 5,padding:14}}>
       <Text style={{fontWeight:'800',fontSize:20}}>{title}</Text>
       <View style={{marginTop:12}}>
         {children}

@@ -11,8 +11,8 @@ const _layout = () => {
   return (
     <TopTabs
     screenOptions={{
-    
-        tabBarLabelStyle: { fontSize: 9, fontWeight: "600" },
+ 
+        tabBarLabelStyle: { fontSize: 12, fontWeight: "600",textTransform:'capitalize' },
         tabBarIndicatorStyle: { backgroundColor: Colors.golden,height:3,borderTopRightRadius:15,borderTopLeftRadius:15 },
         tabBarActiveTintColor: Colors.golden,
         tabBarInactiveTintColor: 'gray', 

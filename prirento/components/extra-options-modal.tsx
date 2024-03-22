@@ -42,10 +42,10 @@ const ExtraOptionsModal: React.FC<CustomColorPickerModalProps> = ({
   }, [extraOption]);
 
   return (
-    <Modal visible={isVisible} animationType="slide" transparent={true}>
+    <Modal visible={isVisible} animationType="fade" transparent={true} >
       <View style={styles.modalOverlay}>
         <View style={styles.modalContent}>
-          <ScrollView style={{ width: "100%" }}>
+     <ScrollView showsVerticalScrollIndicator={false}>
             <Text
               style={{
                 textAlign: "center",
@@ -59,7 +59,7 @@ const ExtraOptionsModal: React.FC<CustomColorPickerModalProps> = ({
                 : "Add New Extra Option"}
             </Text>
 
-            <View style={{ marginTop: 12 }}>
+            <View style={{ marginTop: 12 ,flex:1,}}>
               <View>
                 <Controller
                   control={form.control} // From useForm()
@@ -68,6 +68,11 @@ const ExtraOptionsModal: React.FC<CustomColorPickerModalProps> = ({
                     <Input value={value} setValue={onChange} label="Label" />
                   )}
                 />
+                {form.formState.errors.label && (
+                <Text style={{ color: "red", fontSize: 10 }}>
+                  {form.formState.errors.label.message}
+                </Text>
+              )}
               </View>
               <View style={{ marginTop: 8 }}>
                 <Controller
@@ -81,6 +86,11 @@ const ExtraOptionsModal: React.FC<CustomColorPickerModalProps> = ({
                     />
                   )}
                 />
+                {form.formState.errors.description && (
+                <Text style={{ color: "red", fontSize: 10 }}>
+                  {form.formState.errors.description.message}
+                </Text>
+              )}
               </View>
               <View style={{ marginTop: 8 }}>
                 <Controller
@@ -95,6 +105,11 @@ const ExtraOptionsModal: React.FC<CustomColorPickerModalProps> = ({
                     />
                   )}
                 />
+                {form.formState.errors.price && (
+                <Text style={{ color: "red", fontSize: 10 }}>
+                  {form.formState.errors.price.message}
+                </Text>
+              )}
               </View>
               <View style={{ marginTop: 8 }}>
                 <Controller
@@ -110,9 +125,9 @@ const ExtraOptionsModal: React.FC<CustomColorPickerModalProps> = ({
                             width: 200,
                             aspectRatio: 2 / 1.4,
                             alignSelf: "center",
-                            borderRadius: 12,
+                            borderRadius: 5,marginTop:4
                           }}
-                          resizeMode="contain"
+                          resizeMode="cover"
                         />
                       )}
                       <ImageUploader
@@ -123,18 +138,25 @@ const ExtraOptionsModal: React.FC<CustomColorPickerModalProps> = ({
                     </View>
                   )}
                 />
+                {form.formState.errors.logo && (
+                <Text style={{ color: "red", fontSize: 10 }}>
+                  {form.formState.errors.logo.message}
+                </Text>
+              )}
               </View>
               <CustomButton
               onPress={form.handleSubmit(onSubmit)}
                 title={extraOption ? "Update" : "Create"}
                 loading={form.formState.isSubmitting}
                 disabled={form.formState.isSubmitting}
-                style={{backgroundColor:Colors.mainDark}}
+                style={{backgroundColor:Colors.mainDark,marginTop:'auto',borderRadius:12,paddingVertical:11}}
               />
             </View>
+     
+     
           </ScrollView>
           <TouchableOpacity onPress={onClose} style={styles.closeButton}>
-            <Text style={{ fontWeight: "600" }}>Close </Text>
+         <Ionicons name="close"  size={22}/>
           </TouchableOpacity>
         </View>
       </View>
@@ -147,22 +169,19 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "rgba(0,0,0,0.5)",
+    backgroundColor: "rgba(0,0,0,0.7)",
   },
-  colorOption: {
-    flexDirection: "row",
-    alignItems: "center",
-    marginVertical: 10,
-    width: "100%", // Ensure the touchable area spans the full width
-  },
+
   modalContent: {
-    width: "80%",
-    height: "80%",
+    width: "90%",
+    height: "85%",
+    position:'relative',
+ 
     overflow: "scroll",
     backgroundColor: "white",
     borderRadius: 20,
     padding: 20,
-    alignItems: "center",
+
     shadowColor: "#000",
     shadowOffset: {
       width: 0,
@@ -173,17 +192,17 @@ const styles = StyleSheet.create({
     elevation: 5,
   },
 
-  colorCircle: {
-    width: 24,
-    height: 24,
-    borderRadius: 12,
-    marginRight: 10,
-  },
-  colorText: {
-    marginLeft: 10,
-  },
+ 
+
   closeButton: {
-    marginTop: 20,
+
+    alignSelf:'center',
+padding:12,
+position:'absolute',
+top:10,
+right:10,
+  
+
   },
 });
 

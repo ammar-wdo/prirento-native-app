@@ -16,3 +16,4 @@ export const GET_CAR_EXTRA_OPTIONS_DETAILS = (carId:string,optionId:string)=> MA
 export const GET_NOTIFICATIONS= MAIN_BACKEND + '/api/native/notifications'
 export const GET_NOTIFICATIONS_COUNT= MAIN_BACKEND + '/api/native/notifications/count'
 export const GET_COMPANY = MAIN_BACKEND + '/api/native/company'
+export const CHANGE_PASSWORD = MAIN_BACKEND + '/api/native/password'

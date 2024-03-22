@@ -26,7 +26,7 @@ const ExtraOptionCard = ({el,carId,setExtraOptionModal,setOpen}:Props) => {
     <Image
       source={{ uri: el.logo }}
       style={{ width: "100%", aspectRatio: 2 / 1, borderRadius: 5 }}
-      resizeMode="contain"
+      resizeMode="cover"
     />
     <View style={{flexDirection:'row',flex:1,marginTop:12,gap:12,alignItems:'flex-end'}}>
         <View>
