@@ -121,7 +121,8 @@ export default function TabOneScreen() {
                     style={{
                       paddingVertical: 7,
                       paddingHorizontal: 12,
-                      backgroundColor: Colors.border2,
+                      backgroundColor: Colors.lightGray,borderRadius:5,
+                      color:'gray'
                     }}
                   >
                     {monthAndDate}
