@@ -124,7 +124,7 @@ const index = () => {
           <FormWrapper title="Basic Informations">
             <View style={{ gap: 12 }}>
               <View style={{ gap: 2 }}>
-                <Text style={{ fontWeight: "800" }}>Car Model</Text>
+                <Text style={{ fontWeight: "700" }}>Car Model</Text>
 
                 <Controller
                   control={form.control} // From useForm()
@@ -217,7 +217,7 @@ const index = () => {
             <FormWrapper title="Appearance">
               {/* car colr */}
               <View style={{ gap: 2 }}>
-                <Text style={{ fontWeight: "800" }}>Car Color</Text>
+                <Text style={{ fontWeight: "700" }}>Car Color</Text>
 
                 <Controller
                   control={form.control} // From useForm()
@@ -263,8 +263,8 @@ const index = () => {
                 )}
               </View>
               {/* car interior color */}
-              <View style={{ gap: 2 }}>
-                <Text style={{ fontWeight: "800" }}>Car Interior Color</Text>
+              <View style={{ gap: 2,marginTop:12 }}>
+                <Text style={{ fontWeight: "700" }}>Car Interior Color {form.watch('interiorColor')}</Text>
 
                 <Controller
                   control={form.control} // From useForm()
@@ -272,10 +272,10 @@ const index = () => {
                   render={({ field: { onChange, onBlur, value } }) => (
                     <View>
                       <TouchableOpacity
-                        onPress={() => setColorPickerVisible(true)}
+                        onPress={() => setInteriorColorPickerVisible(true)}
                         style={styles.colorPickerTrigger}
                       >
-                        <Text>{form.watch("colors") || "Select Color"}</Text>
+                        <Text>{form.watch("interiorColor") || "Select Color"}</Text>
                         {!!value && (
                           <View
                             style={{
@@ -310,8 +310,8 @@ const index = () => {
                 )}
               </View>
               {/* Gallery */}
-              <View style={{ gap: 2 }}>
-                <Text style={{ fontWeight: "800" }}>Gallery</Text>
+              <View style={{ gap: 2,marginTop:12 }}>
+                <Text style={{ fontWeight: "700" }}>Gallery</Text>
 
                 <Controller
                   control={form.control} // From useForm()
@@ -397,7 +397,7 @@ const index = () => {
 
                 {/* transmission */}
                 <View style={{ gap: 2 }}>
-                  <Text style={{ fontWeight: "800" }}>Transmission</Text>
+                  <Text style={{ fontWeight: "700" }}>Transmission</Text>
 
                   <Controller
                     control={form.control} // From useForm()
@@ -435,7 +435,7 @@ const index = () => {
                 {/* electric */}
 
                 <View style={{ gap: 2 }}>
-                  <Text style={{ fontWeight: "800" }}>Electric</Text>
+                  <Text style={{ fontWeight: "700" }}>Electric</Text>
 
                   <Controller
                     control={form.control} // From useForm()
@@ -472,7 +472,7 @@ const index = () => {
                 </View>
                 {/* car type */}
                 <View style={{ gap: 2 }}>
-                  <Text style={{ fontWeight: "800" }}>Car Type</Text>
+                  <Text style={{ fontWeight: "700" }}>Car Type</Text>
 
                   <Controller
                     control={form.control} // From useForm()
@@ -784,11 +784,11 @@ export default index;
 const styles = StyleSheet.create({
   colorPickerTrigger: {
     padding: 10,
-    margin: 10,
+    marginTop: 10,
     width: "100%",
-    borderColor: Colors.border,
-    borderWidth: 1,
-    borderRadius: 10,
+    borderWidth: 0.7,
+    borderColor: Colors.border2,
+    borderRadius: 5,
     alignSelf: "center",
     flexDirection: "row",
     justifyContent: "space-between",

@@ -256,7 +256,7 @@ const CarDetails = () => {
             <FormWrapper title="Appearance">
               {/* car colr */}
               <View style={{ gap: 2 }}>
-                <Text style={{ fontWeight: "800" }}>Car Color</Text>
+                <Text style={{ fontWeight:'700' }}>Car Color</Text>
 
                 <Controller
                   control={form.control} // From useForm()
@@ -302,8 +302,8 @@ const CarDetails = () => {
                 )}
               </View>
               {/* car interior color */}
-              <View style={{ gap: 2 }}>
-                <Text style={{ fontWeight: "800" }}>Car Interior Color</Text>
+              <View style={{ gap: 2,marginTop:12 }}>
+                <Text style={{ fontWeight:'700' }}>Car Interior Color</Text>
 
                 <Controller
                   control={form.control} // From useForm()
@@ -311,10 +311,10 @@ const CarDetails = () => {
                   render={({ field: { onChange, onBlur, value } }) => (
                     <View>
                       <TouchableOpacity
-                        onPress={() => setColorPickerVisible(true)}
+                        onPress={() => setInteriorColorPickerVisible(true)}
                         style={styles.colorPickerTrigger}
                       >
-                        <Text>{form.watch("colors") || "Select Color"}</Text>
+                        <Text>{form.watch("interiorColor") || "Select Color"}</Text>
                         {!!value && (
                           <View
                             style={{
@@ -349,8 +349,8 @@ const CarDetails = () => {
                 )}
               </View>
               {/* Gallery */}
-              <View style={{ gap: 2 }}>
-                <Text style={{ fontWeight: "800" }}>Gallery</Text>
+              <View style={{ gap: 2,marginTop:12 }}>
+                <Text style={{ fontWeight:'700' }}>Gallery</Text>
 
                 <Controller
                   control={form.control} // From useForm()
@@ -436,7 +436,7 @@ const CarDetails = () => {
 
                 {/* transmission */}
                 <View style={{ gap: 2 }}>
-                  <Text style={{ fontWeight: "800" }}>Transmission</Text>
+                  <Text style={{ fontWeight:'700' }}>Transmission</Text>
 
                   <Controller
                     control={form.control} // From useForm()
@@ -474,7 +474,7 @@ const CarDetails = () => {
                 {/* electric */}
 
                 <View style={{ gap: 2 }}>
-                  <Text style={{ fontWeight: "800" }}>Electric</Text>
+                  <Text style={{ fontWeight:'700' }}>Electric</Text>
 
                   <Controller
                     control={form.control} // From useForm()
@@ -511,7 +511,7 @@ const CarDetails = () => {
                 </View>
                 {/* car type */}
                 <View style={{ gap: 2 }}>
-                  <Text style={{ fontWeight: "800" }}>Car Type</Text>
+                  <Text style={{ fontWeight:'700' }}>Car Type</Text>
 
                   <Controller
                     control={form.control} // From useForm()

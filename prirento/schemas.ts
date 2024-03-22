@@ -1,15 +1,16 @@
-import { z } from 'zod';
+import { z } from "zod";
 
 export const loginSchema = z.object({
   email: z.string().email({ message: "Invalid email address" }),
-  password: z.string().min(6, { message: "Password must be at least 6 characters long" }),
+  password: z
+    .string()
+    .min(6, { message: "Password must be at least 6 characters long" }),
 });
-
 
 //car schema
 
 const requiredString = z.string().min(1, "Required field");
-const phoneNumberPattern =/^(?:[0-9]){1,3}(?:[ -]*[0-9]){6,14}$/;
+const phoneNumberPattern = /^(?:[0-9]){1,3}(?:[ -]*[0-9]){6,14}$/;
 
 const requiredNumber = z.preprocess((input) => {
   return input === "" ? undefined : Number(input);
@@ -31,11 +32,11 @@ export const carTypesString = [
   "convertable",
   "classics",
   "business",
-]
+];
 export const transmition = ["auto", "manual"] as const;
-export const transmitionString = ["auto", "manual"]
+export const transmitionString = ["auto", "manual"];
 export const electric = ["none", "fully_electric", "hybrid"] as const;
-export const electricString = ["none", "fully_electric", "hybrid"] ;
+export const electricString = ["none", "fully_electric", "hybrid"];
 export const carStatus = ["pending", "active"] as const;
 export const carColors = [
   "Black",
@@ -57,6 +58,25 @@ export const carColors = [
   "Other",
 ] as const;
 
+export type ColorsType =
+  | "Black"
+  | "White"
+  | "Silver"
+  | "Gray"
+  | "Blue"
+  | "Red"
+  | "Brown"
+  | "Green"
+  | "Beige"
+  | "Gold"
+  | "Orange"
+  | "Yellow"
+  | "Purple"
+  | "Maroon"
+  | "Navy"
+  | "Charcoal"
+  | "Other";
+
 export const carColorsString = [
   "Black",
   "White",
@@ -75,9 +95,9 @@ export const carColorsString = [
   "Navy",
   "Charcoal",
   "Other",
-]
+];
 
-export const carColorsMapper :{[key:string]:string} = {
+export const carColorsMapper: { [key: string]: string } = {
   Black: "#000000",
   White: "#FFFFFF",
   Silver: "#C0C0C0",
@@ -196,87 +216,88 @@ export const carSchema = z
   .and(colorSchema)
   .and(numericValues);
 
-
-  export const carPricingsSchema = z.object({
-    pricings: z
-      .array(z.coerce.number())
-      .refine((pricings) => !pricings.includes(0), {
-        message: "Pricings cannot include zero",
-      })
-      .refine((pricings) => !pricings.some((val) => val < 0), {
-        message: "Negative values not allowed",
-      }),
-    hourPrice: requiredNumber.refine((val) => val > 0, "Enter positive value"),
-  });
-
-
-  export type CarDetail = z.infer<typeof carSchema>
-  export type ComingCar = Omit<CarDetail, 'pickupLocations' | 'dropoffLocations'> & {pickupLocations:{id:string,name:string}[],dropoffLocations:{id:string,name:string}[],pricings:number[],hourlyPrice:number}
-
-
-  export const carExtraOptionsSchema = z.object({
-    label: requiredString,
-    description: requiredString,
-    price: requiredNumber
-      .refine((val) => val, "Required field")
-      .refine((val) => val > 0, "Enter positive value"),
-  
-    logo: requiredString,
-  });
-
-
-  const dayOpeningTimeSchema = z.object({
-    openTime: z.string().min(1, "Open time is required"),
-    closeTime: z.string().min(1, "Close time is required"),
-    closed: z.boolean(),
-  });
-
-
-  const newPassword = z.string().min(8, { message: "Enter at least 8 chars" });
-
-  export const companySchema = z.object({
-    email: requiredString.min(2, "E-mail is required").email(),
-    password: z.string().min(8, "Password should be at least 8 chars"),
-    newPassword: z
-      .union([z.string(), z.undefined()])
-      .refine(
-        (val) => !val || newPassword.safeParse(val).success,
-        "Enter at least 8 chars"
-      ),
-    address: requiredString,
-    phoneNumber: requiredString.refine((value) => {
-      const phoneRegex = /^(?:[0-9]){1,3}(?:[ -]*[0-9]){6,14}$/;
-      return phoneRegex.test(value);
-    }, "Invalid phone number"),
-    whatsApp: requiredString.refine((value) => {
-      const phoneRegex = /^(?:[0-9]){1,3}(?:[ -]*[0-9]){6,14}$/;
-      return phoneRegex.test(value);
-    }, "Invalid phone number"),
-    logo: z.string().min(1, "You should upload a logo"),
-    gallary: z.array(requiredString),
-    away: z.coerce.boolean(),
-    openingTime: z.object({
-      Monday: dayOpeningTimeSchema,
-      Tuesday: dayOpeningTimeSchema,
-      Wednesday: dayOpeningTimeSchema,
-      Thursday: dayOpeningTimeSchema,
-      Friday: dayOpeningTimeSchema,
-      Saturday: dayOpeningTimeSchema,
-      Sunday: dayOpeningTimeSchema,
+export const carPricingsSchema = z.object({
+  pricings: z
+    .array(z.coerce.number())
+    .refine((pricings) => !pricings.includes(0), {
+      message: "Pricings cannot include zero",
+    })
+    .refine((pricings) => !pricings.some((val) => val < 0), {
+      message: "Negative values not allowed",
     }),
-  });
+  hourPrice: requiredNumber.refine((val) => val > 0, "Enter positive value"),
+});
 
-  export type Company = z.infer<typeof companySchema>
+export type CarDetail = z.infer<typeof carSchema>;
+export type ComingCar = Omit<
+  CarDetail,
+  "pickupLocations" | "dropoffLocations"
+> & {
+  pickupLocations: { id: string; name: string }[];
+  dropoffLocations: { id: string; name: string }[];
+  pricings: number[];
+  hourlyPrice: number;
+};
 
+export const carExtraOptionsSchema = z.object({
+  label: requiredString,
+  description: requiredString,
+  price: requiredNumber
+    .refine((val) => val, "Required field")
+    .refine((val) => val > 0, "Enter positive value"),
 
+  logo: requiredString,
+});
 
+const dayOpeningTimeSchema = z.object({
+  openTime: z.string().min(1, "Open time is required"),
+  closeTime: z.string().min(1, "Close time is required"),
+  closed: z.boolean(),
+});
 
-  
-  export const passwordSchema = z.object({
+const newPassword = z.string().min(8, { message: "Enter at least 8 chars" });
+
+export const companySchema = z.object({
+  email: requiredString.min(2, "E-mail is required").email(),
+  password: z.string().min(8, "Password should be at least 8 chars"),
+  newPassword: z
+    .union([z.string(), z.undefined()])
+    .refine(
+      (val) => !val || newPassword.safeParse(val).success,
+      "Enter at least 8 chars"
+    ),
+  address: requiredString,
+  phoneNumber: requiredString.refine((value) => {
+    const phoneRegex = /^(?:[0-9]){1,3}(?:[ -]*[0-9]){6,14}$/;
+    return phoneRegex.test(value);
+  }, "Invalid phone number"),
+  whatsApp: requiredString.refine((value) => {
+    const phoneRegex = /^(?:[0-9]){1,3}(?:[ -]*[0-9]){6,14}$/;
+    return phoneRegex.test(value);
+  }, "Invalid phone number"),
+  logo: z.string().min(1, "You should upload a logo"),
+  gallary: z.array(requiredString),
+  away: z.coerce.boolean(),
+  openingTime: z.object({
+    Monday: dayOpeningTimeSchema,
+    Tuesday: dayOpeningTimeSchema,
+    Wednesday: dayOpeningTimeSchema,
+    Thursday: dayOpeningTimeSchema,
+    Friday: dayOpeningTimeSchema,
+    Saturday: dayOpeningTimeSchema,
+    Sunday: dayOpeningTimeSchema,
+  }),
+});
+
+export type Company = z.infer<typeof companySchema>;
+
+export const passwordSchema = z
+  .object({
     password: requiredString.min(8, "At least 8 characters"),
-    newPassword: requiredString.min(8, 'At least 8 characters'),
+    newPassword: requiredString.min(8, "At least 8 characters"),
     confirmPassword: requiredString,
-  }).refine((data) => data.newPassword === data.confirmPassword, {
+  })
+  .refine((data) => data.newPassword === data.confirmPassword, {
     message: "Passwords don't match",
     path: ["confirmPassword"], // Specify the path of the field this error message is associated with
   });

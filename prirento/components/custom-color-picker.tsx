@@ -1,3 +1,4 @@
+import { Colors } from '@/constants/Colors';
 import { carColorsMapper } from '@/schemas';
 import { Ionicons } from '@expo/vector-icons';
 import React from 'react';
@@ -28,7 +29,7 @@ const CustomItemsPickerModal: React.FC<CustomColorPickerModalProps> = ({
               <TouchableOpacity 
                 key={item} 
                 onPress={() => {onSelectItem(item);onClose()}} 
-                style={styles.colorOption}
+                style={[styles.colorOption,{backgroundColor:selectedItem === item ? Colors.lightGray : 'white'}]}
               >
              { isColor &&   <View style={[styles.colorCircle, { backgroundColor: carColorsMapper[item]  }]} />}
                 <Text style={styles.colorText}>{item}</Text>
@@ -54,7 +55,8 @@ const styles = StyleSheet.create({
   colorOption: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginVertical: 10,
+borderRadius:6,
+    padding:12,
     width: '100%', // Ensure the touchable area spans the full width
   },
   modalContent: {
