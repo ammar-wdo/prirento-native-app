@@ -33,12 +33,14 @@ import {
 } from "@/schemas";
 
 import { FontAwesome5, Ionicons } from "@expo/vector-icons";
-import ImageUploader from "@/components/image-uploader";
+
 import CustomItemsPickerModal from "@/components/custom-color-picker";
 import CustomModePickerModal from "@/components/model-picker";
 import { CheckBox, Icon } from "@rneui/themed";
 import CustomButton from "@/components/custom-button";
 import { useQueryClient } from "@tanstack/react-query";
+import { ImageComponent } from "@/components/image-component-upload";
+import { useImageUploader } from "@/components/image-uploader";
 
 const CarDetails = () => {
   const { carId } = useLocalSearchParams();
@@ -88,7 +90,7 @@ const CarDetails = () => {
     setRefreshing,
     setTransmissionPickerVisible,
   } = useCarEdit(carData?.car);
-
+const {pickImage,loading} = useImageUploader({onUploadSuccess:(url:string)=>form.setValue('gallary',[...form.watch('gallary'),url])})
   const onRefresh = React.useCallback(async () => {
     setRefreshing(true);
 
@@ -181,16 +183,7 @@ const CarDetails = () => {
                           }{" "}
                           {sortedModels?.find((el) => el.id === value)?.name}
                         </Text>
-                        {!!value && (
-                          <View
-                            style={{
-                              width: 30,
-                              height: 30,
-                              borderRadius: 100,
-                              backgroundColor: carColorsMapper[value],
-                            }}
-                          ></View>
-                        )}
+                   
                         <FontAwesome5
                           name="caret-down"
                           size={15}
@@ -274,7 +267,7 @@ const CarDetails = () => {
                               width: 30,
                               height: 30,
                               borderRadius: 100,
-                              backgroundColor: carColorsMapper[value],
+                              // backgroundColor: carColorsMapper[value],
                             }}
                           ></View>
                         )}
@@ -321,7 +314,7 @@ const CarDetails = () => {
                               width: 30,
                               height: 30,
                               borderRadius: 100,
-                              backgroundColor: carColorsMapper[value],
+                              // backgroundColor: carColorsMapper[value],
                             }}
                           ></View>
                         )}
@@ -357,7 +350,8 @@ const CarDetails = () => {
                   name="gallary"
                   render={({ field: { onChange, onBlur, value } }) => (
                     <View style={{ width: "100%" }}>
-                      <ImageUploader onUploadSuccess={onChange} />
+                      <ImageComponent  pickImage={pickImage}/>
+                      {loading && <ActivityIndicator size={30} color={Colors.mainDark} />}
                       <View
                         style={{
                           marginTop: 4,

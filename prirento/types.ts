@@ -169,3 +169,20 @@ export type Notification = {
   };
   createdAt:string
 };
+
+
+
+export type CarAvailability  ={
+  id :string,
+
+  label?:string,
+
+  startDate : string
+  endDate :    string
+
+  carId: string
+ 
+
+  createdAt :string
+  updatedAt :string
+}

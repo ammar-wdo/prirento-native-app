@@ -17,3 +17,5 @@ export const GET_NOTIFICATIONS= MAIN_BACKEND + '/api/native/notifications'
 export const GET_NOTIFICATIONS_COUNT= MAIN_BACKEND + '/api/native/notifications/count'
 export const GET_COMPANY = MAIN_BACKEND + '/api/native/company'
 export const CHANGE_PASSWORD = MAIN_BACKEND + '/api/native/password'
+export const GET_CAR_AVAILABILITIES = (carId:string)=> MAIN_BACKEND + `/api/native/car/${carId}/availability`
+export const GET_CAR_AVAILABILITIES_DETAILS = (carId:string,availabilityId:string)=> MAIN_BACKEND + `/api/native/car/${carId}/availability/${availabilityId}`

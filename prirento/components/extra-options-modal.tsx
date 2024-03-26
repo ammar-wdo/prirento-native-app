@@ -11,12 +11,15 @@ import {
   Text,
   StyleSheet,
   ScrollView,
+  ActivityIndicator,
 } from "react-native";
 import Input from "./Input";
 import { Image } from "react-native";
-import ImageUploader from "./image-uploader";
+
 import CustomButton from "./custom-button";
 import { Colors } from "@/constants/Colors";
+import { useImageUploader } from "./image-uploader";
+import { ImageComponent } from "./image-component-upload";
 
 interface CustomColorPickerModalProps {
   isVisible: boolean;
@@ -32,6 +35,8 @@ const ExtraOptionsModal: React.FC<CustomColorPickerModalProps> = ({
   onClose,
 }) => {
   const { form, onSubmit } = useCarExtraOptions(extraOption, carId);
+
+  const {loading,pickImage} = useImageUploader({onUploadSuccess:(url:string)=>form.setValue('logo',url)})
 
   useEffect(() => {
     if (extraOption) {
@@ -130,11 +135,10 @@ const ExtraOptionsModal: React.FC<CustomColorPickerModalProps> = ({
                           resizeMode="cover"
                         />
                       )}
-                      <ImageUploader
-                        onUploadSuccess={(value) =>
-                          form.setValue("logo", value)
-                        }
+                      <ImageComponent
+                      pickImage={pickImage}
                       />
+                      {loading && <ActivityIndicator size={20} color={Colors.mainDark} />}
                     </View>
                   )}
                 />

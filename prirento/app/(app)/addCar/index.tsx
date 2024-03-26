@@ -28,8 +28,10 @@ import {
   transmitionString,
 } from "@/schemas";
 import { FontAwesome5, Ionicons } from "@expo/vector-icons";
-import ImageUploader from "@/components/image-uploader";
+
 import CustomModePickerModal from "@/components/model-picker";
+import { useImageUploader } from "@/components/image-uploader";
+import { ImageComponent } from "@/components/image-component-upload";
 
 const index = () => {
   const {
@@ -67,7 +69,7 @@ const index = () => {
     setRefreshing,
     setTransmissionPickerVisible,
   } = useAddCar();
-
+const {loading,pickImage} = useImageUploader({onUploadSuccess:(url:string)=>form.setValue('gallary',[...form.watch('gallary'),url])})
   const onRefresh = React.useCallback(async () => {
     setRefreshing(true);
 
@@ -148,7 +150,7 @@ const index = () => {
                               width: 30,
                               height: 30,
                               borderRadius: 100,
-                              backgroundColor: carColorsMapper[value],
+                          
                             }}
                           ></View>
                         )}
@@ -235,7 +237,7 @@ const index = () => {
                               width: 30,
                               height: 30,
                               borderRadius: 100,
-                              backgroundColor: carColorsMapper[value],
+                              // backgroundColor: carColorsMapper[value],
                             }}
                           ></View>
                         )}
@@ -282,7 +284,7 @@ const index = () => {
                               width: 30,
                               height: 30,
                               borderRadius: 100,
-                              backgroundColor: carColorsMapper[value],
+                              // backgroundColor: carColorsMapper[value],
                             }}
                           ></View>
                         )}
@@ -318,7 +320,8 @@ const index = () => {
                   name="gallary"
                   render={({ field: { onChange, onBlur, value } }) => (
                     <View style={{ width: "100%" }}>
-                      <ImageUploader onUploadSuccess={onChange} />
+                      <ImageComponent pickImage={pickImage}/>
+                      {loading && <ActivityIndicator size={30} color={Colors.mainDark} />}
                       <View
                         style={{
                           marginTop: 4,

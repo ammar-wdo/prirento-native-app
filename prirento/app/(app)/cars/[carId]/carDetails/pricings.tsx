@@ -34,7 +34,7 @@ const Pricing = () => {
   } = useCarQuery(carId as string);
 
   const { form, onSubmit, addRow, deleteRow, setValue } = usePricings({
-    success:carData?.success,
+    success: carData?.success,
     hourPrice: carData?.car?.hourlyPrice!,
     pricings: carData?.car?.pricings!,
   });
@@ -64,93 +64,103 @@ const Pricing = () => {
       </View>
     );
   }
-  if (!carData?.success) return <Text>{carData?.error}</Text>;
+  if (!carData?.success)
+    return (
+      <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
+        <Text>{carData?.error}</Text>
+        <TouchableOpacity onPress={onRefresh} style={{marginTop:12}}>
+          <Text>Try Again!</Text>
+        </TouchableOpacity>
+      </View>
+    );
 
-  if(!!carData.car) return (
-    <ScrollView
-      style={{ flex: 1, backgroundColor: "white" }}
-      contentContainerStyle={{ padding: 20 }}
-      refreshControl={
-        <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-      }
-    >
-      <Controller
-        control={form.control} // From useForm()
-        name="hourPrice"
-        render={({ field: { onChange, onBlur, value } }) => (
-          <Input
-            value={(value || '').toString()}
-            setValue={onChange}
-            label="Hourly Price"
-            numeric={true}
-          />
-        )}
-      />
-      {form.formState.errors.hourPrice && (
-        <Text style={{ color: "red", fontSize: 10 }}>
-          {form.formState.errors.hourPrice.message}
-        </Text>
-      )}
-      {/* pricings */}
-     <View style={{ marginTop: 12 }}>
+  if (!!carData.car)
+    return (
+      <ScrollView
+        style={{ flex: 1, backgroundColor: "white" }}
+        contentContainerStyle={{ padding: 20 }}
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        }
+      >
         <Controller
           control={form.control} // From useForm()
-          name="pricings"
+          name="hourPrice"
           render={({ field: { onChange, onBlur, value } }) => (
-            <View>
-              {(!!value &&  !!value?.length) &&  value.map((price, i) => (
-                <PriceInput
-                  deleteRow={deleteRow}
-                  numeric={true}
-                  key={i}
-                  value={value[i].toString()}
-                  index={i.toString()}
-                  setValue={setValue}
-                />
-              ))}
-            </View>
+            <Input
+              value={(value || "").toString()}
+              setValue={onChange}
+              label="Hourly Price"
+              numeric={true}
+            />
           )}
         />
-        {form.formState.errors.pricings && (
+        {form.formState.errors.hourPrice && (
           <Text style={{ color: "red", fontSize: 10 }}>
-            {form.formState.errors.pricings.message}
+            {form.formState.errors.hourPrice.message}
           </Text>
         )}
-      </View>
-      <TouchableOpacity
-        onPress={addRow}
-        style={{
-          marginTop:12,
-          flexDirection: "row",
-          alignItems: "center",
-          gap: 12,
-          backgroundColor:Colors.secondaryGreen,
-          justifyContent: "center",
-          padding: 12,
-          borderRadius: 6,
-         
-         
-        }}
-      >
-        <Feather name="plus" color={"white"} />
-        <Text style={{ color: "white",fontWeight:'600', fontSize:14 }}>Add new day</Text>
-      </TouchableOpacity>
-      <CustomButton
-      disabled={form.formState.isSubmitting}
-        loading={form.formState.isSubmitting}
-        onPress={form.handleSubmit(onSubmit)}
-        title="Update Pricings"
-        textStyle={{ fontWeight: "600",fontSize:14 }}
-        style={{
-          backgroundColor: Colors.secondaryGreen,
-          marginTop: 12,
-          padding: 12,
-          borderRadius: 6,
-        }}
-      
-      />
-    </ScrollView>
-  );
+        {/* pricings */}
+        <View style={{ marginTop: 12 }}>
+          <Controller
+            control={form.control} // From useForm()
+            name="pricings"
+            render={({ field: { onChange, onBlur, value } }) => (
+              <View>
+                {!!value &&
+                  !!value?.length &&
+                  value.map((price, i) => (
+                    <PriceInput
+                      deleteRow={deleteRow}
+                      numeric={true}
+                      key={i}
+                      value={value[i].toString()}
+                      index={i.toString()}
+                      setValue={setValue}
+                    />
+                  ))}
+              </View>
+            )}
+          />
+          {form.formState.errors.pricings && (
+            <Text style={{ color: "red", fontSize: 10 }}>
+              {form.formState.errors.pricings.message}
+            </Text>
+          )}
+        </View>
+        <TouchableOpacity
+          onPress={addRow}
+          style={{
+            marginTop: 12,
+            flexDirection: "row",
+            alignItems: "center",
+            gap: 12,
+            backgroundColor: Colors.secondaryGreen,
+            justifyContent: "center",
+            padding: 12,
+            borderRadius: 6,
+          }}
+        >
+          <Feather name="plus" color={"white"} />
+          <Text style={{ color: "white", fontWeight: "600", fontSize: 14 }}>
+            Add new day
+          </Text>
+        </TouchableOpacity>
+        <CustomButton
+          disabled={form.formState.isSubmitting}
+          loading={form.formState.isSubmitting}
+          onPress={form.handleSubmit(onSubmit)}
+          title="Update Pricings"
+          textStyle={{ fontWeight: "600", fontSize: 14 }}
+          style={{
+            backgroundColor: Colors.secondaryGreen,
+            marginTop: 12,
+            padding: 12,
+            borderRadius: 6,
+          }}
+        />
+      </ScrollView>
+    );
 };
 
 export default Pricing;

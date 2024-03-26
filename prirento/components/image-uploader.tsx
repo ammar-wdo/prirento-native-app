@@ -13,8 +13,9 @@ interface ImageUploaderProps {
   onUploadSuccess: (url: string) => void;
 }
 
-const ImageUploader: React.FC<ImageUploaderProps> = ({ onUploadSuccess }) => {
+export const useImageUploader = ({ onUploadSuccess }:ImageUploaderProps) => {
   const [image, setImage] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false)
   const pickImage = async () => {
     // No permissions request is necessary for launching the image library
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -33,45 +34,55 @@ const ImageUploader: React.FC<ImageUploaderProps> = ({ onUploadSuccess }) => {
   };
 
   const uploadImage = async (uri: string) => {
-    console.log('uri')
+    console.log('uri',uri)
     const data = new FormData();
-    data.append("file", uri); // Directly use the URI string
+     // @ts-ignore
+    data.append("file", {
+     
+      uri: uri,
+      type:  'image/jpeg', 
+      name:  'uploaded-image.jpg',
+    }); // Directly use the URI string
+
     data.append("upload_preset", "prirento");
+    data.append('cloud_name', 'dzjcvb26j')
 
     try {
+      setLoading(true)
       const response = await fetch(
         "https://api.cloudinary.com/v1_1/dzjcvb26j/image/upload",
         {
           method: "POST",
           body: data,
           headers: {
+            'Accept': 'application/json',
             "Content-Type": "multipart/form-data",
           },
         }
       );
       const jsonResponse = await response.json();
-      if (jsonResponse.secure_url) {
-        onUploadSuccess(jsonResponse.secure_url);
+      console.log("Json response",jsonResponse)
+      if (response.ok) {
+        console.log("response",jsonResponse)
+        onUploadSuccess(jsonResponse.url);
       } else {
         throw new Error("Cloudinary upload failed");
       }
     } catch (error) {
       console.error("Upload Error:", error);
       Alert.alert("Upload Failed", "Failed to upload image. Please try again.");
+    }finally{
+      setLoading(false)
     }
   };
 
-  return (
-    <TouchableOpacity
-      onPress={pickImage}
-      style={{alignItems:'center',width:'100%',marginVertical:12,flexDirection:'row',justifyContent:'center',gap:3,backgroundColor:Colors.mainDark,padding:12,borderRadius:12}}
-    >
-      <Ionicons name="image-outline" size={20} color={'white'} />
-      <Text style={{fontWeight:'600',color:'white'}}>
-        Pick an image
-      </Text>
-    </TouchableOpacity>
-  );
+
+
+
+  return { loading ,pickImage}
 };
 
-export default ImageUploader;
+
+
+
+

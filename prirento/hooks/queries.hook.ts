@@ -1,10 +1,10 @@
 import { useQuery } from "@tanstack/react-query";
 import { useAuth } from "./auth.hook";
-import { Booking, BookingCard, BookingInfo, CarCard, CarModel, ExtraOption, Location, Notification, RecentCar } from "@/types";
+import { Booking, BookingCard, BookingInfo, CarAvailability, CarCard, CarModel, ExtraOption, Location, Notification, RecentCar } from "@/types";
 import { fetcher } from "@/lib/utils";
 import { CarDetail, ComingCar, Company } from "@/schemas";
 import { Platform } from 'react-native';
-import { GET_BOOKINGS, GET_BOOKING_DETAILS, GET_BOOKINS_INFO, GET_CARS, GET_CAR_DETAILS, GET_CAR_EXTRA_OPTIONS, GET_CAR_EXTRA_OPTIONS_DETAILS, GET_COMPANY, GET_LOCATIONS, GET_MODELS, GET_NOTIFICATIONS, GET_NOTIFICATIONS_COUNT, GET_RECENT_BOOKINGS, GET_RECENT_CARS } from "@/links";
+import { GET_BOOKINGS, GET_BOOKING_DETAILS, GET_BOOKINS_INFO, GET_CARS, GET_CAR_AVAILABILITIES, GET_CAR_DETAILS, GET_CAR_EXTRA_OPTIONS, GET_CAR_EXTRA_OPTIONS_DETAILS, GET_COMPANY, GET_LOCATIONS, GET_MODELS, GET_NOTIFICATIONS, GET_NOTIFICATIONS_COUNT, GET_RECENT_BOOKINGS, GET_RECENT_CARS } from "@/links";
 import { isEnabled } from "react-native/Libraries/Performance/Systrace";
 
 export const url = Platform.select({
@@ -191,6 +191,8 @@ export const useCarExtraOptionsQuery = (carId:string)=>{
 
 
 }
+
+
 export const useCarExtraOptionsDetailsQuery = (carId:string,optionId:string)=>{
 
 
@@ -280,4 +282,23 @@ export const useCompany = ()=>{
     >(GET_COMPANY,user?.token),
 
   })
+}
+
+
+
+export const useCarAvailabilitiesQuery = (carId:string)=>{
+
+
+  const {user} = useAuth()
+
+  return useQuery({
+ queryKey: ['availability', carId],
+    queryFn: () => fetcher<{
+      success: boolean;
+      availabilities:CarAvailability[];
+      error?: string;
+    }>(GET_CAR_AVAILABILITIES(carId),user?.token),
+  })
+
+
 }

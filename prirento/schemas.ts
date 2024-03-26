@@ -301,3 +301,38 @@ export const passwordSchema = z
     message: "Passwords don't match",
     path: ["confirmPassword"], // Specify the path of the field this error message is associated with
   });
+
+
+
+
+
+  const timeSchema = z.object({
+    startTime: z.string().min(1, "Start time is required"),
+    endTime: z.string().min(1, "End time is required"),
+  });
+  
+  const dateSchema = z.object({
+    startDate: z.string().min(1, "Start date is required"),
+    endDate: z.string().min(1, "End date is required"),
+  });
+  
+  export const carAvailabilitySchema = z
+    .object({
+      label: z.string().optional(),
+    })
+    .and(timeSchema)
+    .and(dateSchema)
+    .refine(
+      (data) => {
+        const { startDate, endDate, startTime, endTime } = data;
+  
+        const startDateTime = new Date(`${startDate}T${startTime}`);
+        const endDateTime = new Date(`${endDate}T${endTime}`);
+  
+        return startDateTime < endDateTime;
+      },
+      {
+        message: "Start date must be before end date",
+        path: ["endTime"],
+      }
+    );

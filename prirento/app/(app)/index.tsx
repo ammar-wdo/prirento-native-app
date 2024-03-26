@@ -4,6 +4,7 @@ import {
   RefreshControl,
   ScrollView,
   Text,
+  TouchableOpacity,
   View,
 } from "react-native";
 
@@ -22,6 +23,10 @@ import { Ionicons } from "@expo/vector-icons";
 import BookingCardComponent from "@/components/bookings-card";
 
 import { getCurrentMonthYear } from "@/lib/utils";
+import BarChartComponent from "@/components/bar-charts";
+import BarChartComponentTwo from "@/components/bar-chart-two";
+
+
 
 export default function TabOneScreen() {
   const [refreshing, setRefreshing] = useState(false);
@@ -67,6 +72,39 @@ export default function TabOneScreen() {
   };
 
   const monthAndDate = getCurrentMonthYear();
+
+  if (BookingsInfoLoading || recentIsLoading || recentBookingsLoading)
+    return (
+      <View style={{ flex: 1 }}>
+        <CustomHeader />
+        <View
+          style={{ flex: 1, alignItems: "center", justifyContent: "center" }}
+        >
+          <ActivityIndicator size={40} color={Colors.mainDark} />
+        </View>
+      </View>
+    );
+
+  if (
+    !recentData?.success ||
+    !recentBookingsData?.success ||
+    !BookingsInfoData?.success ||
+    !!BookingsInfoError ||
+    !!recentBookingsError ||
+    !!recentError
+  )
+    return  <View style={{ flex: 1 }}>
+    <CustomHeader />
+    <View
+      style={{ flex: 1, alignItems: "center", justifyContent: "center" }}
+    >
+     <Text>Something went wrong</Text>
+     <TouchableOpacity style={{marginTop:12,padding:12}} onPress={onRefresh}>
+      Try agian!
+     </TouchableOpacity>
+    </View>
+  </View>;
+
   return (
     <View style={{ flex: 1 }}>
       <CustomHeader />
@@ -79,19 +117,7 @@ export default function TabOneScreen() {
       >
         {/* Monthly bookings info */}
         <View>
-          {BookingsInfoLoading ? (
-            <View>
-              <Text>Loading cars ...</Text>
-            </View>
-          ) : BookingsInfoError ? (
-            <View>
-              <Text>Something went wrong</Text>
-            </View>
-          ) : !BookingsInfoData?.success ? (
-            <View>
-              <Text>{BookingsInfoData?.error}</Text>
-            </View>
-          ) : (
+   
             <View
               style={{
                 borderWidth: 0.7,
@@ -99,7 +125,9 @@ export default function TabOneScreen() {
                 borderRadius: 7,
               }}
             >
-              {/* <BarChartComponent bookings={BookingsInfoData.bookingsInfo.bookings}  /> */}
+              <View style={{backgroundColor:'#E7F9F6',overflow:'hidden',padding:12}} >
+    <BarChartComponentTwo bookings={BookingsInfoData.bookingsInfo.bookings} />
+               </View>
               <View style={{ padding: 10 }}>
                 <View
                   style={{
@@ -121,8 +149,9 @@ export default function TabOneScreen() {
                     style={{
                       paddingVertical: 7,
                       paddingHorizontal: 12,
-                      backgroundColor: Colors.lightGray,borderRadius:5,
-                      color:'gray'
+                      backgroundColor: Colors.lightGray,
+                      borderRadius: 5,
+                      color: "gray",
                     }}
                   >
                     {monthAndDate}
@@ -217,7 +246,7 @@ export default function TabOneScreen() {
                 </View>
               </View>
             </View>
-          )}
+      
         </View>
 
         {/* Most rented cars */}
@@ -287,9 +316,24 @@ export default function TabOneScreen() {
               <Text>{recentBookingsData?.error}</Text>
             ) : (
               <View style={{ gap: 4 }}>
-                {recentBookingsData.bookings.map((booking) => (
-                  <BookingCardComponent key={booking.id} booking={booking} />
-                ))}
+                {!!recentBookingsData.bookings.length ? (
+                  recentBookingsData.bookings.map((booking) => (
+                    <BookingCardComponent key={booking.id} booking={booking} />
+                  ))
+                ) : (
+                  <View style={{ padding: 12 }}>
+                    <Text
+                      style={{
+                        textAlign: "center",
+                        color: "gray",
+                        fontWeight: "600",
+                        fontSize: 25,
+                      }}
+                    >
+                      No Bookings
+                    </Text>
+                  </View>
+                )}
               </View>
             )}
           </View>

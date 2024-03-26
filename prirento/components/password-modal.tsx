@@ -15,7 +15,7 @@ import {
 } from "react-native";
 import Input from "./Input";
 import { Image } from "react-native";
-import ImageUploader from "./image-uploader";
+
 import CustomButton from "./custom-button";
 import { Colors } from "@/constants/Colors";
 import { usePassword } from "@/hooks/password.hook";
