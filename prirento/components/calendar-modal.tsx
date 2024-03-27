@@ -32,6 +32,7 @@ const CalendarModal: React.FC<CustomColorPickerModalProps> = ({
           <ScrollView showsVerticalScrollIndicator={false}>
             <View style={{ marginTop: 20 }}>
               <DatePicker
+              minimumDate={date}
                 options={{ mainColor: Colors.mainDark }}
                 mode="calendar"
               current={date}

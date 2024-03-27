@@ -15,6 +15,7 @@ interface CustomColorPickerModalProps {
   isVisible: boolean;
   date: string;
   onChange: (value: string) => void;
+  startDate:string
 
   onClose: () => void;
 }
@@ -22,7 +23,7 @@ const EndCalendarModal: React.FC<CustomColorPickerModalProps> = ({
   isVisible,
   date,
   onChange,
-
+startDate,
   onClose,
 }) => {
   return (
@@ -32,7 +33,8 @@ const EndCalendarModal: React.FC<CustomColorPickerModalProps> = ({
           <ScrollView showsVerticalScrollIndicator={false}>
             <View style={{ marginTop: 20 }}>
               <DatePicker
-                options={{ mainColor: Colors.mainDark }}
+             minimumDate={startDate}
+                options={{ mainColor: Colors.mainDark ,textDefaultColor:Colors.mainDark}}
                 mode="calendar"
                 current={date}
                 selected={date}

@@ -282,6 +282,7 @@ const CarAvailabilitysModal: React.FC<CustomColorPickerModalProps> = ({
         onChange={(val) => form.setValue("startDate", val)}
       />
          <EndCalendarModal
+         startDate={form.watch('startDate')}
         isVisible={endDateOpen}
         onClose={() => setEndDateOpen(false)}
         date={form.watch("endDate")}
