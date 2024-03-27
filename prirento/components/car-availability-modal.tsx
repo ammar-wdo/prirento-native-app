@@ -4,9 +4,8 @@ import { CarAvailability, ExtraOption } from "@/types";
 import { Ionicons } from "@expo/vector-icons";
 import React, { useEffect, useLayoutEffect, useState } from "react";
 import { Controller, UseFormReturn } from "react-hook-form";
-import DateTimePicker, {
-  DateTimePickerEvent,
-} from "@react-native-community/datetimepicker";
+import DatePicker from "react-native-modern-datepicker";
+
 import {
   Modal,
   View,
@@ -26,6 +25,8 @@ import { useCarAvailability } from "@/hooks/availability-hook";
 import { convertDateToISOString, formatDate, getTime } from "@/lib/utils";
 import ChooseTimeModal from "./choose-time-modal";
 import { Colors } from "@/constants/Colors";
+import CalendarModal from "./calendar-modal";
+import EndCalendarModal from "./endCalendarModal";
 
 interface CustomColorPickerModalProps {
   isVisible: boolean;
@@ -46,8 +47,12 @@ const CarAvailabilitysModal: React.FC<CustomColorPickerModalProps> = ({
     if (carAvailability) {
       form.reset({
         label: carAvailability.label,
-        startDate:convertDateToISOString(new Date(carAvailability?.startDate || '')),
-        endDate: convertDateToISOString(new Date(carAvailability?.endDate || '')),
+        startDate: convertDateToISOString(
+          new Date(carAvailability?.startDate || "")
+        ),
+        endDate: convertDateToISOString(
+          new Date(carAvailability?.endDate || "")
+        ),
         startTime: getTime(new Date(carAvailability.startDate)),
         endTime: getTime(new Date(carAvailability.endDate)),
       });
@@ -68,21 +73,6 @@ const CarAvailabilitysModal: React.FC<CustomColorPickerModalProps> = ({
   const [startDateOpen, setStartDateOpen] = useState(false);
   const [endDateOpen, setEndDateOpen] = useState(false);
 
-  const onChangeStartDate = (
-    event: DateTimePickerEvent,
-    selectedDate?: Date
-  ) => {
-    const currentDate = selectedDate;
-    setStartDateOpen(false);
-    form.setValue("startDate", convertDateToISOString(selectedDate) || "");
-  };
-
-  const onChangeEndDate = (event: DateTimePickerEvent, selectedDate?: Date) => {
-    const currentDate = selectedDate;
-    setStartDateOpen(false);
-    form.setValue("endDate", convertDateToISOString(selectedDate) || "");
-  };
-
   useLayoutEffect(() => {
     setStartDateOpen(false);
     setEndDateOpen(false);
@@ -92,7 +82,11 @@ const CarAvailabilitysModal: React.FC<CustomColorPickerModalProps> = ({
     <Modal visible={isVisible} animationType="fade" transparent={true}>
       <View style={styles.modalOverlay}>
         <View style={styles.modalContent}>
-          <ScrollView showsVerticalScrollIndicator={false} style={{flex:1}} contentContainerStyle={{flex:1}}>
+          <ScrollView
+            showsVerticalScrollIndicator={false}
+            style={{ flex: 1 }}
+            contentContainerStyle={{ flex: 1 }}
+          >
             <Text
               style={{
                 textAlign: "center",
@@ -106,7 +100,7 @@ const CarAvailabilitysModal: React.FC<CustomColorPickerModalProps> = ({
                 : "Add New Car Block Date"}
             </Text>
 
-            <View style={{ marginTop: 12,flex:1 }}>
+            <View style={{ marginTop: 12, flex: 1 }}>
               <Controller
                 control={form.control} // From useForm()
                 name="label"
@@ -152,11 +146,11 @@ const CarAvailabilitysModal: React.FC<CustomColorPickerModalProps> = ({
                       </TouchableOpacity>
                     )}
                   />
-                    {form.formState.errors.startTime && (
-                <Text style={{ color: "red", fontSize: 10 }}>
-                  {form.formState.errors.startTime.message}
-                </Text>
-              )}
+                  {form.formState.errors.startTime && (
+                    <Text style={{ color: "red", fontSize: 10 }}>
+                      {form.formState.errors.startTime.message}
+                    </Text>
+                  )}
                 </View>
                 <View>
                   <Text style={{ fontWeight: "700" }}>End Time</Text>
@@ -178,11 +172,11 @@ const CarAvailabilitysModal: React.FC<CustomColorPickerModalProps> = ({
                       </TouchableOpacity>
                     )}
                   />
-                     {form.formState.errors.endTime && (
-                <Text style={{ color: "red", fontSize: 10 }}>
-                  {form.formState.errors.endTime.message}
-                </Text>
-              )}
+                  {form.formState.errors.endTime && (
+                    <Text style={{ color: "red", fontSize: 10 }}>
+                      {form.formState.errors.endTime.message}
+                    </Text>
+                  )}
                 </View>
               </View>
 
@@ -200,35 +194,36 @@ const CarAvailabilitysModal: React.FC<CustomColorPickerModalProps> = ({
                     control={form.control} // From useForm()
                     name="startDate"
                     render={({ field: { onChange, onBlur, value } }) => (
-                      <TouchableOpacity
-                        onPress={() => setStartDateOpen(true)}
-                        style={{
-                          padding: 8,
-                          flexDirection: "row",
-                          gap: 12,
-                          alignItems: "center",
-                        }}
-                      >
-                        <Text>
-                          {!!value
-                            ? formatDate(new Date(value), "en-GB", {
-                                timeZone: "UTC",
-                                year: "numeric",
-                                month: "2-digit",
-                                day: "2-digit",
-                              })
-                            : "Choose Date"}
-                        </Text>
-                        <Ionicons name="calendar-clear-outline" />
-                       
-                      </TouchableOpacity>
+                      <View>
+                        <TouchableOpacity
+                          onPress={() => setStartDateOpen(true)}
+                          style={{
+                            padding: 8,
+                            flexDirection: "row",
+                            gap: 12,
+                            alignItems: "center",
+                          }}
+                        >
+                          <Text>
+                            {!!value
+                              ? formatDate(new Date(value), "en-GB", {
+                                  timeZone: "UTC",
+                                  year: "numeric",
+                                  month: "2-digit",
+                                  day: "2-digit",
+                                })
+                              : "Choose Date"}
+                          </Text>
+                          <Ionicons name="calendar-clear-outline" />
+                        </TouchableOpacity>
+                      </View>
                     )}
                   />
-                     {form.formState.errors.startDate && (
-                <Text style={{ color: "red", fontSize: 10 }}>
-                  {form.formState.errors.startDate.message}
-                </Text>
-              )}
+                  {form.formState.errors.startDate && (
+                    <Text style={{ color: "red", fontSize: 10 }}>
+                      {form.formState.errors.startDate.message}
+                    </Text>
+                  )}
                 </View>
                 <View>
                   <Text style={{ fontWeight: "700" }}>End Date</Text>
@@ -259,19 +254,19 @@ const CarAvailabilitysModal: React.FC<CustomColorPickerModalProps> = ({
                       </TouchableOpacity>
                     )}
                   />
-                     {form.formState.errors.endDate && (
-                <Text style={{ color: "red", fontSize: 10 }}>
-                  {form.formState.errors.endDate.message}
-                </Text>
-              )}
+                  {form.formState.errors.endDate && (
+                    <Text style={{ color: "red", fontSize: 10 }}>
+                      {form.formState.errors.endDate.message}
+                    </Text>
+                  )}
                 </View>
               </View>
-       
+
               <CustomButton
                 loading={form.formState.isSubmitting}
-                style={{backgroundColor:Colors.mainDark,marginTop:'auto'}}
+                style={{ backgroundColor: Colors.mainDark, marginTop: "auto" }}
                 onPress={form.handleSubmit(onSubmit)}
-                title={carAvailability ? 'Update' : 'Create'}
+                title={carAvailability ? "Update" : "Create"}
               />
             </View>
           </ScrollView>
@@ -279,27 +274,19 @@ const CarAvailabilitysModal: React.FC<CustomColorPickerModalProps> = ({
             <Ionicons name="close" size={22} />
           </TouchableOpacity>
         </View>
-        {!!startDateOpen && (
-          <DateTimePicker
-            minimumDate={new Date()}
-            testID="dateTimePicker"
-            value={new Date(form.getValues("startDate") || new Date())}
-            mode={"date"}
-            is24Hour={true}
-            onChange={onChangeStartDate}
-          />
-        )}
-        {!!endDateOpen && (
-          <DateTimePicker
-            testID="dateTimePickerEnd"
-            value={new Date(form.getValues("endDate") || new Date())}
-            mode={"date"}
-            is24Hour={true}
-            onChange={onChangeEndDate}
-          />
-        )}
       </View>
-
+      <CalendarModal
+        isVisible={startDateOpen}
+        onClose={() => setStartDateOpen(false)}
+        date={form.watch("startDate")}
+        onChange={(val) => form.setValue("startDate", val)}
+      />
+         <EndCalendarModal
+        isVisible={endDateOpen}
+        onClose={() => setEndDateOpen(false)}
+        date={form.watch("endDate")}
+        onChange={(val) => form.setValue("endDate", val)}
+      />
       <ChooseTimeModal
         isVisible={startTimeOpen}
         onClose={() => setStartTimeOpen(false)}

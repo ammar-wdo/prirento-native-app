@@ -21,6 +21,7 @@ import { useCarExtraOptions } from "@/hooks/car-extraOptions.hook";
 import ExtraOptionCard from "@/components/extra-option-card";
 import ExtraOptionsModal from "@/components/extra-options-modal";
 import { useModal } from "@/hooks/modal-hook";
+import { Ionicons } from "@expo/vector-icons";
 
 const ExtraOtions = () => {
   const pathname = usePathname();
@@ -69,14 +70,19 @@ const ExtraOtions = () => {
 
           padding: 8,
           marginBottom: 20,
-          borderRadius: 12,
+          borderRadius: 5,
           paddingVertical: 11,
+          flexDirection:'row',
+          gap:12,
+          justifyContent:'center',
+          alignItems:'center'
         }}
         onPress={() => {
           control(true);
           setExttraOptionModal(undefined);
         }}
       >
+        <Ionicons name="add-circle-outline" color={'white'} size={20} />
         <Text
           style={{ color: "white", textAlign: "center", fontWeight: "600" }}
         >

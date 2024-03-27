@@ -16,6 +16,7 @@ import { formatDate } from "@/lib/utils";
 import CarAvailabilitysModal from "@/components/car-availability-modal";
 import { useModal } from "@/hooks/modal-hook";
 import { CarAvailability } from "@/types";
+import { FontAwesome5, Ionicons } from "@expo/vector-icons";
 
 const Availability = () => {
   const pathname = usePathname();
@@ -81,10 +82,16 @@ const Availability = () => {
           padding: 6,
           backgroundColor: Colors.mainDark,
           borderRadius: 5,
+          flexDirection:'row',
+          paddingVertical: 11,
+          gap:12,
+          justifyContent:'center',
+          alignItems:'center'
         }}
       >
-        <Text style={{ color: "white", textAlign: "center" }}>
-          Add New Block Date
+        <Ionicons name="add-circle-outline"  color={'white'} size={20}/>
+        <Text style={{ color: "white", textAlign: "center" ,fontWeight:'600'}}>
+           New Block Date
         </Text>
       </TouchableOpacity>
       {!data.availabilities.length ? (
@@ -151,12 +158,18 @@ const Availability = () => {
                 }}
                 style={{
                   marginTop: 12,
-                  backgroundColor: Colors.mainDark,
-                  padding: 3,
+                  backgroundColor: Colors.secondaryGreen,
+            
+                  padding: 6,
                   borderRadius: 5,
+                  flexDirection:'row',
+                  gap:12,
+                  justifyContent:'center',
+                  alignItems:'center'
                 }}
               >
-                <Text style={{ color: "white", textAlign: "center" }}>
+              <FontAwesome5 name={'edit'} size={16} color={'white'} />
+                <Text style={{ color: "white", textAlign: "center" ,fontWeight:'600'}}>
                   Edit
                 </Text>
               </TouchableOpacity>
