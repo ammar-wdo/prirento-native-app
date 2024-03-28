@@ -11,6 +11,7 @@ import { poster } from "@/lib/utils";
 import { url } from "./queries.hook";
 import { useAuth } from "./auth.hook";
 import { useQueryClient } from "@tanstack/react-query";
+import { ADD_PRICE } from "@/links";
 
 
 
@@ -60,7 +61,7 @@ export const usePricings = ({ pricings, hourPrice,success}: Props) => {
     try {
    
       const res = await poster<{ success: boolean; message?: string }>(
-        `${url}/api/native/car/${carId}/pricings`,
+        ADD_PRICE(carId as string),
         values,
         user?.token
       );

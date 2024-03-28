@@ -6,6 +6,7 @@ import {
   StyleSheet,
   Text,
   TextInput,
+  TouchableOpacity,
   View,
 } from "react-native";
 import React, { useMemo, useState } from "react";
@@ -93,7 +94,6 @@ const index = () => {
                 <FlatList
                   ListHeaderComponent={() => (
                     <View>
-                    
                       <View
                         style={{
                           margin: 10,
@@ -102,11 +102,17 @@ const index = () => {
                           gap: 8,
                         }}
                       >
-                        <Ionicons
-                          name="arrow-back"
-                          size={20}
-                          onPress={() => router.push("/(app)")}
-                        />
+                        <TouchableOpacity
+                          onPress={() => router.push('/(app)')}
+                          style={{
+                            padding: 10,
+                            borderRadius: 100,
+                            backgroundColor: Colors.lightGray,
+                          }}
+                        >
+                          <Ionicons name="arrow-back" size={20} />
+                        </TouchableOpacity>
+
                         <View
                           style={{
                             borderWidth: 0.7,
@@ -136,7 +142,7 @@ const index = () => {
                           flexDirection: "row",
                           alignItems: "center",
                           gap: 5,
-                          padding: 5,
+                          padding: 12,
                         }}
                       >
                         <Ionicons

@@ -43,9 +43,10 @@ const _layout = () => {
           source={{ uri: data.car.gallary[0] }}
           style={{ aspectRatio: 2 / 1, width: "100%" }}
         />
+        
         <TouchableOpacity
           onPress={() => router.push("/(app)/cars")}
-          style={{ position: "absolute", top: 20, left: 10, zIndex: 10 }}
+          style={{ position: "absolute", top: 20, left: 10, zIndex: 10,padding:10 }}
         >
           <Ionicons name="arrow-back" size={20} color={"white"} />
         </TouchableOpacity>

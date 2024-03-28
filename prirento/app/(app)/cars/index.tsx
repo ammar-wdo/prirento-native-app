@@ -7,6 +7,7 @@ import {
   StyleSheet,
   Text,
   TextInput,
+  TouchableOpacity,
   View,
 } from "react-native";
 import React, { useMemo, useState } from "react";
@@ -69,15 +70,21 @@ const router = useRouter()
         <View style={{flex:1,backgroundColor:'white'}}>
          
         <FlatList
+        showsVerticalScrollIndicator={false}
         ListHeaderComponent={()=>   <View
           style={{
-            margin: 10,
+          marginTop:10,
+          marginBottom:20,
             alignItems: "center",
             flexDirection: "row",
             gap: 8,
           }}
         >
-          <Ionicons name="arrow-back" size={20} onPress={()=>router.back()}/>
+          <TouchableOpacity onPress={()=>router.back()}  style={{padding:10,borderRadius:100 ,backgroundColor:Colors.lightGray}}>
+          <Ionicons name="arrow-back" size={20} />
+          </TouchableOpacity>
+
+        
           <View
             style={{
               borderWidth: 0.7,
