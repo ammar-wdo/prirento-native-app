@@ -10,6 +10,7 @@ import { useAuth } from "./auth.hook";
 import { url } from "./queries.hook";
 import { ToastAndroid } from "react-native";
 import { useState } from "react";
+import { ADD_CAR } from "@/links";
 
 export const useAddCar = () => {
 
@@ -63,7 +64,7 @@ export const useAddCar = () => {
   const onSubmit = async (data: z.infer<typeof carSchema>) => {
     try {
       const res = await poster<{ success: boolean; message?: string }>(
-        `${url}/api/native/car`,
+        ADD_CAR,
         data,
         user?.token
       );

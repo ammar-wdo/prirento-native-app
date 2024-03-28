@@ -10,6 +10,7 @@ import { useAuth } from "./auth.hook";
 import { url } from "./queries.hook";
 import { ToastAndroid } from "react-native";
 import { useState } from "react";
+import { EDIT_CAR } from "@/links";
 
 export const useCarEdit = (car: ComingCar | undefined) => {
   const usedPickups = car?.pickupLocations.map((el) => el.id);
@@ -67,7 +68,7 @@ export const useCarEdit = (car: ComingCar | undefined) => {
   const onSubmit = async (data: z.infer<typeof carSchema>) => {
     try {
       const res = await poster<{ success: boolean; message?: string }>(
-        `${url}/api/native/car/${carId}/edit`,
+        EDIT_CAR(carId as string),
         data,
         user?.token
       );
