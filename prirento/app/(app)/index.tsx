@@ -238,7 +238,7 @@ export default function TabOneScreen() {
                           fontWeight: "500",
                         }}
                       >
-                        {BookingsInfoData.bookingsInfo.total}
+                        {BookingsInfoData.bookingsInfo.total.toFixed(2)}
                       </Text>
                       <Text style={{ fontSize: 16, color: "#777" }}>Sales</Text>
                     </View>

@@ -9,7 +9,7 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import React, { useMemo, useState } from "react";
+import React, { useCallback, useMemo, useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useBookingsQuery } from "@/hooks/queries.hook";
 import { useQueryClient } from "@tanstack/react-query";
@@ -20,6 +20,7 @@ import BookingCardComponent from "@/components/bookings-card";
 import { Colors } from "@/constants/Colors";
 import Input from "@/components/Input";
 import { useRouter } from "expo-router";
+import TextFilter from "@/components/text-filter";
 
 const renderItemSeparator = () => {
   return <View style={styles.itemSeparator} />;
@@ -48,6 +49,9 @@ const index = () => {
       setRefreshing(false);
     }
   };
+  const handleQueryChange = useCallback((text: string) => {
+    setQuery(text);
+  }, []);
 
   const filteredData = useMemo(() => {
     return BookingsData?.bookings.filter((el) => {
@@ -94,46 +98,12 @@ const index = () => {
                 <FlatList
                   ListHeaderComponent={() => (
                     <View>
-                      <View
-                        style={{
-                          margin: 10,
-                          alignItems: "center",
-                          flexDirection: "row",
-                          gap: 8,
-                        }}
-                      >
-                        <TouchableOpacity
-                          onPress={() => router.push('/(app)')}
-                          style={{
-                            padding: 10,
-                            borderRadius: 100,
-                            backgroundColor: Colors.lightGray,
-                          }}
-                        >
-                          <Ionicons name="arrow-back" size={20} />
-                        </TouchableOpacity>
-
-                        <View
-                          style={{
-                            borderWidth: 0.7,
-                            borderRadius: 100,
-                            borderColor: Colors.border2,
-                            flex: 1,
-                            padding: 6,
-                            paddingHorizontal: 14,
-                            flexDirection: "row",
-                            alignItems: "center",
-                            gap: 4,
-                          }}
-                        >
-                          <Ionicons name="search" />
-                          <TextInput
-                            value={query}
-                            onChangeText={(text) => setQuery(text)}
-                            style={{ flex: 1 }}
-                            placeholder="Search by booking code"
-                          />
-                        </View>
+                      <View style={{ paddingHorizontal: 8 }}>
+                        <TextFilter
+                          placeHolder="Search By Booking Code"
+                          text={query}
+                          setText={handleQueryChange}
+                        />
                       </View>
                       <View
                         style={{

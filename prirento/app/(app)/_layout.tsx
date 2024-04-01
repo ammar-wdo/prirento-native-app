@@ -10,6 +10,7 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { useAuth } from "@/hooks/auth.hook";
 import { Colors } from "@/constants/Colors";
 import { Image } from "react-native";
+import { NotificationsProvider } from "@/hooks/notification-provicer";
 
 function TabBarIcon(props: {
   name: React.ComponentProps<typeof FontAwesome>["name"];
@@ -23,8 +24,9 @@ export default function TabLayout() {
   const { user } = useAuth();
   const router = useRouter();
   if (!user) return <Redirect href="/(modals)/signin" />;
-
+console.log('start')
   return (
+    <NotificationsProvider>
     <Tabs
       screenOptions={{
         tabBarActiveTintColor: "black",
@@ -92,5 +94,6 @@ export default function TabLayout() {
         }}
       />
     </Tabs>
+    </NotificationsProvider>
   );
 }

@@ -41,14 +41,17 @@ const router = useRouter()
            style={{
              position:'absolute',
              backgroundColor: "red",
-             width: 14,
-             height: 14,
+             minWidth:20,
+             minHeight:20,
+             padding:1,
              alignItems: "center",
              justifyContent: "center",
              borderRadius: 100,
-             top:-4,
-             right:1,
-             zIndex:10
+             top:-7,
+             right:-3,
+             zIndex:10,
+             borderWidth:2,
+             borderColor:'white'
            }}
          >
            <Text style={{color:'white',fontSize:10}}>{data.count}</Text>

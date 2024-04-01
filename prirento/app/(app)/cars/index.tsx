@@ -10,7 +10,7 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import React, { useMemo, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import CustomHeader from "@/components/custom-header";
 
 import CarCardItem from "@/components/car-card";
@@ -18,6 +18,7 @@ import { Colors } from "@/constants/Colors";
 import { useCarsQuery } from "@/hooks/queries.hook";
 import { Ionicons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
+import TextFilter from "@/components/text-filter";
 
 const renderItemSeparator = () => {
   return <View style={styles.itemSeparator} />;
@@ -27,6 +28,8 @@ const index = () => {
   const [refreshing, setRefreshing] = useState(false);
   const [query, setQuery] = useState("");
   const { data, isLoading, refetch: refetchCars } = useCarsQuery();
+
+
 
   const onRefresh = async () => {
     try {
@@ -40,12 +43,21 @@ const index = () => {
     }
   };
 
-  const filteredData = useMemo(() => {
-    return data?.cars.filter((el) => {
-      if (!query) return true;
-      return el.carName.toLocaleLowerCase().includes(query.toLocaleLowerCase());
-    });
-  }, [query, data?.cars]);
+
+
+
+
+  const filteredData = useMemo(() => data?.cars.filter((el) => {
+    if (!query) return true;
+    return el.carName.toLowerCase().includes(query.toLowerCase());
+  }), [query, data?.cars]);
+
+  // Memoizing onChangeText handler to avoid re-creating the function on every render
+  const handleQueryChange = useCallback((text:string) => {
+    setQuery(text);
+  }, []);
+
+
 const router = useRouter()
   return (
     <View style={styles.list}>
@@ -71,42 +83,7 @@ const router = useRouter()
          
         <FlatList
         showsVerticalScrollIndicator={false}
-        ListHeaderComponent={()=>   <View
-          style={{
-          marginTop:10,
-          marginBottom:20,
-            alignItems: "center",
-            flexDirection: "row",
-            gap: 8,
-          }}
-        >
-          <TouchableOpacity onPress={()=>router.back()}  style={{padding:10,borderRadius:100 ,backgroundColor:Colors.lightGray}}>
-          <Ionicons name="arrow-back" size={20} />
-          </TouchableOpacity>
-
-        
-          <View
-            style={{
-              borderWidth: 0.7,
-              borderRadius: 100,
-              borderColor: Colors.border2,
-              flex: 1,
-              padding: 6,
-              paddingHorizontal:14,
-              flexDirection: "row",
-              alignItems:'center',
-              gap:4
-            }}
-          >
-            <Ionicons name="search" />
-            <TextInput
-              value={query}
-              onChangeText={(text) => setQuery(text)}
-              style={{ flex: 1 }}
-              placeholder="Search by car model"
-            />
-          </View>
-        </View>}
+        ListHeaderComponent={()=>  <TextFilter placeHolder="Search By Car Model" text={query} setText={handleQueryChange} />}
           refreshControl={
             <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
           }

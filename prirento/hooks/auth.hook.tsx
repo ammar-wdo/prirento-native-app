@@ -1,9 +1,12 @@
 
 
+import { fetcher } from "@/lib/utils";
+import { REMOVE_PUSH_TOKEN } from "@/links";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useQueryClient } from "@tanstack/react-query";
 import { router } from "expo-router";
 import { ReactNode, createContext, useContext, useEffect, useState } from "react";
+import { Alert } from "react-native";
 
 export type User = {
   email: string;
@@ -61,9 +64,23 @@ export const AuthProvider = ({children}:{children:ReactNode}) => {
 }
 
 const signout =async ()=>{
- 
-    setUser(null)
+
+  try {
+    const res = await fetcher<{success:boolean,error?:string}>(REMOVE_PUSH_TOKEN,user?.token)
+    if(!res.success){
+      console.log(res.error)
+    }else if(res.success) {
+      console.log('push notification token removed')
+      setUser(null)
     await AsyncStorage.removeItem('user')
+    }
+  } catch (error) {
+    console.log(error)
+    Alert.alert("Some thing went wrong ,Try again later.")
+  }
+
+
+    
 }
 
 

@@ -254,7 +254,7 @@ export const useNotificationsCount = ()=>{
     }
  
     >(GET_NOTIFICATIONS_COUNT,user?.token),
-    refetchInterval:60000
+ 
  
   })
 
