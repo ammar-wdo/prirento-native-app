@@ -1,5 +1,7 @@
 import {
   ActivityIndicator,
+  Alert,
+  FlatList,
   Image,
   ScrollView,
   StyleSheet,
@@ -90,7 +92,10 @@ const CarDetails = () => {
     setRefreshing,
     setTransmissionPickerVisible,
   } = useCarEdit(carData?.car);
-const {pickImage,loading} = useImageUploader({onUploadSuccess:(url:string)=>form.setValue('gallary',[...form.watch('gallary'),url])})
+  const { pickImage, loading } = useImageUploader({
+    onUploadSuccess: (url: string) =>
+      form.setValue("gallary", [...form.watch("gallary"), url]),
+  });
   const onRefresh = React.useCallback(async () => {
     setRefreshing(true);
 
@@ -183,7 +188,7 @@ const {pickImage,loading} = useImageUploader({onUploadSuccess:(url:string)=>form
                           }{" "}
                           {sortedModels?.find((el) => el.id === value)?.name}
                         </Text>
-                   
+
                         <FontAwesome5
                           name="caret-down"
                           size={15}
@@ -249,7 +254,7 @@ const {pickImage,loading} = useImageUploader({onUploadSuccess:(url:string)=>form
             <FormWrapper title="Appearance">
               {/* car colr */}
               <View style={{ gap: 2 }}>
-                <Text style={{ fontWeight:'700' }}>Car Color</Text>
+                <Text style={{ fontWeight: "700" }}>Car Color</Text>
 
                 <Controller
                   control={form.control} // From useForm()
@@ -295,8 +300,8 @@ const {pickImage,loading} = useImageUploader({onUploadSuccess:(url:string)=>form
                 )}
               </View>
               {/* car interior color */}
-              <View style={{ gap: 2,marginTop:12 }}>
-                <Text style={{ fontWeight:'700' }}>Car Interior Color</Text>
+              <View style={{ gap: 2, marginTop: 12 }}>
+                <Text style={{ fontWeight: "700" }}>Car Interior Color</Text>
 
                 <Controller
                   control={form.control} // From useForm()
@@ -307,7 +312,9 @@ const {pickImage,loading} = useImageUploader({onUploadSuccess:(url:string)=>form
                         onPress={() => setInteriorColorPickerVisible(true)}
                         style={styles.colorPickerTrigger}
                       >
-                        <Text>{form.watch("interiorColor") || "Select Color"}</Text>
+                        <Text>
+                          {form.watch("interiorColor") || "Select Color"}
+                        </Text>
                         {!!value && (
                           <View
                             style={{
@@ -342,31 +349,32 @@ const {pickImage,loading} = useImageUploader({onUploadSuccess:(url:string)=>form
                 )}
               </View>
               {/* Gallery */}
-              <View style={{ gap: 2,marginTop:12 }}>
-                <Text style={{ fontWeight:'700' }}>Gallery</Text>
+              <View style={{ gap: 2, marginTop: 12 }}>
+                <Text style={{ fontWeight: "700" }}>Gallery</Text>
 
                 <Controller
                   control={form.control} // From useForm()
                   name="gallary"
                   render={({ field: { onChange, onBlur, value } }) => (
                     <View style={{ width: "100%" }}>
-                      <ImageComponent  pickImage={pickImage}/>
-                      {loading && <ActivityIndicator size={30} color={Colors.mainDark} />}
-                      <View
-                        style={{
-                          marginTop: 4,
-                          flexDirection: "row",
-                          gap: 5,
-                          flexWrap: "wrap",
-                          justifyContent: "space-between",
-                        }}
-                      >
-                        {form.watch("gallary").map((el, i) => (
+                      <ImageComponent pickImage={pickImage} />
+                      {loading && (
+                        <ActivityIndicator size={30} color={Colors.mainDark} />
+                      )}
+
+                      <FlatList
+                      
+                        ItemSeparatorComponent={() => (
+                          <View style={{ padding: 5 }} />
+                        )}
+                        showsHorizontalScrollIndicator={false}
+                        style={{ height: "auto" }}
+                        horizontal
+                        data={form.watch("gallary")}
+                        renderItem={({ item }) => (
                           <View
-                            key={i}
                             style={{
-                              flex: 1,
-                              minWidth: "30%",
+                              width: 300,
                               aspectRatio: 2 / 1,
                               borderColor: Colors.border,
                               overflow: "hidden",
@@ -377,19 +385,37 @@ const {pickImage,loading} = useImageUploader({onUploadSuccess:(url:string)=>form
                           >
                             <Image
                               resizeMode="cover"
-                              source={{ uri: el }}
+                              source={{ uri: item }}
                               style={{ height: "100%", width: "100%" }}
                             />
                             <TouchableOpacity
-                              onPress={() => handleImageDelete(el)}
+                              onPress={() =>
+                                Alert.alert(
+                                  "Delete Image",
+                                  "Are you sure you want to delete this image ?",
+                                  [
+                                    {
+                                      style:'cancel',
+                                      text: "Cancel",
+                                      onPress: () =>{},
+                                    },
+                                    {
+                                      style:'destructive',
+                                      text: "Delete",
+                                      onPress: () => handleImageDelete(item),
+                                    },
+                                  
+                                  ]
+                                )
+                              }
                               style={{
                                 position: "absolute",
                                 top: 1,
                                 right: 1,
                                 backgroundColor: "red",
                                 borderRadius: 100,
-                                width: 15,
-                                height: 15,
+                                width: 25,
+                                height: 25,
                                 alignItems: "center",
                                 justifyContent: "center",
                               }}
@@ -397,8 +423,8 @@ const {pickImage,loading} = useImageUploader({onUploadSuccess:(url:string)=>form
                               <Ionicons name="close" color={"white"} />
                             </TouchableOpacity>
                           </View>
-                        ))}
-                      </View>
+                        )}
+                      />
                     </View>
                   )}
                 />
@@ -430,7 +456,7 @@ const {pickImage,loading} = useImageUploader({onUploadSuccess:(url:string)=>form
 
                 {/* transmission */}
                 <View style={{ gap: 2 }}>
-                  <Text style={{ fontWeight:'700' }}>Transmission</Text>
+                  <Text style={{ fontWeight: "700" }}>Transmission</Text>
 
                   <Controller
                     control={form.control} // From useForm()
@@ -468,7 +494,7 @@ const {pickImage,loading} = useImageUploader({onUploadSuccess:(url:string)=>form
                 {/* electric */}
 
                 <View style={{ gap: 2 }}>
-                  <Text style={{ fontWeight:'700' }}>Electric</Text>
+                  <Text style={{ fontWeight: "700" }}>Electric</Text>
 
                   <Controller
                     control={form.control} // From useForm()
@@ -505,7 +531,7 @@ const {pickImage,loading} = useImageUploader({onUploadSuccess:(url:string)=>form
                 </View>
                 {/* car type */}
                 <View style={{ gap: 2 }}>
-                  <Text style={{ fontWeight:'700' }}>Car Type</Text>
+                  <Text style={{ fontWeight: "700" }}>Car Type</Text>
 
                   <Controller
                     control={form.control} // From useForm()
@@ -724,14 +750,14 @@ const {pickImage,loading} = useImageUploader({onUploadSuccess:(url:string)=>form
 
           <View style={{ marginTop: 12 }}>
             <FormWrapper title="Locations">
-              <View style={{ flexDirection: "row", }}>
+              <View style={{ flexDirection: "column",gap:20 }}>
                 <View>
                   <Text style={{ fontWeight: "600" }}>Pick-up locations</Text>
                   <Controller
                     control={form.control} // From useForm()
                     name="pickupLocations"
                     render={({ field: { onChange, onBlur, value } }) => (
-                      <View>
+                      <View style={{flexDirection:'row',flexWrap:'wrap',justifyContent:'space-between'}}>
                         {locationsData?.locations.map((location) => (
                           <CheckBox
                             key={location.id}
@@ -749,7 +775,7 @@ const {pickImage,loading} = useImageUploader({onUploadSuccess:(url:string)=>form
                             checkedIcon="checkbox-outline"
                             uncheckedIcon={"checkbox-blank-outline"}
                             checkedColor={Colors.secondaryGreen}
-                            textStyle={{fontSize:11}}
+                            textStyle={{ fontSize: 11 }}
                           />
                         ))}
                       </View>
@@ -767,7 +793,7 @@ const {pickImage,loading} = useImageUploader({onUploadSuccess:(url:string)=>form
                     control={form.control} // From useForm()
                     name="dropoffLocations"
                     render={({ field: { onChange, onBlur, value } }) => (
-                      <View>
+                      <View style={{flexDirection:'row',flexWrap:'wrap',justifyContent:'space-between'}}>
                         {locationsData?.locations.map((location) => (
                           <CheckBox
                             key={location.id}
@@ -785,8 +811,7 @@ const {pickImage,loading} = useImageUploader({onUploadSuccess:(url:string)=>form
                             checkedIcon="checkbox-outline"
                             uncheckedIcon={"checkbox-blank-outline"}
                             checkedColor={Colors.secondaryGreen}
-                            textStyle={{fontSize:11}}
-                         
+                            textStyle={{ fontSize: 11 }}
                           />
                         ))}
                       </View>
@@ -809,7 +834,7 @@ const {pickImage,loading} = useImageUploader({onUploadSuccess:(url:string)=>form
             style={{ backgroundColor: Colors.secondaryGreen, marginTop: 12 }}
             textStyle={{ fontWeight: "600" }}
           />
-          <Text>{JSON.stringify(form.formState.errors)}</Text>
+         
         </View>
       )}
     </ScrollView>
@@ -821,7 +846,7 @@ export default CarDetails;
 const styles = StyleSheet.create({
   colorPickerTrigger: {
     padding: 10,
-  marginTop:12,
+    marginTop: 12,
     width: "100%",
     borderWidth: 0.7,
     borderColor: Colors.border2,

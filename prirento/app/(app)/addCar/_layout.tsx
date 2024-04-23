@@ -10,6 +10,7 @@ const _layout = () => {
       <Stack.Screen
         name="index"
         options={{
+          
           title: "Add New Car",
           headerTitleAlign: "center",
           headerBackVisible: true,

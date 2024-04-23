@@ -1,5 +1,6 @@
 import {
   ActivityIndicator,
+  Alert,
   Image,
   RefreshControl,
   ScrollView,
@@ -258,7 +259,24 @@ const PersonalInfo = () => {
                     }}
                   >
                     <TouchableOpacity
-                      onPress={() => form.setValue("logo", "")}
+                      onPress={() =>
+                        Alert.alert(
+                          "Delete Image",
+                          "Are you sure you want to delete this image ?",
+                          [
+                            {
+                              style: "cancel",
+                              text: "Cancel",
+                              onPress: () => {},
+                            },
+                            {
+                              style: "destructive",
+                              text: "Delete",
+                              onPress: () => form.setValue("logo", ""),
+                            },
+                          ]
+                        )
+                      }
                       style={{
                         top: 0,
                         right: 0,
@@ -290,9 +308,11 @@ const PersonalInfo = () => {
                     No Logo{" "}
                   </Text>
                 )}
-                  {LoadingLogo && <ActivityIndicator size={30} color={Colors.mainDark} />}
+                {LoadingLogo && (
+                  <ActivityIndicator size={30} color={Colors.mainDark} />
+                )}
                 <ImageComponent pickImage={pickImageLogo} />
-              
+
                 {form.formState.errors.logo && (
                   <Text style={{ color: "red", fontSize: 10 }}>
                     {form.formState.errors.logo.message}
@@ -336,9 +356,27 @@ const PersonalInfo = () => {
                       >
                         <TouchableOpacity
                           onPress={() =>
-                            form.setValue(
-                              "gallary",
-                              form.watch("gallary").filter((im) => im !== el)
+                            Alert.alert(
+                              "Delete Image",
+                              "Are you sure you want to delete this image ?",
+                              [
+                                {
+                                  style: "cancel",
+                                  text: "Cancel",
+                                  onPress: () => {},
+                                },
+                                {
+                                  style: "destructive",
+                                  text: "Delete",
+                                  onPress: () =>
+                                    form.setValue(
+                                      "gallary",
+                                      form
+                                        .watch("gallary")
+                                        .filter((im) => im !== el)
+                                    ),
+                                },
+                              ]
                             )
                           }
                           style={{
@@ -378,9 +416,19 @@ const PersonalInfo = () => {
                       No Images
                     </Text>
                   )}
- {loading && <View style={{flexDirection:'row',justifyContent:'center',width:'100%'}}><ActivityIndicator  size={30} color={Colors.mainDark} /></View> }
+                  {loading && (
+                    <View
+                      style={{
+                        flexDirection: "row",
+                        justifyContent: "center",
+                        width: "100%",
+                      }}
+                    >
+                      <ActivityIndicator size={30} color={Colors.mainDark} />
+                    </View>
+                  )}
                   <ImageComponent pickImage={pickImage} />
-                 
+
                   {form.formState.errors.gallary && (
                     <Text style={{ color: "red", fontSize: 10 }}>
                       {form.formState.errors.gallary.message}

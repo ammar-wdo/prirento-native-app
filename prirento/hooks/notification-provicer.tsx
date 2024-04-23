@@ -49,6 +49,8 @@ export const NotificationsProvider = ({
         queryClient.refetchQueries({ queryKey: ["recentCars"] });
         queryClient.refetchQueries({ queryKey: ["recentBookings"] });
         queryClient.refetchQueries({ queryKey: ["bookingsInfo"] });
+        queryClient.refetchQueries({ queryKey: ["cars"] });
+        queryClient.refetchQueries({ queryKey: ["bookings"] });
       });
 
     responseListener.current =

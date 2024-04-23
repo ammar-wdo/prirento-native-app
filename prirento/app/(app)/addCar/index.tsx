@@ -104,7 +104,7 @@ const {loading,pickImage} = useImageUploader({onUploadSuccess:(url:string)=>form
   };
 
   return (
-    <ScrollView style={{ flex: 1, backgroundColor: "white", padding: 12 }}
+    <ScrollView contentContainerStyle={{paddingBottom:20}} style={{ flex: 1, backgroundColor: "white", padding: 12 }}
     refreshControl={
       <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
     }
@@ -694,14 +694,14 @@ const {loading,pickImage} = useImageUploader({onUploadSuccess:(url:string)=>form
 
           <View style={{ marginTop: 12 }}>
             <FormWrapper title="Locations">
-              <View style={{ flexDirection: "row", gap: 14 }}>
+              <View style={{ flexDirection: "column", gap: 20 }}>
                 <View>
                   <Text style={{ fontWeight: "600" }}>Pick-up locations</Text>
                   <Controller
                     control={form.control} // From useForm()
                     name="pickupLocations"
                     render={({ field: { onChange, onBlur, value } }) => (
-                      <View>
+                      <View style={{flexDirection:'row',flexWrap:'wrap',justifyContent:'space-between'}}>
                         {locationsData?.locations.map((location) => (
                           <CheckBox
                             key={location.id}
@@ -719,6 +719,7 @@ const {loading,pickImage} = useImageUploader({onUploadSuccess:(url:string)=>form
                             checkedIcon="checkbox-outline"
                             uncheckedIcon={"checkbox-blank-outline"}
                             checkedColor={Colors.secondaryGreen}
+                            textStyle={{ fontSize: 11 }}
                           />
                         ))}
                       </View>
@@ -736,7 +737,7 @@ const {loading,pickImage} = useImageUploader({onUploadSuccess:(url:string)=>form
                     control={form.control} // From useForm()
                     name="dropoffLocations"
                     render={({ field: { onChange, onBlur, value } }) => (
-                      <View>
+                      <View style={{flexDirection:'row',flexWrap:'wrap',justifyContent:'space-between'}}>
                         {locationsData?.locations.map((location) => (
                           <CheckBox
                             key={location.id}
@@ -754,6 +755,7 @@ const {loading,pickImage} = useImageUploader({onUploadSuccess:(url:string)=>form
                             checkedIcon="checkbox-outline"
                             uncheckedIcon={"checkbox-blank-outline"}
                             checkedColor={Colors.secondaryGreen}
+                            textStyle={{ fontSize: 11 }}
                           />
                         ))}
                       </View>
@@ -776,7 +778,7 @@ const {loading,pickImage} = useImageUploader({onUploadSuccess:(url:string)=>form
             style={{ backgroundColor: Colors.secondaryGreen, marginTop: 12 }}
             textStyle={{ fontWeight: "600" }}
           />
-          <Text>{JSON.stringify(form.formState.errors)}</Text>
+       
         </View>
       )}
     </ScrollView>

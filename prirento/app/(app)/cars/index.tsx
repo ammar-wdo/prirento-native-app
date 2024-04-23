@@ -82,6 +82,7 @@ const router = useRouter()
         <View style={{flex:1,backgroundColor:'white'}}>
          
         <FlatList
+     
         showsVerticalScrollIndicator={false}
         ListHeaderComponent={()=>  <TextFilter placeHolder="Search By Car Model" text={query} setText={handleQueryChange} />}
           refreshControl={
@@ -121,6 +122,7 @@ const styles = StyleSheet.create({
   listContentContainer: {
     paddingHorizontal: 10,
     paddingTop: 10,
+   
   },
   emptyListText: {
     textAlign: "center",

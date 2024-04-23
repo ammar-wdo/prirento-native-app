@@ -22,7 +22,7 @@ const BarChartComponentTwo: React.FC<BarChartComponentProps> = ({bookings}) => {
 
   // Filter bookings for the current month and year
   const filteredBookings = bookings.filter((booking) => {
-    const bookingDate = new Date(booking.createdAt);
+    const bookingDate = new Date(booking.startDate);
     return bookingDate.getMonth() === currentMonth && bookingDate.getFullYear() === currentYear;
   });
 
@@ -33,7 +33,7 @@ const BarChartComponentTwo: React.FC<BarChartComponentProps> = ({bookings}) => {
   }
 
   filteredBookings.forEach((booking) => {
-    const day = new Date(booking.createdAt).getDate();
+    const day = new Date(booking.startDate).getDate();
     bookingsPerDay[day] = (bookingsPerDay[day] || 0) + 1;
   });
 
