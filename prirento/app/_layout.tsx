@@ -45,15 +45,7 @@ export default function RootLayoutNav() {
                 headerLeft:()=><Ionicons size={20} name="arrow-back" onPress={()=>router.push('/(app)')} />
               }}
             />
-            <Stack.Screen
-              name="(modals)/help"
-              options={{
-                
-                
-                title: "Help Center",
-                headerTitleAlign: "center",
-              }}
-            />
+        
             <Stack.Screen
               name="(modals)/privacy"
               options={{

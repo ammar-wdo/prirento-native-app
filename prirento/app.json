@@ -10,7 +10,7 @@
     "splash": {
       "image": "./assets/images/splash.png",
       "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "backgroundColor": "#052206"
     },
     "assetBundlePatterns": [
       "**/*"
@@ -21,10 +21,11 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/images/adaptive-icon.png",
-        "backgroundColor": "#ffffff"
+        "foregroundImage": "./assets/images/icon.png",
+        "backgroundColor": "#052206"
       },
-      "package": "com.ammar1990.prirento"
+      "package": "com.ammar1990.prirento",
+      "googleServicesFile":"./app/google-services.json"
     },
     "web": {
       "bundler": "metro",

@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "23485034921",
+    "project_id": "prirento",
+    "storage_bucket": "prirento.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:23485034921:android:216c6768f6046a2054d4b8",
+        "android_client_info": {
+          "package_name": "com.ammar1990.prirento"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCvtjJVTfKGNQxZMkqifbpoZj_uR90_Bew"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

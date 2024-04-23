@@ -86,7 +86,7 @@ console.log('start')
         name="settings/index"
         options={{
           title: "Settings",
-          headerShown: false,
+     
 
           tabBarIcon: ({ color }) => (
             <Ionicons name="settings-outline" size={20} color={color} />

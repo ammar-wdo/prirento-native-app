@@ -1,4 +1,4 @@
-import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { Platform, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import React from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import SettingsElement from "@/components/settings-element";
@@ -8,35 +8,61 @@ import { useAuth } from "@/hooks/auth.hook";
 import { Ionicons } from "@expo/vector-icons";
 import { useModal } from "@/hooks/modal-hook";
 import ExitModal from "@/components/exit-modal";
+import { startActivityAsync, ActivityAction } from 'expo-intent-launcher'
+import * as Linking from 'expo-linking';
+import * as Application from 'expo-application';
+
+
 
 const index = () => {
   const router = useRouter();
 
 const {logout,setLogout} = useModal()
+
+
+
+const onPress= () => {
+  if (Platform.OS === 'android') {
+    const bundleIdentifier = Application.applicationId;
+    if (Platform.Version >= 26) {
+      startActivityAsync(
+        ActivityAction.APP_NOTIFICATION_SETTINGS
+     
+      );
+    } else {
+      startActivityAsync(
+        ActivityAction.APPLICATION_DETAILS_SETTINGS
+       
+      );
+    }
+  }
+  if (Platform.OS === 'ios') {
+    Linking.openURL('app-settings:');
+  }
+}
+
   return (
     <View style={{ padding: 12, flex: 1, backgroundColor: "white" }}>
  <Stack.Screen    options={{
           title: "Settings",
           headerTitleAlign: "center",
           headerBackVisible: true,
-          headerLeft:()=><Ionicons size={20} name="arrow-back" onPress={()=>router.push('/(app)')} />
+          headerLeft:()=><Ionicons size={20} style={{marginLeft:12,padding:12}} name="arrow-back" onPress={()=>router.push('/(app)')} />,
+          headerBackTitleVisible:false
         }} />
       <SettingsElement
         title="Notifications"
-        push={() => router.push("/(modals)/notifications")}
+        push={onPress}
       />
       <SettingsElement
         title="Terms & Conditions"
-        push={() => router.push("/(modals)/terms")}
+        push={() => router.push("https://www.prirento.ae/terms-and-conditions")}
       />
       <SettingsElement
         title="Privacy Policy"
-        push={() => router.push("/(modals)/privacy")}
+        push={() => router.push("https://www.prirento.ae/privacy-policy")}
       />
-      <SettingsElement
-        title="Help & Support"
-        push={() => router.push("/(modals)/help")}
-      />
+   
       <TouchableOpacity
         onPress={()=>setLogout(true)}
         style={{
