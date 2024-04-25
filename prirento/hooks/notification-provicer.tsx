@@ -14,6 +14,10 @@ export const NotificationsProvider = ({
   const [expoPushToken, setExpoPushToken] = useState<string | undefined>(
     undefined
   );
+
+  const { user } = useAuth();
+
+
   const [notification, setNotification] =
     useState<Notifications.Notification>();
   const notificationListener = useRef<Notifications.Subscription>();
@@ -32,10 +36,16 @@ export const NotificationsProvider = ({
   const queryClient = useQueryClient();
 
   useEffect(() => {
-    registerForPushNotificationsAsync().then((token) => {
+console.log('user',JSON.stringify(user))
+    if(!!user?.pushToken) {
+      setExpoPushToken(user.pushToken)
+    }
+    else
+
+  {  registerForPushNotificationsAsync().then((token) => {
       setExpoPushToken(token);
       console.log("Token: ", token);
-    });
+    });}
 
    
 
@@ -71,7 +81,7 @@ export const NotificationsProvider = ({
     };
   }, []);
 
-  const { user } = useAuth();
+ 
 
     //add push token after we recieve it
     useEffect(() => {
@@ -93,7 +103,7 @@ export const NotificationsProvider = ({
           }
         };
   
-        if (expoPushToken) {
+        if (!!expoPushToken || !user?.pushToken) {
           addPushToken();
         }
       }, [expoPushToken]);

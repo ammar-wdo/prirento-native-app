@@ -13,6 +13,7 @@ export type User = {
   logo: string;
   name:string
   token: string;
+  pushToken:string | ''
 };
 
 type AuthType = {
@@ -54,6 +55,7 @@ export const AuthProvider = ({children}:{children:ReactNode}) => {
     };
 
     loadUser();
+    
   }, []);
 
 
@@ -64,7 +66,7 @@ export const AuthProvider = ({children}:{children:ReactNode}) => {
 }
 
 const signout =async ()=>{
-
+  console.log("the user",JSON.stringify(user))
   try {
     const res = await fetcher<{success:boolean,error?:string}>(REMOVE_PUSH_TOKEN,user?.token)
     if(!res.success){
