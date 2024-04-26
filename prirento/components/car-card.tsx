@@ -40,7 +40,7 @@ const CarCardItem = ({ car }: { car: CarCard }) => {
           </View>}
         </View>
       </View>
-      <Text>{car.image}</Text>
+     
     </TouchableOpacity>
   );
 };
