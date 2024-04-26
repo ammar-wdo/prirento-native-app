@@ -33,6 +33,20 @@ export const fetcher = async <T>(url: string,token?: string): Promise<T> => {
 
     return response.data;
 };
+  export const remover = async <T>(url: string,token?: string): Promise<T> => {
+    // Default headers can be extended or overridden by the headers argument
+   
+
+    const response = await axios.delete<T>(url, {
+        headers: {
+          "api-Secret": API_SECRET,
+          ...(token && { 'Authorization': `Bearer ${token}`})
+       
+        },
+    });
+
+    return response.data;
+};
 
 
 

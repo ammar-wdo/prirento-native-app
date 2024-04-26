@@ -17,7 +17,7 @@ import { FontAwesome5, Ionicons } from "@expo/vector-icons";
 import CustomButton from "@/components/custom-button";
 import { useLogin } from "@/hooks/login.hook";
 import { useAuth } from "@/hooks/auth.hook";
-import { Redirect } from "expo-router";
+import { Redirect, SplashScreen } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 
 const Signin = () => {
@@ -28,6 +28,9 @@ const Signin = () => {
   if (!!loading) return null;
 
   if (!!user) return <Redirect href="/(app)" />;
+
+
+  SplashScreen.hideAsync()
 
   return (
     <KeyboardAvoidingView

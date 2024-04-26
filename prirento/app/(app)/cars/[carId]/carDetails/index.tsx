@@ -374,7 +374,7 @@ const CarDetails = () => {
                         renderItem={({ item }) => (
                           <View
                             style={{
-                              width: 300,
+                              width: 275,
                               aspectRatio: 2 / 1,
                               borderColor: Colors.border,
                               overflow: "hidden",

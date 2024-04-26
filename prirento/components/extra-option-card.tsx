@@ -1,8 +1,13 @@
-import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
-import React from 'react'
+import { ActivityIndicator, Alert, Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import React, { useState } from 'react'
 import { ExtraOption } from '@/types'
 import { Colors } from '@/constants/Colors'
 import { useRouter } from 'expo-router'
+import { remover } from '@/lib/utils'
+import { useQueryClient } from '@tanstack/react-query'
+import { useAuth } from '@/hooks/auth.hook'
+import { DELETE_CAR_EXTRA_OPTION } from '@/links'
+import { FontAwesome, Ionicons } from '@expo/vector-icons'
 
 type Props = {
     el:ExtraOption,
@@ -12,6 +17,53 @@ type Props = {
 }
 const ExtraOptionCard = ({el,carId,setExtraOptionModal,setOpen}:Props) => {
     const router = useRouter()
+
+    const [isLoadingDelete, setIsLoadingDelete] = useState("");
+
+    const queryClient = useQueryClient();
+
+    const {user} = useAuth()
+
+  const handleDelete = async (extraOptionId: string, carId: string) => {
+    Alert.alert(
+      "Confirm",
+      "Are you sure you want to proceed?",
+      [
+        {
+          text: "Cancel",
+          onPress: () => console.log("Cancel Pressed"),
+          style: "cancel",
+        },
+        {
+          text: "OK",
+          onPress: async () => {
+            try {
+              setIsLoadingDelete(extraOptionId);
+              const res = await remover<{
+                success: boolean;
+                error?: string;
+                message?: string;
+              }>(DELETE_CAR_EXTRA_OPTION(carId, extraOptionId), user?.token);
+              if (res.success) {
+                queryClient.refetchQueries({
+                  queryKey: ["extraOptions", carId],
+                });
+                Alert.alert("Successfully Deleted");
+              } else if (!res.success) {
+                Alert.alert(res.error!);
+              }
+            } catch (error) {
+              console.log(error);
+              Alert.alert("Something went wrong");
+            } finally {
+              setIsLoadingDelete("");
+            }
+          },
+        },
+      ],
+      { cancelable: false } // This ensures the alert is not dismissable by tapping outside of it
+    );
+  };
   return (
     <View
 
@@ -44,14 +96,17 @@ const ExtraOptionCard = ({el,carId,setExtraOptionModal,setOpen}:Props) => {
         {el.status}
       </Text>
      </View>
-    
-      <TouchableOpacity
+    <View style={{gap:3,flex:1}}>
+    <TouchableOpacity
         style={{
-          marginTop: 10,
+         width:'100%',
           backgroundColor: Colors.secondaryGreen,
           borderRadius: 5,
-          padding: 8,
-          flex:1
+          padding: 6,
+          flex:1,
+          gap: 12,
+          flexDirection:'row',
+          justifyContent:'center'
         }}
         onPress={() => {
 setExtraOptionModal(el)
@@ -59,6 +114,7 @@ setOpen()
 
         }}
       >
+         <FontAwesome name='edit' color={'white'}  size={16} />
         <Text
           style={{
             color: "white",
@@ -66,9 +122,45 @@ setOpen()
             fontWeight: "500",
           }}
         >
-          Edit
+           Edit
         </Text>
       </TouchableOpacity>
+      <TouchableOpacity
+              disabled={isLoadingDelete === el.id}
+                onPress={() => handleDelete(el.id, carId)}
+                style={{
+                  backgroundColor: "red",
+                  marginTop: 4,
+                  opacity:isLoadingDelete === el.id ? 0.5 : 1,
+
+                  padding: 6,
+                  borderRadius: 5,
+                
+                  gap: 12,
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
+              >
+                {isLoadingDelete === el.id ? (
+                  <ActivityIndicator color={"white"} size={"small"} />
+                ) : (
+                  <View style={{  flexDirection: "row",   justifyContent: "center",
+                  alignItems: "center",gap: 12,}}>
+                    <Ionicons name="trash" size={16} color={"white"} />
+                    <Text
+                      style={{
+                        color: "white",
+                        textAlign: "center",
+                        fontWeight: "600",
+                      }}
+                    >
+                      Delete
+                    </Text>
+                  </View>
+                )}
+              </TouchableOpacity>
+    </View>
+      
     </View>
   </View>
   )

@@ -18,10 +18,13 @@ const CarCardItem = ({ car }: { car: CarCard }) => {
     Blocked: styles.blocked,
   };
   const router = useRouter();
+
+  console.log(car.image)
   return (
     <TouchableOpacity  onPress={() => router.push(`/(app)/cars/${car.id}/carDetails`)}>
       <View >
         <Image
+        
           source={{ uri: car.image }}
           resizeMode="cover"
           style={styles.image}
@@ -37,6 +40,7 @@ const CarCardItem = ({ car }: { car: CarCard }) => {
           </View>}
         </View>
       </View>
+      <Text>{car.image}</Text>
     </TouchableOpacity>
   );
 };

@@ -1,5 +1,6 @@
 import {
   ActivityIndicator,
+  Alert,
   RefreshControl,
   ScrollView,
   StyleSheet,
@@ -12,11 +13,13 @@ import { usePathname } from "expo-router";
 import { useCarAvailabilitiesQuery } from "@/hooks/queries.hook";
 import { useQueryClient } from "@tanstack/react-query";
 import { Colors } from "@/constants/Colors";
-import { formatDate } from "@/lib/utils";
+import { formatDate, remover } from "@/lib/utils";
 import CarAvailabilitysModal from "@/components/car-availability-modal";
 import { useModal } from "@/hooks/modal-hook";
 import { CarAvailability } from "@/types";
 import { FontAwesome5, Ionicons } from "@expo/vector-icons";
+import { DELETE_CAR_AVAILABILITY } from "@/links";
+import { useAuth } from "@/hooks/auth.hook";
 
 const Availability = () => {
   const pathname = usePathname();
@@ -29,9 +32,54 @@ const Availability = () => {
 
   const { data, error, isLoading, refetch } = useCarAvailabilitiesQuery(carId);
 
+  const { user } = useAuth();
+
   const [carAvailabilityModal, setCarAvailabilityModal] = useState<
     CarAvailability | undefined
   >(undefined);
+
+  const [isLoadingDelete, setIsLoadingDelete] = useState("");
+
+  const handleDelete = async (availabilityId: string, carId: string) => {
+    Alert.alert(
+      "Confirm",
+      "Are you sure you want to proceed?",
+      [
+        {
+          text: "Cancel",
+          onPress: () => console.log("Cancel Pressed"),
+          style: "cancel",
+        },
+        {
+          text: "OK",
+          onPress: async () => {
+            try {
+              setIsLoadingDelete(availabilityId);
+              const res = await remover<{
+                success: boolean;
+                error?: string;
+                message?: string;
+              }>(DELETE_CAR_AVAILABILITY(carId, availabilityId), user?.token);
+              if (res.success) {
+                queryClient.refetchQueries({
+                  queryKey: ["availability", carId],
+                });
+                Alert.alert("Successfully Deleted");
+              } else if (!res.success) {
+                Alert.alert(res.error!);
+              }
+            } catch (error) {
+              console.log(error);
+              Alert.alert("Something went wrong");
+            } finally {
+              setIsLoadingDelete("");
+            }
+          },
+        },
+      ],
+      { cancelable: false } // This ensures the alert is not dismissable by tapping outside of it
+    );
+  };
 
   const onRefresh = React.useCallback(async () => {
     setRefreshing(true);
@@ -82,16 +130,18 @@ const Availability = () => {
           padding: 6,
           backgroundColor: Colors.mainDark,
           borderRadius: 5,
-          flexDirection:'row',
+          flexDirection: "row",
           paddingVertical: 11,
-          gap:12,
-          justifyContent:'center',
-          alignItems:'center'
+          gap: 12,
+          justifyContent: "center",
+          alignItems: "center",
         }}
       >
-        <Ionicons name="add-circle-outline"  color={'white'} size={20}/>
-        <Text style={{ color: "white", textAlign: "center" ,fontWeight:'600'}}>
-           New Block Date
+        <Ionicons name="add-circle-outline" color={"white"} size={20} />
+        <Text
+          style={{ color: "white", textAlign: "center", fontWeight: "600" }}
+        >
+          New Block Date
         </Text>
       </TouchableOpacity>
       {!data.availabilities.length ? (
@@ -159,24 +209,65 @@ const Availability = () => {
                 style={{
                   marginTop: 12,
                   backgroundColor: Colors.secondaryGreen,
-            
+
                   padding: 6,
                   borderRadius: 5,
-                  flexDirection:'row',
-                  gap:12,
-                  justifyContent:'center',
-                  alignItems:'center'
+                  flexDirection: "row",
+                  gap: 12,
+                  justifyContent: "center",
+                  alignItems: "center",
                 }}
               >
-              <FontAwesome5 name={'edit'} size={16} color={'white'} />
-                <Text style={{ color: "white", textAlign: "center" ,fontWeight:'600'}}>
+                <FontAwesome5 name={"edit"} size={16} color={"white"} />
+                <Text
+                  style={{
+                    color: "white",
+                    textAlign: "center",
+                    fontWeight: "600",
+                  }}
+                >
                   Edit
                 </Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+              disabled={isLoadingDelete === el.id}
+                onPress={() => handleDelete(el.id, carId)}
+                style={{
+                  backgroundColor: "red",
+                  marginTop: 4,
+                  opacity:isLoadingDelete === el.id ? 0.5 : 1,
+
+                  padding: 6,
+                  borderRadius: 5,
+                
+                  gap: 12,
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
+              >
+                {isLoadingDelete === el.id ? (
+                  <ActivityIndicator color={"white"} size={"small"} />
+                ) : (
+                  <View style={{  flexDirection: "row",   justifyContent: "center",
+                  alignItems: "center",gap: 12,}}>
+                    <Ionicons name="trash" size={16} color={"white"} />
+                    <Text
+                      style={{
+                        color: "white",
+                        textAlign: "center",
+                        fontWeight: "600",
+                      }}
+                    >
+                      Delete
+                    </Text>
+                  </View>
+                )}
               </TouchableOpacity>
             </View>
           ))}
         </View>
       )}
+
       <CarAvailabilitysModal
         isVisible={availability}
         onClose={() => setAvailability(false)}

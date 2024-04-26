@@ -1,4 +1,4 @@
-import { Redirect, Slot, Stack, useRouter } from "expo-router";
+import { Redirect, Slot, Stack, useRouter,SplashScreen } from "expo-router";
 
 import { AuthProvider, useAuth } from "@/hooks/auth.hook";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
@@ -6,10 +6,19 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import Toast from "react-native-toast-message";
 import { Ionicons } from "@expo/vector-icons";
 import { ModalProvider } from "@/hooks/modal-hook";
+import { useEffect } from "react";
 
 
 const queryClient = new QueryClient();
 
+
+SplashScreen.preventAutoHideAsync();
+
+// useEffect(()=>{
+//   setTimeout(() => {
+//     SplashScreen.hideAsync()
+//   }, 7000);
+// },[])
 
 
 export default function RootLayoutNav() {

@@ -25,6 +25,7 @@ import BookingCardComponent from "@/components/bookings-card";
 import { getCurrentMonthYear } from "@/lib/utils";
 import BarChartComponent from "@/components/bar-charts";
 import BarChartComponentTwo from "@/components/bar-chart-two";
+import { SplashScreen } from "expo-router";
 
 
 
@@ -104,6 +105,9 @@ export default function TabOneScreen() {
      </TouchableOpacity>
     </View>
   </View>;
+
+SplashScreen.hideAsync()
+
 
   return (
     <View style={{ flex: 1 }}>

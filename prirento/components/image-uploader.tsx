@@ -64,7 +64,7 @@ export const useImageUploader = ({ onUploadSuccess }:ImageUploaderProps) => {
       console.log("Json response",jsonResponse)
       if (response.ok) {
         console.log("response",jsonResponse)
-        onUploadSuccess(jsonResponse.url);
+        onUploadSuccess(jsonResponse.secure_url);
       } else {
         throw new Error("Cloudinary upload failed");
       }

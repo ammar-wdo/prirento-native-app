@@ -16,6 +16,7 @@ export const ADD_PRICE= (carId:string)=> MAIN_BACKEND + `/api/native/car/${carId
 export const GET_BOOKING_DETAILS = (bookingId:string)=> MAIN_BACKEND + `/api/native/bookings/${bookingId}`
 export const GET_CAR_EXTRA_OPTIONS = (carId:string)=> MAIN_BACKEND + `/api/native/car/${carId}/extraOptions`
 export const GET_CAR_EXTRA_OPTIONS_DETAILS = (carId:string,optionId:string)=> MAIN_BACKEND + `/api/native/car/${carId}/extraOptions/${optionId}`
+export const DELETE_CAR_EXTRA_OPTION = (carId:string,optionId:string)=> MAIN_BACKEND + `/api/native/car/${carId}/extraOptions/${optionId}`
 export const GET_NOTIFICATIONS= MAIN_BACKEND + '/api/native/notifications'
 export const GET_NOTIFICATIONS_COUNT= MAIN_BACKEND + '/api/native/notifications/count'
 export const GET_COMPANY = MAIN_BACKEND + '/api/native/company'
@@ -24,3 +25,4 @@ export const REMOVE_PUSH_TOKEN = MAIN_BACKEND + '/api/native/company/remove-push
 export const CHANGE_PASSWORD = MAIN_BACKEND + '/api/native/password'
 export const GET_CAR_AVAILABILITIES = (carId:string)=> MAIN_BACKEND + `/api/native/car/${carId}/availability`
 export const GET_CAR_AVAILABILITIES_DETAILS = (carId:string,availabilityId:string)=> MAIN_BACKEND + `/api/native/car/${carId}/availability/${availabilityId}`
+export const DELETE_CAR_AVAILABILITY = (carId:string,availabilityId:string)=> MAIN_BACKEND + `/api/native/car/${carId}/availability/${availabilityId}`
