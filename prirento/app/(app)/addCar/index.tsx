@@ -124,14 +124,14 @@ const {loading,pickImage} = useImageUploader({onUploadSuccess:(url:string)=>form
   )
 
   return (
-    <ScrollView contentContainerStyle={{flex: 1,paddingBottom:20}} style={{  backgroundColor: "white", padding: 12 }}
+    <ScrollView contentContainerStyle={{paddingBottom:20}} style={{ flex:1, backgroundColor: "white", padding: 12 }}
     refreshControl={
       <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
     }
   >
     
      
-        <View>
+   
           <FormWrapper title="Basic Informations">
             <View style={{ gap: 12 }}>
               <View style={{ gap: 2 }}>
@@ -788,7 +788,7 @@ const {loading,pickImage} = useImageUploader({onUploadSuccess:(url:string)=>form
             textStyle={{ fontWeight: "600" }}
           />
        
-        </View>
+     
  
     </ScrollView>
   );
