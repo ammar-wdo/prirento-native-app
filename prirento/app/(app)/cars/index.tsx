@@ -19,6 +19,7 @@ import { useCarsQuery } from "@/hooks/queries.hook";
 import { Ionicons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
 import TextFilter from "@/components/text-filter";
+import ErrorComponent from "@/components/error-component";
 
 const renderItemSeparator = () => {
   return <View style={styles.itemSeparator} />;
@@ -27,9 +28,7 @@ const renderItemSeparator = () => {
 const index = () => {
   const [refreshing, setRefreshing] = useState(false);
   const [query, setQuery] = useState("");
-  const { data, isLoading, refetch: refetchCars } = useCarsQuery();
-
-
+  const { data, isLoading, refetch: refetchCars,error } = useCarsQuery();
 
   const onRefresh = async () => {
     try {
@@ -43,51 +42,59 @@ const index = () => {
     }
   };
 
-
-
-
-
-  const filteredData = useMemo(() => data?.cars.filter((el) => {
-    if (!query) return true;
-    return el.carName.toLowerCase().includes(query.toLowerCase());
-  }), [query, data?.cars]);
+  const filteredData = useMemo(
+    () =>
+      data?.cars.filter((el) => {
+        if (!query) return true;
+        return el.carName.toLowerCase().includes(query.toLowerCase());
+      }),
+    [query, data?.cars]
+  );
 
   // Memoizing onChangeText handler to avoid re-creating the function on every render
-  const handleQueryChange = useCallback((text:string) => {
+  const handleQueryChange = useCallback((text: string) => {
     setQuery(text);
   }, []);
 
+  const router = useRouter();
 
-const router = useRouter()
+  if (isLoading)
+    return (
+      <View style={{ alignItems: "center", justifyContent: "center", flex: 1 }}>
+        <ActivityIndicator size="large" color={Colors.mainDark} />
+      </View>
+    );
+
+  if (!data?.success ||error  )
+    return (
+      <ScrollView
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        }
+        style={{ flex: 1 }}
+        contentContainerStyle={{
+          alignItems: "center",
+          justifyContent: "center",
+          flex: 1,
+        }}
+      >
+       <ErrorComponent text="Something went wrong!" onRefresh={onRefresh} />
+      </ScrollView>
+    );
   return (
     <View style={styles.list}>
-      <CustomHeader cars={true} />
-      {isLoading ? (
-        <View
-          style={{ alignItems: "center", justifyContent: "center", flex: 1 }}
-        >
-          <ActivityIndicator size="large" color={Colors.mainDark} />
-        </View>
-      ) : !data?.success ? (
-        <ScrollView
-          refreshControl={
-            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-          }
-          style={{ flex: 1 }}
-          contentContainerStyle={{ alignItems: 'center', justifyContent: 'center' }}
-        >
-          <Text>{data?.error}</Text>{" "}
-        </ScrollView>
-      ) : (
-        <View style={{flex:1,backgroundColor:'white'}}>
-         
+      <View style={{ flex: 1, backgroundColor: "white" }}>
         <FlatList
-     
-        showsVerticalScrollIndicator={false}
-        ListHeaderComponent={()=>  <TextFilter placeHolder="Search By Car Model" text={query} setText={handleQueryChange} />}
-          refreshControl={
-            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-          }
+          showsVerticalScrollIndicator={false}
+          ListHeaderComponent={() => (
+            <TextFilter
+              placeHolder="Search By Car Model"
+              text={query}
+              setText={handleQueryChange}
+            />
+          )}
+          refreshing={refreshing}
+          onRefresh={onRefresh}
           style={styles.list}
           ItemSeparatorComponent={renderItemSeparator}
           keyExtractor={(item) => item.id.toString()}
@@ -95,16 +102,10 @@ const router = useRouter()
           data={filteredData}
           renderItem={({ item }) => <CarCardItem car={item} />}
           ListEmptyComponent={
-            !isLoading && (
-              <Text style={styles.emptyListText}>No such car</Text>
-            )
+            !isLoading && <Text style={styles.emptyListText}>No such car</Text>
           }
         />
-        </View>
-      
-      )}
-
- 
+      </View>
     </View>
   );
 };
@@ -122,12 +123,11 @@ const styles = StyleSheet.create({
   listContentContainer: {
     paddingHorizontal: 10,
     paddingTop: 10,
-   
   },
   emptyListText: {
     textAlign: "center",
     marginTop: 20,
     fontSize: 18,
-    color: 'gray',
+    color: "gray",
   },
 });

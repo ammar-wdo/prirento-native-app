@@ -20,6 +20,7 @@ import { CarAvailability } from "@/types";
 import { FontAwesome5, Ionicons } from "@expo/vector-icons";
 import { DELETE_CAR_AVAILABILITY } from "@/links";
 import { useAuth } from "@/hooks/auth.hook";
+import ErrorComponent from "@/components/error-component";
 
 const Availability = () => {
   const pathname = usePathname();
@@ -103,14 +104,15 @@ const Availability = () => {
     );
   }
 
-  if (!data?.success || error)
+  if (!data?.success || error )
     return (
-      <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
-        <Text>Something went wrong!</Text>
-        <TouchableOpacity onPress={onRefresh} style={{ marginTop: 12 }}>
-          <Text>Try Again!</Text>
-        </TouchableOpacity>
-      </View>
+  <ScrollView 
+  refreshControl={<RefreshControl onRefresh={onRefresh} refreshing={refreshing}/>}
+  contentContainerStyle={{flex:1,alignItems:'center',justifyContent:'center'}}
+  
+  >
+     <ErrorComponent text="Something went wrong!" onRefresh={onRefresh} />
+      </ScrollView>
     );
 
   return (

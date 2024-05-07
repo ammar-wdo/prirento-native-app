@@ -26,6 +26,7 @@ import { getCurrentMonthYear } from "@/lib/utils";
 import BarChartComponent from "@/components/bar-charts";
 import BarChartComponentTwo from "@/components/bar-chart-two";
 import { SplashScreen } from "expo-router";
+import ErrorComponent from "@/components/error-component";
 
 
 
@@ -86,27 +87,33 @@ export default function TabOneScreen() {
       </View>
     );
 
+
+    SplashScreen.hideAsync()
+
   if (
     !recentData?.success ||
     !recentBookingsData?.success ||
     !BookingsInfoData?.success ||
     !!BookingsInfoError ||
     !!recentBookingsError ||
-    !!recentError
+    !!recentError 
   )
     return  <View style={{ flex: 1 }}>
     <CustomHeader />
-    <View
-      style={{ flex: 1, alignItems: "center", justifyContent: "center" }}
+    <ScrollView
+    
+     refreshControl={
+      <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+    }
+
+    
+      contentContainerStyle={{ flex: 1, alignItems: "center", justifyContent: "center" }}
     >
-     <Text>Something went wrong</Text>
-     <TouchableOpacity style={{marginTop:12,padding:12}} onPress={onRefresh}>
-      Try agian!
-     </TouchableOpacity>
-    </View>
+<ErrorComponent onRefresh={onRefresh} text="Something went wrong!"/>
+    </ScrollView>
   </View>;
 
-SplashScreen.hideAsync()
+
 
 
   return (

@@ -1,13 +1,15 @@
 import {
   ActivityIndicator,
   Image,
+  RefreshControl,
   SafeAreaView,
+  ScrollView,
   StyleSheet,
   Text,
   TouchableOpacity,
   View,
 } from "react-native";
-import React from "react";
+import React, { useState } from "react";
 import { Slot, Stack, useLocalSearchParams, useRouter } from "expo-router";
 
 import { Colors } from "@/constants/Colors";
@@ -17,12 +19,26 @@ import { CarDetail } from "@/schemas";
 import { useCarQuery } from "@/hooks/queries.hook";
 import { LinearGradient } from "expo-linear-gradient";
 import { capitalizer } from "@/lib/utils";
+import ErrorComponent from "@/components/error-component";
 
 const _layout = () => {
   const { carId } = useLocalSearchParams();
   const router = useRouter();
 
-  const { isLoading, data } = useCarQuery(carId as string);
+  const { isLoading, data,refetch,error } = useCarQuery(carId as string);
+  const [refreshing, setRefreshing] = useState(false);
+
+  const onRefresh = async () => {
+    try {
+      setRefreshing(true);
+      await refetch();
+    } catch (error) {
+      console.error("Failed to refetch cars:", error);
+      // Handle the error as needed
+    } finally {
+      setRefreshing(false); // Always stop the refreshing indicator
+    }
+  };
 
   if (isLoading) {
     return (
@@ -31,11 +47,31 @@ const _layout = () => {
       </View>
     );
   }
-  if (!data?.success) return <Text>{data?.error}</Text>;
+  if (!data?.success || error ) return  <ScrollView
+  refreshControl={
+    <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+  }
+  style={{ flex: 1 }}
+  contentContainerStyle={{
+    alignItems: "center",
+    justifyContent: "center",
+    flex: 1,
+  }}
+>
+<ErrorComponent text="Something went wrong!" onRefresh={onRefresh} />
+          <TouchableOpacity onPress={()=>router.push('/(app)/cars')}   style={{
+            marginTop: 8,
+            backgroundColor: Colors.mainDark,
+            padding: 8,
+            borderRadius: 5,
+          }}>
+            <Text style={{ color: "white" }}>Back to Cars screen</Text>
+          </TouchableOpacity>
+</ScrollView>
 
   return (
     <View style={{flex:1}}>
-          <CustomHeader cars={true} />
+         
    <SafeAreaView style={{ flex: 1 }}>
   
       <View style={{ position: "relative" }}>

@@ -12,7 +12,7 @@ import { useCarQuery } from "@/hooks/queries.hook";
 
 import { usePricings } from "@/hooks/car-pricings.hook";
 
-import { usePathname } from "expo-router";
+import { Link, usePathname } from "expo-router";
 import FormWrapper from "@/components/form-wrapper";
 import { Controller } from "react-hook-form";
 import Input from "@/components/Input";
@@ -20,6 +20,7 @@ import PriceInput from "@/components/price-input";
 import CustomButton from "@/components/custom-button";
 import { Feather } from "@expo/vector-icons";
 import { Colors } from "@/constants/Colors";
+import ErrorComponent from "@/components/error-component";
 
 const Pricing = () => {
   const pathname = usePathname();
@@ -64,14 +65,21 @@ const Pricing = () => {
       </View>
     );
   }
-  if (!carData?.success)
+  if (!carData?.success || carError )
     return (
-      <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
-        <Text>{carData?.error}</Text>
-        <TouchableOpacity onPress={onRefresh} style={{marginTop:12}}>
-          <Text>Try Again!</Text>
-        </TouchableOpacity>
-      </View>
+      <ScrollView
+      contentContainerStyle={{
+        flex: 1,
+        alignItems: "center",
+        justifyContent: "center",
+      }}
+      refreshControl={
+        <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+      }
+    >
+       <ErrorComponent text="Something went wrong!" onRefresh={onRefresh} />
+      
+    </ScrollView>
     );
 
   if (!!carData.car)
