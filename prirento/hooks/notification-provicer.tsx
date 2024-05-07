@@ -36,16 +36,13 @@ export const NotificationsProvider = ({
   const queryClient = useQueryClient();
 
   useEffect(() => {
-console.log('user',JSON.stringify(user))
-    if(!!user?.pushToken) {
-      setExpoPushToken(user.pushToken)
-    }
-    else
 
-  {  registerForPushNotificationsAsync().then((token) => {
+  
+
+    registerForPushNotificationsAsync().then((token) => {
       setExpoPushToken(token);
       console.log("Token: ", token);
-    });}
+    });
 
    
 
@@ -68,6 +65,8 @@ console.log('user',JSON.stringify(user))
         console.log(response);
       });
 
+   
+
     return () => {
       if (notificationListener.current) {
         Notifications.removeNotificationSubscription(
@@ -78,8 +77,13 @@ console.log('user',JSON.stringify(user))
       if (responseListener.current) {
         Notifications.removeNotificationSubscription(responseListener.current);
       }
+
+      // Notifications.removePushTokenSubscription()
     };
   }, []);
+
+
+
 
  
 
@@ -102,10 +106,18 @@ console.log('user',JSON.stringify(user))
             console.log(error);
           }
         };
-  
-        if (!!expoPushToken || !user?.pushToken) {
-          addPushToken();
+
+        const implementNewToken = async()=>{
+          try {
+        
+              await addPushToken();
+           
+          } catch (error) {
+            console.log(error)
+          }
         }
+  implementNewToken()
+      
       }, [expoPushToken]);
 
   return <>{children}</>;
