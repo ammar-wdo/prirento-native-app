@@ -14,6 +14,7 @@ import { AntDesign, Ionicons, MaterialIcons } from "@expo/vector-icons";
 import { it } from "node:test";
 import { timeFromNow } from "@/lib/utils";
 import NotificationCard from "@/components/notification-card";
+import ErrorComponent from "@/components/error-component";
 
 const renderItemSeparator = () => {
   return <View style={styles.itemSeparator} />;
@@ -43,16 +44,25 @@ const Notifications = () => {
         >
           <ActivityIndicator size="large" color={Colors.mainDark} />
         </View>
-      ) : !data?.success ? (
+      ) : !data?.success || error ? (
         <ScrollView
-          refreshControl={
-            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-          }
-          style={{ flex: 1}}
-          contentContainerStyle={{ alignItems: 'center', justifyContent: 'center' }}
-        >
-          <Text>{data?.error}</Text>{" "}
-        </ScrollView>
+        refreshControl={
+          <RefreshControl
+            refreshing={refreshing}
+            onRefresh={onRefresh}
+          />
+        }
+        contentContainerStyle={{
+          flex: 1,
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+      >
+        <ErrorComponent
+          text="Something went wrong!"
+          onRefresh={onRefresh}
+        />
+      </ScrollView>
       ) : (
         <View style={{ flex: 1, backgroundColor: "white" }}>
           <FlatList

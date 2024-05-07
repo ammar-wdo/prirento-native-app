@@ -22,6 +22,7 @@ import BookingDetailCard from "@/components/booking-details-card";
 import CustomHeader from "@/components/custom-header";
 import { GET_NOTIFICATIONS } from "@/links";
 import { useAuth } from "@/hooks/auth.hook";
+import ErrorComponent from "@/components/error-component";
 
 const Separator = () => (
   <View
@@ -90,11 +91,26 @@ setRead()
           <View style={styles.loadingContainer}>
             <ActivityIndicator size="large" color={Colors.mainDark} />
           </View>
-        ) : error ? (
-          <Text>Something went wrong</Text>
-        ) : !data?.success ? (
-          <Text>{data?.error}</Text>
-        ) : (
+        ) : !data?.success ||  error  ? (
+          <ScrollView
+                refreshControl={
+                  <RefreshControl
+                    refreshing={refreshing}
+                    onRefresh={onRefresh}
+                  />
+                }
+                contentContainerStyle={{
+                  flex: 1,
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+              >
+                <ErrorComponent
+                  text="Something went wrong!"
+                  onRefresh={onRefresh}
+                />
+              </ScrollView>
+        )  : (
           <ScrollView >
             <CustomHeader />
             <View style={{ width: "100%", aspectRatio: 2 / 1 }}>

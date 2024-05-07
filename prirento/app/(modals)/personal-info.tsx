@@ -26,6 +26,7 @@ import PasswordModal from "@/components/password-modal";
 import ExitModal from "@/components/exit-modal";
 import { useImageUploader } from "@/components/image-uploader";
 import { ImageComponent } from "@/components/image-component-upload";
+import ErrorComponent from "@/components/error-component";
 
 const PersonalInfo = () => {
   const { data, isLoading, error, refetch } = useCompany();
@@ -89,17 +90,26 @@ const PersonalInfo = () => {
       </View>
     );
 
-  if (!data?.success) {
+  if (!data?.success || error ) {
     return (
       <ScrollView
-        style={{ flex: 1, backgroundColor: "white" }}
-        contentContainerStyle={{ padding: 20 }}
-        refreshControl={
-          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-        }
-      >
-        <Text>{data?.error}</Text>
-      </ScrollView>
+      refreshControl={
+        <RefreshControl
+          refreshing={refreshing}
+          onRefresh={onRefresh}
+        />
+      }
+      contentContainerStyle={{
+        flex: 1,
+        alignItems: "center",
+        justifyContent: "center",
+      }}
+    >
+      <ErrorComponent
+        text="Something went wrong!"
+        onRefresh={onRefresh}
+      />
+    </ScrollView>
     );
   }
 

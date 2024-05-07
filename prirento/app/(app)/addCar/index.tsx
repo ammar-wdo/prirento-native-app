@@ -32,6 +32,7 @@ import { FontAwesome5, Ionicons } from "@expo/vector-icons";
 import CustomModePickerModal from "@/components/model-picker";
 import { useImageUploader } from "@/components/image-uploader";
 import { ImageComponent } from "@/components/image-component-upload";
+import ErrorComponent from "@/components/error-component";
 
 const index = () => {
   const {
@@ -103,25 +104,33 @@ const {loading,pickImage} = useImageUploader({onUploadSuccess:(url:string)=>form
     form.setValue("gallary", newGallary);
   };
 
+
+  if(modelsLoading || locationsLoading) return <ScrollView   refreshControl={
+    <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+  }
+  contentContainerStyle={{flex: 1,paddingBottom:20,alignItems:'center',justifyContent:'center'}}
+  >
+  <ActivityIndicator size="large" color={Colors.mainDark} />
+  </ScrollView>
+
+  if(!modelsData?.success || !locationsData?.success || modelsError || locationsError ) return (
+    <ScrollView   refreshControl={
+      <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+    }
+    contentContainerStyle={{flex: 1,paddingBottom:20,alignItems:'center',justifyContent:'center'}}
+    >
+   <ErrorComponent text="Something went wrong!" onRefresh={onRefresh} />
+    </ScrollView>
+  )
+
   return (
-    <ScrollView contentContainerStyle={{paddingBottom:20}} style={{ flex: 1, backgroundColor: "white", padding: 12 }}
+    <ScrollView contentContainerStyle={{flex: 1,paddingBottom:20}} style={{  backgroundColor: "white", padding: 12 }}
     refreshControl={
       <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
     }
   >
     
-      {modelsLoading || locationsLoading ? (
-        <View
-          style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
-        >
-          <ActivityIndicator size="large" color={Colors.mainDark} />
-        </View>
-      ) : !modelsData?.success || !locationsData?.success ? (
-        <View>
-          {" "}
-          <Text>{modelsData?.error}</Text>
-        </View>
-      ) : (
+     
         <View>
           <FormWrapper title="Basic Informations">
             <View style={{ gap: 12 }}>
@@ -780,7 +789,7 @@ const {loading,pickImage} = useImageUploader({onUploadSuccess:(url:string)=>form
           />
        
         </View>
-      )}
+ 
     </ScrollView>
   );
 };

@@ -21,6 +21,7 @@ import { Colors } from "@/constants/Colors";
 import Input from "@/components/Input";
 import { useRouter } from "expo-router";
 import TextFilter from "@/components/text-filter";
+import ErrorComponent from "@/components/error-component";
 
 const renderItemSeparator = () => {
   return <View style={styles.itemSeparator} />;
@@ -89,10 +90,25 @@ const index = () => {
               >
                 <ActivityIndicator size="large" color={Colors.mainDark} />
               </View>
-            ) : !!BookingsError ? (
-              <Text>Something went wrong</Text>
-            ) : !BookingsData?.success ? (
-              <Text>{BookingsData?.error}</Text>
+            ) : !BookingsData?.success || BookingsError  ? (
+              <ScrollView
+                refreshControl={
+                  <RefreshControl
+                    refreshing={refreshing}
+                    onRefresh={onRefresh}
+                  />
+                }
+                contentContainerStyle={{
+                  flex: 1,
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+              >
+                <ErrorComponent
+                  text="Something went wrong!"
+                  onRefresh={onRefresh}
+                />
+              </ScrollView>
             ) : (
               <View style={{ gap: 4, flex: 1 }}>
                 <FlatList
