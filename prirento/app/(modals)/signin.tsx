@@ -17,7 +17,7 @@ import { FontAwesome5, Ionicons } from "@expo/vector-icons";
 import CustomButton from "@/components/custom-button";
 import { useLogin } from "@/hooks/login.hook";
 import { useAuth } from "@/hooks/auth.hook";
-import { Redirect, SplashScreen } from "expo-router";
+import { Link, Redirect, SplashScreen } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 
 const Signin = () => {
@@ -95,7 +95,7 @@ const Signin = () => {
                   marginVertical: 4,
                 }}
               >
-                Forget password? Contact us
+                Forget password? <Link href={'https://www.prirento.ae/contact-us'}>Contact us</Link>
               </Text>
 
               <CustomButton
