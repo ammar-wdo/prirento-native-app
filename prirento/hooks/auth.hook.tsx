@@ -20,14 +20,16 @@ type AuthType = {
   user: User | null;
   signin: (user:User) => void;
   signout: () => void;
-  loading:boolean
+  loading:boolean;
+  logUserOut: () => void;
 };
 
 const AuthContext = createContext<AuthType>({
   user: null,
   signin: () => {},
   signout: () => {},
-  loading:true
+  loading:true,
+  logUserOut:()=>{}
 });
 
 
@@ -89,10 +91,15 @@ const signout =async ()=>{
     
 }
 
+const logUserOut = async ()=>
+ { setUser(null)
+  await AsyncStorage.removeItem('user')}
+
+
 
 
 return (
-    <AuthContext.Provider value={{ user, signin, signout ,loading}}>
+    <AuthContext.Provider value={{ user, signin, signout ,loading,logUserOut}}>
       {children}
     </AuthContext.Provider>
   );

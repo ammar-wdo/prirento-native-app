@@ -5,12 +5,12 @@ import { Colors } from '@/constants/Colors'
 
 const LogoutComponent = () => {
 
-    const { signout } = useAuth()
+    const { logUserOut } = useAuth()
   return (
     <View style={{flex:1,alignItems:'center',justifyContent:'center',gap:6,backgroundColor:'white'}}>
       <Text style={{fontWeight:'700'}}>Your Email has been changed</Text>
       <Text>Please sign in aging </Text>
-      <TouchableOpacity onPress={signout} style={{backgroundColor:Colors.mainDark,padding:12,paddingHorizontal:20 ,borderRadius:5}}>
+      <TouchableOpacity onPress={logUserOut} style={{backgroundColor:Colors.mainDark,padding:12,paddingHorizontal:20 ,borderRadius:5}}>
         <Text style={{color:'white'}}>Sign in </Text>
       </TouchableOpacity>
     </View>

@@ -115,7 +115,7 @@ export const useCompanyHook = ({ company }: Props) => {
   });
 
   const [out, setOut] = useState(false)
-  const { user, signout } = useAuth();
+  const { user, signout,logUserOut } = useAuth();
   const queryClient = useQueryClient()
   async function onSubmit(values: z.infer<typeof companySchema>) {
     try {
@@ -129,7 +129,7 @@ export const useCompanyHook = ({ company }: Props) => {
         queryClient.invalidateQueries({queryKey:['company']})
         if (!!res.logout) {
         setOut(true)
-          setTimeout(()=>signout(), 10000);
+          setTimeout(()=>logUserOut(), 10000);
         }else{
             Alert.alert("Successfully Updated")
         }
