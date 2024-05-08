@@ -65,8 +65,8 @@ const { signout } = useAuth()
 
   return (
     <ScrollView
-      style={{  backgroundColor: "white" }}
-      contentContainerStyle={{ padding: 20 ,flex: 1}}
+      style={{flex:1,  backgroundColor: "white", }}
+      contentContainerStyle={{ padding: 20 ,}}
       refreshControl={
         <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
       }
@@ -137,7 +137,7 @@ const { signout } = useAuth()
             key={el.id}
           />
         ))
-      )}
+       )}
       <ExtraOptionsModal
         extraOption={extraOptionModal}
         isVisible={open}

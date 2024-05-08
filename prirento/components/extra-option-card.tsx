@@ -22,7 +22,7 @@ const ExtraOptionCard = ({el,carId,setExtraOptionModal,setOpen}:Props) => {
 
     const queryClient = useQueryClient();
 
-    const {user} = useAuth()
+    const {user,logUserOut} = useAuth()
 
   const handleDelete = async (extraOptionId: string, carId: string) => {
     Alert.alert(
@@ -43,13 +43,19 @@ const ExtraOptionCard = ({el,carId,setExtraOptionModal,setOpen}:Props) => {
                 success: boolean;
                 error?: string;
                 message?: string;
+                logout?:boolean
               }>(DELETE_CAR_EXTRA_OPTION(carId, extraOptionId), user?.token);
               if (res.success) {
                 queryClient.refetchQueries({
                   queryKey: ["extraOptions", carId],
                 });
+            
                 Alert.alert("Successfully Deleted");
-              } else if (!res.success) {
+              }
+              
+              else if (!res.success && res.logout) return logUserOut()
+              
+              else if (!res.success) {
                 Alert.alert(res.error!);
               }
             } catch (error) {
@@ -73,6 +79,7 @@ const ExtraOptionCard = ({el,carId,setExtraOptionModal,setOpen}:Props) => {
       borderRadius: 5,
       padding: 8,
       marginBottom: 12,
+
     }}
   >
     <Image

@@ -65,7 +65,11 @@ export const useCarAvailability = (
           carAvailability ? "Successfully Updated" : "Successfully Created"
         );
       }
-        else if (!res.success && !!res.logout) {return  logUserOut()}
+        else if (!res.success && !!res.logout) {
+          setAvailability(false)
+          logUserOut()
+
+          return  }
        
        else if (res.error) {
         Alert.alert(res.error);

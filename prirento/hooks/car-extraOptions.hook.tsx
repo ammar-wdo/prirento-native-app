@@ -56,7 +56,10 @@ const queryClient = useQueryClient()
         }
         
         else  if(!res.success && !!res.logout){
-          return logUserOut()
+
+          control(false)
+          logUserOut()
+          return 
         }
         else if(res.error){
           Alert.alert(res.error)
