@@ -122,11 +122,15 @@ export const useCompanyHook = ({ company }: Props) => {
       const res = await poster<{
         success: boolean;
         logout?: boolean;
+        logoutUser?: boolean;
         error?: string;
       }>(GET_COMPANY, values, user?.token);
       console.log(res);
       if (res.success) {
         queryClient.invalidateQueries({queryKey:['company']})
+        if(!res.success && !!res.logoutUser){
+          return logUserOut()
+        }
         if (!!res.logout) {
         setOut(true)
           setTimeout(()=>logUserOut(), 10000);

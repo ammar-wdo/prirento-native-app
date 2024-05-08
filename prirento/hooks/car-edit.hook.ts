@@ -13,6 +13,8 @@ import { useState } from "react";
 import { EDIT_CAR } from "@/links";
 
 export const useCarEdit = (car: ComingCar | undefined) => {
+
+  
   const usedPickups = car?.pickupLocations.map((el) => el.id);
   const usedDropoffs = car?.dropoffLocations.map((el) => el.id);
 
@@ -61,21 +63,26 @@ export const useCarEdit = (car: ComingCar | undefined) => {
   });
 
   const router = useRouter();
-  const { user } = useAuth();
+  const { user , logUserOut} = useAuth();
   const queryClient = useQueryClient();
   const { carId } = useLocalSearchParams();
 
   const onSubmit = async (data: z.infer<typeof carSchema>) => {
     try {
-      const res = await poster<{ success: boolean; message?: string }>(
+      const res = await poster<{ success: boolean; message?: string,logout?:boolean }>(
         EDIT_CAR(carId as string),
         data,
         user?.token
       );
-
-      if (!res.success) {
+      
+      if(!res.success && !!res.logout){
+        return logUserOut()
+      }
+     else if (!res.success) {
         Alert.alert(res.message || "error");
-      } else {
+      }
+  
+      else {
         Alert.alert("Successfully Updated");
         queryClient.invalidateQueries({ queryKey: ["cars"], exact: true });
         queryClient.invalidateQueries({

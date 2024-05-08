@@ -57,17 +57,21 @@ export const useAddCar = () => {
   });
 
   const router = useRouter();
-  const { user } = useAuth();
+  const { user ,logUserOut} = useAuth();
   const queryClient = useQueryClient();
 
 
   const onSubmit = async (data: z.infer<typeof carSchema>) => {
     try {
-      const res = await poster<{ success: boolean; message?: string }>(
+      const res = await poster<{ success: boolean; message?: string,logout?:boolean }>(
         ADD_CAR,
         data,
         user?.token
       );
+
+      if(!res.success && !!res.logout){
+        return logUserOut()
+      }
 
       if (!res.success) {
         Alert.alert(res.message || "error");

@@ -50,7 +50,7 @@ export const usePricings = ({ pricings, hourPrice,success}: Props) => {
 
   const router = useRouter()
 
-  const {user} = useAuth()
+  const {user , logUserOut} = useAuth()
 
   const queryClient = useQueryClient()
 
@@ -60,13 +60,15 @@ export const usePricings = ({ pricings, hourPrice,success}: Props) => {
   async function onSubmit(values: z.infer<typeof carPricingsSchema>) {
     try {
    
-      const res = await poster<{ success: boolean; message?: string }>(
+      const res = await poster<{ success: boolean; message?: string,logout?:boolean }>(
         ADD_PRICE(carId as string),
         values,
         user?.token
       );
-
-      if (!res.success) {
+      if(!res.success && !!res.logout){
+        return logUserOut()
+      }
+    else  if (!res.success) {
         Alert.alert(res.message || "error");
       } else {
          Alert.alert("Successfully Updated");

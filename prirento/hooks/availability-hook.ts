@@ -22,7 +22,7 @@ export const useCarAvailability = (
   carAvailability: CarAvailability | undefined,
   carId: string
 ) => {
-  const { user } = useAuth();
+  const { user ,logUserOut} = useAuth();
 
   const form = useForm<z.infer<typeof carAvailabilitySchema>>({
     resolver: zodResolver(carAvailabilitySchema),
@@ -45,13 +45,13 @@ export const useCarAvailability = (
       let res;
 
       if (carAvailability) {
-        res = await poster<{ success: boolean; error?: string }>(
+        res = await poster<{ success: boolean; error?: string,logout?:boolean }>(
           GET_CAR_AVAILABILITIES_DETAILS(carId, carAvailability.id),
           values,
           user?.token
         );
       } else {
-        res = await poster<{ success: boolean; error?: string }>(
+        res = await poster<{ success: boolean; error?: string ,logout?:boolean}>(
           GET_CAR_AVAILABILITIES(carId),
           values,
           user?.token
@@ -64,7 +64,10 @@ export const useCarAvailability = (
         Alert.alert(
           carAvailability ? "Successfully Updated" : "Successfully Created"
         );
-      } else if (res.error) {
+      }
+        else if (!res.success && !!res.logout) {return  logUserOut()}
+       
+       else if (res.error) {
         Alert.alert(res.error);
       }
     } catch (error) {

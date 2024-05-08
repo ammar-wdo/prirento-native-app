@@ -17,7 +17,7 @@ import { useModal } from "./modal-hook";
 
 export const useCarExtraOptions = (extraOption : ExtraOption | undefined,carId:string) => {
 
-const {user} = useAuth()
+const {user , logUserOut} = useAuth()
     console.log('Extra Option',extraOption)
   const form = useForm<z.infer<typeof carExtraOptionsSchema>>({
     resolver: zodResolver(carExtraOptionsSchema),
@@ -39,11 +39,11 @@ const queryClient = useQueryClient()
       let res
 
       if(extraOption){
- res = await poster<{success:boolean,error?:string}>(GET_CAR_EXTRA_OPTIONS_DETAILS(carId,extraOption.id),values,user?.token)
+ res = await poster<{success:boolean,error?:string,logout?:boolean}>(GET_CAR_EXTRA_OPTIONS_DETAILS(carId,extraOption.id),values,user?.token)
 
 
       }else{
-         res = await poster<{success:boolean,error?:string}>(GET_CAR_EXTRA_OPTIONS(carId),values,user?.token)
+         res = await poster<{success:boolean,error?:string,logout?:boolean}>(GET_CAR_EXTRA_OPTIONS(carId),values,user?.token)
        
 
       }
@@ -52,7 +52,13 @@ const queryClient = useQueryClient()
         queryClient.invalidateQueries({queryKey:['extraOptions', carId]})
        control(false)
         Alert.alert(extraOption ? 'Successfully Updated' : 'Successfully Created')
-        }else if(res.error){
+        
+        }
+        
+        else  if(!res.success && !!res.logout){
+          return logUserOut()
+        }
+        else if(res.error){
           Alert.alert(res.error)
         }
     } catch (error) {
