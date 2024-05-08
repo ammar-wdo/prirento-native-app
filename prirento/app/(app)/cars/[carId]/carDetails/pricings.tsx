@@ -21,6 +21,8 @@ import CustomButton from "@/components/custom-button";
 import { Feather } from "@expo/vector-icons";
 import { Colors } from "@/constants/Colors";
 import ErrorComponent from "@/components/error-component";
+import { useAuth } from "@/hooks/auth.hook";
+import LogoutComponent from "@/components/logout-component";
 
 const Pricing = () => {
   const pathname = usePathname();
@@ -39,6 +41,8 @@ const Pricing = () => {
     hourPrice: carData?.car?.hourlyPrice!,
     pricings: carData?.car?.pricings!,
   });
+
+  const { signout } = useAuth()
 
   const onRefresh = React.useCallback(async () => {
     setRefreshing(true);
@@ -65,6 +69,12 @@ const Pricing = () => {
       </View>
     );
   }
+
+
+  if ((!carData?.success && !!carData?.logout))
+  return< LogoutComponent />;
+
+
   if (!carData?.success || carError )
     return (
       <ScrollView

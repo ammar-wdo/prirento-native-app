@@ -27,12 +27,13 @@ import BarChartComponent from "@/components/bar-charts";
 import BarChartComponentTwo from "@/components/bar-chart-two";
 import { SplashScreen } from "expo-router";
 import ErrorComponent from "@/components/error-component";
-
-
+import { useAuth } from "@/hooks/auth.hook";
+import LogoutComponent from "@/components/logout-component";
 
 export default function TabOneScreen() {
   const [refreshing, setRefreshing] = useState(false);
   const clientQuery = useQueryClient();
+  const { signout } = useAuth();
 
   const {
     data: recentData,
@@ -87,8 +88,14 @@ export default function TabOneScreen() {
       </View>
     );
 
+  SplashScreen.hideAsync();
 
-    SplashScreen.hideAsync()
+  if (
+    (!recentData?.success && !!recentData?.logout) ||
+    (!recentBookingsData?.success && !!recentBookingsData?.logout) ||
+    (!BookingsInfoData?.success && !!BookingsInfoData?.logout)
+  )
+    return <LogoutComponent />;
 
   if (
     !recentData?.success ||
@@ -96,25 +103,25 @@ export default function TabOneScreen() {
     !BookingsInfoData?.success ||
     !!BookingsInfoError ||
     !!recentBookingsError ||
-    !!recentError 
+    !!recentError
   )
-    return  <View style={{ flex: 1 }}>
-    <CustomHeader />
-    <ScrollView
-    
-     refreshControl={
-      <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-    }
-
-    
-      contentContainerStyle={{ flex: 1, alignItems: "center", justifyContent: "center" }}
-    >
-<ErrorComponent onRefresh={onRefresh} text="Something went wrong!"/>
-    </ScrollView>
-  </View>;
-
-
-
+    return (
+      <View style={{ flex: 1 }}>
+        <CustomHeader />
+        <ScrollView
+          refreshControl={
+            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+          }
+          contentContainerStyle={{
+            flex: 1,
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+        >
+          <ErrorComponent onRefresh={onRefresh} text="Something went wrong!" />
+        </ScrollView>
+      </View>
+    );
 
   return (
     <View style={{ flex: 1 }}>
@@ -128,136 +135,138 @@ export default function TabOneScreen() {
       >
         {/* Monthly bookings info */}
         <View>
-   
+          <View
+            style={{
+              borderWidth: 0.7,
+              borderColor: Colors.border2,
+              borderRadius: 7,
+            }}
+          >
             <View
               style={{
-                borderWidth: 0.7,
-                borderColor: Colors.border2,
-                borderRadius: 7,
+                backgroundColor: "#E7F9F6",
+                overflow: "hidden",
+                padding: 12,
               }}
             >
-              <View style={{backgroundColor:'#E7F9F6',overflow:'hidden',padding:12}} >
-    <BarChartComponentTwo bookings={BookingsInfoData.bookingsInfo.bookings} />
-               </View>
-              <View style={{ padding: 10 }}>
+              <BarChartComponentTwo
+                bookings={BookingsInfoData.bookingsInfo.bookings}
+              />
+            </View>
+            <View style={{ padding: 10 }}>
+              <View
+                style={{
+                  flexDirection: "row",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                  borderBottomWidth: 0.7,
+                  borderBlockColor: Colors.border2,
+                  paddingBottom: 12,
+                  borderRadius: 7,
+                }}
+              >
+                <Text
+                  style={{ fontSize: 22, fontWeight: "500", color: "#777" }}
+                >
+                  Monthly Summary
+                </Text>
+                <Text
+                  style={{
+                    paddingVertical: 7,
+                    paddingHorizontal: 12,
+                    backgroundColor: Colors.lightGray,
+                    borderRadius: 5,
+                    color: "gray",
+                  }}
+                >
+                  {monthAndDate}
+                </Text>
+              </View>
+              <View
+                style={{
+                  paddingTop: 12,
+                  flexDirection: "row",
+                  justifyContent: "space-between",
+                }}
+              >
+                {/* left */}
                 <View
                   style={{
                     flexDirection: "row",
-                    justifyContent: "space-between",
                     alignItems: "center",
-                    borderBottomWidth: 0.7,
-                    borderBlockColor: Colors.border2,
-                    paddingBottom: 12,
-                    borderRadius: 7,
+                    gap: 8,
                   }}
                 >
-                  <Text
-                    style={{ fontSize: 22, fontWeight: "500", color: "#777" }}
-                  >
-                    Monthly Summary
-                  </Text>
-                  <Text
+                  <View
                     style={{
-                      paddingVertical: 7,
-                      paddingHorizontal: 12,
-                      backgroundColor: Colors.lightGray,
-                      borderRadius: 5,
-                      color: "gray",
+                      backgroundColor: Colors.secondaryGreen,
+                      borderRadius: 100,
+                      width: 45,
+                      height: 45,
+                      justifyContent: "center",
+                      alignItems: "center",
                     }}
                   >
-                    {monthAndDate}
-                  </Text>
+                    <Ionicons
+                      name="car-sport-outline"
+                      color={"white"}
+                      size={30}
+                    />
+                  </View>
+                  <View style={{ gap: 4 }}>
+                    <Text
+                      style={{
+                        fontSize: 18,
+                        color: "gray",
+                        fontWeight: "500",
+                      }}
+                    >
+                      {BookingsInfoData.bookingsInfo.count}
+                    </Text>
+                    <Text style={{ fontSize: 16, color: "#777" }}>
+                      {BookingsInfoData.bookingsInfo.count > 1
+                        ? "Cars Rented"
+                        : "Car rented"}
+                    </Text>
+                  </View>
                 </View>
+
+                {/* right */}
                 <View
                   style={{
-                    paddingTop: 12,
                     flexDirection: "row",
-                    justifyContent: "space-between",
+                    alignItems: "center",
+                    gap: 8,
                   }}
                 >
-                  {/* left */}
                   <View
                     style={{
-                      flexDirection: "row",
+                      backgroundColor: Colors.secondaryGreen,
+                      borderRadius: 100,
+                      width: 45,
+                      height: 45,
+                      justifyContent: "center",
                       alignItems: "center",
-                      gap: 8,
                     }}
                   >
-                    <View
-                      style={{
-                        backgroundColor: Colors.secondaryGreen,
-                        borderRadius: 100,
-                        width: 45,
-                        height: 45,
-                        justifyContent: "center",
-                        alignItems: "center",
-                      }}
-                    >
-                      <Ionicons
-                        name="car-sport-outline"
-                        color={"white"}
-                        size={30}
-                      />
-                    </View>
-                    <View style={{ gap: 4 }}>
-                      <Text
-                        style={{
-                          fontSize: 18,
-                          color: "gray",
-                          fontWeight: "500",
-                        }}
-                      >
-                        {BookingsInfoData.bookingsInfo.count}
-                      </Text>
-                      <Text style={{ fontSize: 16, color: "#777" }}>
-                        {BookingsInfoData.bookingsInfo.count > 1
-                          ? "Cars Rented"
-                          : "Car rented"}
-                      </Text>
-                    </View>
+                    <Ionicons name="wallet-outline" color={"white"} size={30} />
                   </View>
-
-                  {/* right */}
-                  <View
-                    style={{
-                      flexDirection: "row",
-                      alignItems: "center",
-                      gap: 8,
-                    }}
-                  >
-                    <View
+                  <View style={{ gap: 4 }}>
+                    <Text
                       style={{
-                        backgroundColor: Colors.secondaryGreen,
-                        borderRadius: 100,
-                        width: 45,
-                        height: 45,
-                        justifyContent: "center",
-                        alignItems: "center",
+                        fontSize: 18,
+                        color: "gray",
+                        fontWeight: "500",
                       }}
                     >
-                      <Ionicons
-                        name="wallet-outline"
-                        color={"white"}
-                        size={30}
-                      />
-                    </View>
-                    <View style={{ gap: 4 }}>
-                      <Text
-                        style={{
-                          fontSize: 18,
-                          color: "gray",
-                          fontWeight: "500",
-                        }}
-                      >
-                        {BookingsInfoData.bookingsInfo.total.toFixed(2)}
-                      </Text>
-                      <Text style={{ fontSize: 16, color: "#777" }}>Sales</Text>
-                    </View>
+                      {BookingsInfoData.bookingsInfo.total.toFixed(2)}
+                    </Text>
+                    <Text style={{ fontSize: 16, color: "#777" }}>Sales</Text>
                   </View>
                 </View>
               </View>
             </View>
-      
+          </View>
         </View>
 
         {/* Most rented cars */}

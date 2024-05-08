@@ -23,6 +23,7 @@ import CustomHeader from "@/components/custom-header";
 import { GET_NOTIFICATIONS } from "@/links";
 import { useAuth } from "@/hooks/auth.hook";
 import ErrorComponent from "@/components/error-component";
+import LogoutComponent from "@/components/logout-component";
 
 const Separator = () => (
   <View
@@ -57,7 +58,7 @@ const BookingDetails = () => {
     }
   };
 
-const {user} = useAuth()
+const {user, signout} = useAuth()
 
   useEffect(()=>{
 const setRead = async ()=>{
@@ -77,6 +78,13 @@ const setRead = async ()=>{
 setRead()
 
   },[bookingsId])
+
+
+  if (
+    (!data?.success && !!data?.logout) 
+  
+  )
+    return <LogoutComponent />;
 
   return (
     <View style={styles.container}>

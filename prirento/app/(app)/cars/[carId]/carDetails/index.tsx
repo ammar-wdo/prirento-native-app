@@ -44,6 +44,8 @@ import { useQueryClient } from "@tanstack/react-query";
 import { ImageComponent } from "@/components/image-component-upload";
 import { useImageUploader } from "@/components/image-uploader";
 import ErrorComponent from "@/components/error-component";
+import { useAuth } from "@/hooks/auth.hook";
+import LogoutComponent from "@/components/logout-component";
 
 const CarDetails = () => {
   const { carId } = useLocalSearchParams();
@@ -70,6 +72,8 @@ const CarDetails = () => {
     error: locationsError,
     refetch: locationsRefetch,
   } = useLocatonsQuery();
+
+  const { signout} = useAuth()
 
   // Function to handle the refresh action
   const clientQuery = useQueryClient();
@@ -128,8 +132,8 @@ const CarDetails = () => {
   ]);
 
   const sortedModels = useMemo(
-    () =>
-      modelsData?.models.sort((a, b) => {
+    () => !modelsData?.models ? []
+     : modelsData?.models.sort((a, b) => {
         const brandA = a.carBrand.brand.toLowerCase();
         const brandB = b.carBrand.brand.toLowerCase();
 
@@ -151,6 +155,9 @@ const CarDetails = () => {
         <ActivityIndicator size="large" color={Colors.mainDark} />
       </View>
     );
+
+    if ((!carData?.success && !!carData?.logout) || (!modelsData?.success && !!modelsData?.logout) || (!locationsData?.success && !!locationsData?.logout))
+    return <LogoutComponent />;
 
   if (
     !carData?.success ||

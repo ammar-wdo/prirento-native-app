@@ -23,6 +23,8 @@ import ExtraOptionsModal from "@/components/extra-options-modal";
 import { useModal } from "@/hooks/modal-hook";
 import { Ionicons } from "@expo/vector-icons";
 import ErrorComponent from "@/components/error-component";
+import { useAuth } from "@/hooks/auth.hook";
+import LogoutComponent from "@/components/logout-component";
 
 const ExtraOtions = () => {
   const pathname = usePathname();
@@ -30,7 +32,7 @@ const ExtraOtions = () => {
   const [refreshing, setRefreshing] = useState(false);
   const queryClient = useQueryClient();
   const router = useRouter();
-
+const { signout } = useAuth()
   const {
     data: extraOptions,
     isLoading: extraOptionsIsLoading,
@@ -56,6 +58,10 @@ const ExtraOtions = () => {
   const [extraOptionModal, setExttraOptionModal] = useState<
     ExtraOption | undefined
   >(undefined);
+
+
+  if ((!extraOptions?.success && !!extraOptions?.logout))
+  return <LogoutComponent />;
 
   return (
     <ScrollView

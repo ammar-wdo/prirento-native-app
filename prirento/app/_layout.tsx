@@ -32,7 +32,8 @@ export default function RootLayoutNav() {
 
  
       <AuthProvider>
-        <SafeAreaView style={{ flex: 1 }}>
+        
+        <SafeAreaView style={{ flex: 1 }} >
           <Stack screenOptions={{headerBackTitleVisible:false}}>
             <Stack.Screen name="(app)" options={{ headerShown: false }} />
             <Stack.Screen

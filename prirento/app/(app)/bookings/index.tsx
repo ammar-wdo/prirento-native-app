@@ -22,6 +22,8 @@ import Input from "@/components/Input";
 import { useRouter } from "expo-router";
 import TextFilter from "@/components/text-filter";
 import ErrorComponent from "@/components/error-component";
+import { useAuth } from "@/hooks/auth.hook";
+import LogoutComponent from "@/components/logout-component";
 
 const renderItemSeparator = () => {
   return <View style={styles.itemSeparator} />;
@@ -55,12 +57,25 @@ const index = () => {
   }, []);
 
   const filteredData = useMemo(() => {
+
+    if(!BookingsData?.bookings) return []
     return BookingsData?.bookings.filter((el) => {
       if (!query) return true;
       return el.bookingCode.includes(query);
     });
   }, [query, BookingsData?.bookings]);
   const router = useRouter();
+  const { signout } = useAuth()
+
+
+  if (
+    (!BookingsData?.success && !!BookingsData?.logout)
+   
+  
+  )
+    return <LogoutComponent />;
+
+
   return (
     <View style={{ flex: 1 }}>
       <CustomHeader />

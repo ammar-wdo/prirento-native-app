@@ -15,6 +15,8 @@ import { it } from "node:test";
 import { timeFromNow } from "@/lib/utils";
 import NotificationCard from "@/components/notification-card";
 import ErrorComponent from "@/components/error-component";
+import { useAuth } from "@/hooks/auth.hook";
+import LogoutComponent from "@/components/logout-component";
 
 const renderItemSeparator = () => {
   return <View style={styles.itemSeparator} />;
@@ -35,6 +37,10 @@ const Notifications = () => {
       setRefreshing(false); // Always stop the refreshing indicator
     }
   };
+
+  const {signout} = useAuth()
+
+  if(!data?.success && !!data?.logout) return <LogoutComponent />
 
   return (
     <View style={styles.list}>

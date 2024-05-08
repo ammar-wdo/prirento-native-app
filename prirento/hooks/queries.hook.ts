@@ -24,6 +24,7 @@ export const useCarsQuery = ()=>{
         success: boolean;
         cars: CarCard[];
         error?: string;
+        logout?:boolean
       }>(GET_CARS,user?.token),
     })
 
@@ -43,6 +44,7 @@ export const useCarQuery = (carId:string)=>{
       success: boolean;
       car: ComingCar &{brand:string,model:string};
       error?: string;
+      logout?:boolean
     }>(GET_CAR_DETAILS(carId),user?.token),
   })
 
@@ -60,6 +62,7 @@ export const useModelsQuery = ()=>{
       success: boolean;
       models: CarModel[];
       error?: string;
+      logout?:boolean
     }>(GET_MODELS,user?.token),
   })
 
@@ -79,6 +82,7 @@ export const useLocatonsQuery = ()=>{
       success: boolean;
       locations: Location[];
       error?: string;
+      logout?:boolean
     }>(GET_LOCATIONS,user?.token),
   })
 
@@ -98,6 +102,7 @@ export const useRecentCarsQuery = ()=>{
       success: boolean;
       cars: RecentCar[];
       error?: string;
+      logout?:boolean
     }>(GET_RECENT_CARS,user?.token),
   })
 
@@ -115,6 +120,7 @@ export const useRecentBookingsQuery = ()=>{
       success: boolean;
       bookings: BookingCard[];
       error?: string;
+      logout?:boolean
     }>(GET_RECENT_BOOKINGS,user?.token),
   })
 
@@ -133,7 +139,9 @@ export const useBookingsQuery = ()=>{
       success: boolean;
       bookings: BookingCard[];
       error?: string;
+      logout?:boolean
     }>(GET_BOOKINGS,user?.token),
+    
   })
 
 }
@@ -151,6 +159,7 @@ export const useBookingsInfoQuery = ()=>{
       success: boolean;
       bookingsInfo: BookingInfo;
       error?: string;
+      logout?:boolean
     }>(GET_BOOKINS_INFO,user?.token),
   })
 
@@ -169,6 +178,7 @@ export const useBookingDetailsQuery = (bookingId:string)=>{
       success: boolean;
       bookingDetails: Booking;
       error?: string;
+      logout?:boolean
     }>(GET_BOOKING_DETAILS(bookingId),user?.token),
   })
 
@@ -186,6 +196,7 @@ export const useCarExtraOptionsQuery = (carId:string)=>{
       success: boolean;
       extraOptions:ExtraOption[];
       error?: string;
+      logout?:boolean
     }>(GET_CAR_EXTRA_OPTIONS(carId),user?.token),
   })
 
@@ -204,6 +215,7 @@ export const useCarExtraOptionsDetailsQuery = (carId:string,optionId:string)=>{
       success: boolean;
       extraOption:ExtraOption;
       error?: string;
+      logout?:boolean
       
     }
   
@@ -228,6 +240,7 @@ export const useNotifications = ()=>{
       success: boolean;
       notifications:Notification[];
       error?: string;
+      logout?:boolean
       
     }
   
@@ -250,6 +263,7 @@ export const useNotificationsCount = ()=>{
       success: boolean;
       count:number;
       error?: string;
+      logout?:boolean
       
     }
  
@@ -275,6 +289,7 @@ export const useCompany = ()=>{
       success: boolean;
       company:Company;
       error?: string;
+      logout?:boolean
       
     }
   
@@ -297,6 +312,7 @@ export const useCarAvailabilitiesQuery = (carId:string)=>{
       success: boolean;
       availabilities:CarAvailability[];
       error?: string;
+      logout?:boolean
     }>(GET_CAR_AVAILABILITIES(carId),user?.token),
   })
 

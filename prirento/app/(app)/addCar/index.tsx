@@ -33,6 +33,8 @@ import CustomModePickerModal from "@/components/model-picker";
 import { useImageUploader } from "@/components/image-uploader";
 import { ImageComponent } from "@/components/image-component-upload";
 import ErrorComponent from "@/components/error-component";
+import { useAuth } from "@/hooks/auth.hook";
+import LogoutComponent from "@/components/logout-component";
 
 const index = () => {
   const {
@@ -88,7 +90,8 @@ const {loading,pickImage} = useImageUploader({onUploadSuccess:(url:string)=>form
 
   const sortedModels = useMemo(
     () =>
-      modelsData?.models.sort((a, b) => {
+    !modelsData?.models ? []
+    :  modelsData?.models.sort((a, b) => {
         const brandA = a.carBrand.brand.toLowerCase();
         const brandB = b.carBrand.brand.toLowerCase();
 
@@ -103,7 +106,7 @@ const {loading,pickImage} = useImageUploader({onUploadSuccess:(url:string)=>form
 
     form.setValue("gallary", newGallary);
   };
-
+const { signout } = useAuth()
 
   if(modelsLoading || locationsLoading) return <ScrollView   refreshControl={
     <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
@@ -112,6 +115,13 @@ const {loading,pickImage} = useImageUploader({onUploadSuccess:(url:string)=>form
   >
   <ActivityIndicator size="large" color={Colors.mainDark} />
   </ScrollView>
+
+if (
+  (!modelsData?.success && !!modelsData?.logout) ||
+  (!locationsData?.success && !!locationsData?.logout)
+
+)
+  return <LogoutComponent />;
 
   if(!modelsData?.success || !locationsData?.success || modelsError || locationsError ) return (
     <ScrollView   refreshControl={

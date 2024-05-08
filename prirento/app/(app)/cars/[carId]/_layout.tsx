@@ -20,10 +20,13 @@ import { useCarQuery } from "@/hooks/queries.hook";
 import { LinearGradient } from "expo-linear-gradient";
 import { capitalizer } from "@/lib/utils";
 import ErrorComponent from "@/components/error-component";
+import { useAuth } from "@/hooks/auth.hook";
+import LogoutComponent from "@/components/logout-component";
 
 const _layout = () => {
   const { carId } = useLocalSearchParams();
   const router = useRouter();
+  const { signout } = useAuth()
 
   const { isLoading, data,refetch,error } = useCarQuery(carId as string);
   const [refreshing, setRefreshing] = useState(false);
@@ -47,6 +50,13 @@ const _layout = () => {
       </View>
     );
   }
+
+  if (
+    (!data?.success && !!data?.logout)
+  
+  )
+    return <LogoutComponent />;
+
   if (!data?.success || error ) return  <ScrollView
   refreshControl={
     <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />

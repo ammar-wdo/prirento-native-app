@@ -27,6 +27,8 @@ import ExitModal from "@/components/exit-modal";
 import { useImageUploader } from "@/components/image-uploader";
 import { ImageComponent } from "@/components/image-component-upload";
 import ErrorComponent from "@/components/error-component";
+import { useAuth } from "@/hooks/auth.hook";
+import LogoutComponent from "@/components/logout-component";
 
 const PersonalInfo = () => {
   const { data, isLoading, error, refetch } = useCompany();
@@ -62,6 +64,8 @@ const PersonalInfo = () => {
     }
   }, [data?.company]);
 
+  const {signout } = useAuth()
+
   if (out)
     return (
       <View
@@ -82,6 +86,9 @@ const PersonalInfo = () => {
         </View>
       </View>
     );
+
+
+    if(!data?.success && !!data?.logout) return <LogoutComponent/>
 
   if (isLoading)
     return (

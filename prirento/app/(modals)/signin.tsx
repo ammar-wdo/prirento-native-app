@@ -33,19 +33,20 @@ const Signin = () => {
   SplashScreen.hideAsync()
 
   return (
+    
     <KeyboardAvoidingView
-   
+    contentContainerStyle={{flex:1}}
+   keyboardVerticalOffset={35}
       behavior={Platform.OS === "ios" ? "padding" : "height"}
       style={{ flex: 1}}
 
-    
     >
 
-        <StatusBar  />
+    
         <ScrollView
-        style={{backgroundColor:Colors.mainDark}}
+        style={{backgroundColor:Colors.mainDark,flex:1}}
           contentContainerStyle={styles.scrollViewContent}
-          keyboardShouldPersistTaps="handled"
+          
         >
           <View style={styles.first}>
             <Image
@@ -140,8 +141,8 @@ const styles = StyleSheet.create({
     width: "100%",
 flex:1,
     backgroundColor: "white",
-    borderTopLeftRadius: 20,
-    borderTopRightRadius: 20,
+    borderTopLeftRadius: 40,
+    borderTopRightRadius: 40,
 
     padding: 20,
     paddingBottom:60

@@ -20,6 +20,8 @@ import { Ionicons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
 import TextFilter from "@/components/text-filter";
 import ErrorComponent from "@/components/error-component";
+import { useAuth } from "@/hooks/auth.hook";
+import LogoutComponent from "@/components/logout-component";
 
 const renderItemSeparator = () => {
   return <View style={styles.itemSeparator} />;
@@ -29,7 +31,7 @@ const index = () => {
   const [refreshing, setRefreshing] = useState(false);
   const [query, setQuery] = useState("");
   const { data, isLoading, refetch: refetchCars,error } = useCarsQuery();
-
+ const { signout} = useAuth()
   const onRefresh = async () => {
     try {
       setRefreshing(true);
@@ -44,7 +46,8 @@ const index = () => {
 
   const filteredData = useMemo(
     () =>
-      data?.cars.filter((el) => {
+    !data?.cars ? []
+     : data?.cars.filter((el) => {
         if (!query) return true;
         return el.carName.toLowerCase().includes(query.toLowerCase());
       }),
@@ -64,6 +67,13 @@ const index = () => {
         <ActivityIndicator size="large" color={Colors.mainDark} />
       </View>
     );
+
+
+    if (
+      (!data?.success && !!data?.logout)
+    
+    )
+      return <LogoutComponent />;
 
   if (!data?.success ||error  )
     return (

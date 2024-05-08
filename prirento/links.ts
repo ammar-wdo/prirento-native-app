@@ -26,3 +26,4 @@ export const CHANGE_PASSWORD = MAIN_BACKEND + '/api/native/password'
 export const GET_CAR_AVAILABILITIES = (carId:string)=> MAIN_BACKEND + `/api/native/car/${carId}/availability`
 export const GET_CAR_AVAILABILITIES_DETAILS = (carId:string,availabilityId:string)=> MAIN_BACKEND + `/api/native/car/${carId}/availability/${availabilityId}`
 export const DELETE_CAR_AVAILABILITY = (carId:string,availabilityId:string)=> MAIN_BACKEND + `/api/native/car/${carId}/availability/${availabilityId}`
+export const CHECK = MAIN_BACKEND + `/api/native/check`

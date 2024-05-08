@@ -1,10 +1,10 @@
 
 
 import { fetcher } from "@/lib/utils";
-import { REMOVE_PUSH_TOKEN } from "@/links";
+import { CHECK, REMOVE_PUSH_TOKEN } from "@/links";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useQueryClient } from "@tanstack/react-query";
-import { router } from "expo-router";
+import { router, usePathname } from "expo-router";
 import { ReactNode, createContext, useContext, useEffect, useState } from "react";
 import { Alert } from "react-native";
 
@@ -41,6 +41,10 @@ export const AuthProvider = ({children}:{children:ReactNode}) => {
   },[user])
 
   const queryClient = useQueryClient()
+
+  const pathname = usePathname()
+
+ 
 
   useEffect(() => {
     // Load the user from AsyncStorage when the app starts

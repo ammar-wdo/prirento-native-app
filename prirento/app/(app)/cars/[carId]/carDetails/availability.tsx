@@ -21,6 +21,7 @@ import { FontAwesome5, Ionicons } from "@expo/vector-icons";
 import { DELETE_CAR_AVAILABILITY } from "@/links";
 import { useAuth } from "@/hooks/auth.hook";
 import ErrorComponent from "@/components/error-component";
+import LogoutComponent from "@/components/logout-component";
 
 const Availability = () => {
   const pathname = usePathname();
@@ -33,7 +34,7 @@ const Availability = () => {
 
   const { data, error, isLoading, refetch } = useCarAvailabilitiesQuery(carId);
 
-  const { user } = useAuth();
+  const { user,signout } = useAuth();
 
   const [carAvailabilityModal, setCarAvailabilityModal] = useState<
     CarAvailability | undefined
@@ -103,6 +104,9 @@ const Availability = () => {
       </View>
     );
   }
+
+  if ((!data?.success && !!data?.logout))
+    return <LogoutComponent />;
 
   if (!data?.success || error )
     return (
