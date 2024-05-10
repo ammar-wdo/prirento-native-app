@@ -189,7 +189,7 @@ if (
                     </View>
                   )}
                 />
-                {form.formState.errors.carModelId && (
+                {form.formState.errors.carModelId  &&(
                   <Text style={{ color: "red", fontSize: 10 }}>
                     {form.formState.errors.carModelId.message}
                   </Text>
@@ -201,6 +201,7 @@ if (
                 name="year"
                 render={({ field: { onChange, onBlur, value } }) => (
                   <Input
+                  onBlur={onBlur}
                     value={value}
                     setValue={onChange}
                     label="Year"
@@ -219,13 +220,14 @@ if (
                 name="description"
                 render={({ field: { onChange, onBlur, value } }) => (
                   <Input
+                  onBlur={onBlur}
                     value={value}
                     setValue={onChange}
                     label="Description"
                   />
                 )}
               />
-              {form.formState.errors.description && (
+              {form.formState.errors.description &&  (
                 <Text style={{ color: "red", fontSize: 10 }}>
                   {form.formState.errors.description.message}
                 </Text>
@@ -277,7 +279,7 @@ if (
                     </View>
                   )}
                 />
-                {form.formState.errors.colors && (
+                {form.formState.errors.colors  &&(
                   <Text style={{ color: "red", fontSize: 10 }}>
                     {form.formState.errors.colors.message}
                   </Text>
@@ -408,7 +410,7 @@ if (
                   control={form.control} // From useForm()
                   name="engine"
                   render={({ field: { onChange, onBlur, value } }) => (
-                    <Input value={value} setValue={onChange} label="Engine" />
+                    <Input value={value} setValue={onChange} label="Engine" onBlur={onBlur} />
                   )}
                 />
                 {form.formState.errors.engine && (
@@ -539,6 +541,7 @@ if (
                       setValue={onChange}
                       label="Seats"
                       numeric={true}
+                      onBlur={onBlur}
                     />
                   )}
                 />
@@ -557,6 +560,7 @@ if (
                       setValue={onChange}
                       label="Doors"
                       numeric={true}
+                      onBlur={onBlur}
                     />
                   )}
                 />
@@ -581,6 +585,7 @@ if (
                     setValue={onChange}
                     label="Km Included"
                     numeric={true}
+                    onBlur={onBlur}
                   />
                 )}
               />
@@ -600,6 +605,7 @@ if (
                       setValue={onChange}
                       label="Minimum renting hours"
                       numeric={true}
+                      onBlur={onBlur}
                     />
                   )}
                 />
@@ -620,6 +626,7 @@ if (
                       setValue={onChange}
                       label="Deposit"
                       numeric={true}
+                      onBlur={onBlur}
                     />
                   )}
                 />
@@ -640,6 +647,7 @@ if (
                       setValue={onChange}
                       label="Cool down time (hours)"
                       numeric={true}
+                      onBlur={onBlur}
                     />
                   )}
                 />
@@ -660,6 +668,7 @@ if (
                       setValue={onChange}
                       label="Delivery fee"
                       numeric={true}
+                      onBlur={onBlur}
                     />
                   )}
                 />

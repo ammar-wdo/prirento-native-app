@@ -15,18 +15,18 @@ export const useLogin = () => {
   const { signin } = useAuth();
 
   const {
+    control,
     register,
     handleSubmit,
     setValue,
-    formState: { errors, isSubmitting },
+    
+    formState: { errors, isSubmitting,touchedFields },
   } = useForm<z.infer<typeof loginSchema>>({
     resolver: zodResolver(loginSchema),
+    criteriaMode: "all"
   });
 
-  useEffect(() => {
-    register("email");
-    register("password");
-  }, [register]);
+
 
   const router = useRouter()
 
@@ -58,5 +58,5 @@ export const useLogin = () => {
     }
   };
 
-  return { onSubmit, register, handleSubmit, setValue, errors, isSubmitting };
+  return { onSubmit, register, handleSubmit, setValue, errors, isSubmitting,touchedFields,control };
 };

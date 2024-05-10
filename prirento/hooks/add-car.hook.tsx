@@ -53,7 +53,7 @@ export const useAddCar = () => {
       year:  "",
       pickupLocations: [],
       dropoffLocations: [],
-    },
+    },criteriaMode: "all"
   });
 
   const router = useRouter();

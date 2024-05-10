@@ -7,8 +7,9 @@ type Props = {
   value: string;
   numeric?: boolean;
   setValue: (value: string) => void;
+  onBlur?:()=>void
 };
-const Input = ({ value, setValue, label, numeric }: Props) => {
+const Input = ({ value, setValue, label, numeric,onBlur }: Props) => {
   return (
     <View style={{ gap: 12 }}>
       {!!label && (
@@ -17,6 +18,7 @@ const Input = ({ value, setValue, label, numeric }: Props) => {
         </Text>
       )}
       <TextInput
+      onBlur={onBlur}
         value={value}
         onChangeText={setValue}
         style={{

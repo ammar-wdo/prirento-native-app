@@ -9,6 +9,7 @@ import {
   TextInput,
   View,
 } from "react-native";
+import { Controller } from 'react-hook-form'
 import React from "react";
 import { Edges, SafeAreaView } from "react-native-safe-area-context";
 import { Colors } from "@/constants/Colors";
@@ -21,7 +22,7 @@ import { Link, Redirect, SplashScreen } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 
 const Signin = () => {
-  const { errors, handleSubmit, onSubmit, register, setValue, isSubmitting } =
+  const { errors, handleSubmit, onSubmit, register, setValue, isSubmitting,touchedFields ,control} =
     useLogin();
   const { user, loading } = useAuth();
 
@@ -67,28 +68,41 @@ const Signin = () => {
               <Text>Email</Text>
               <View style={styles.inputWrapper}>
                 <Ionicons size={20} name="mail" />
-                <TextInput
-                  placeholder="e-mail"
-                  style={styles.input}
-                  onChangeText={(text) =>
-                    setValue("email", text, { shouldValidate: true })
-                  }
-                />
+                <Controller
+  control={control} // this comes from useForm
+  name="email"
+  render={({ field: { onChange, onBlur, value, ref } }) => (
+    <TextInput
+      placeholder="Email"
+      style={styles.input}
+      onChangeText={onChange}
+      onBlur={onBlur}
+      value={value}
+      ref={ref}
+    />
+  )}
+/>
               </View>
-              {errors.email && <Text style={{color:'red'}}>{errors.email.message}</Text>}
+              {errors.email && touchedFields.email && <Text style={{color:'red'}}>{errors.email.message}</Text>}
               <Text>Password</Text>
               <View style={styles.inputWrapper}>
                 <FontAwesome5 size={20} name="key" />
-                <TextInput
-                  placeholder="password"
-                  style={styles.input}
-                  onChangeText={(text) =>
-                    setValue("password", text, { shouldValidate: true })
-                  }
-                  secureTextEntry
-                />
+                <Controller
+  control={control} // this comes from useForm
+  name="password"
+  render={({ field: { onChange, onBlur, value, ref } }) => (
+    <TextInput
+      placeholder="Password"
+      style={styles.input}
+      onChangeText={onChange}
+      onBlur={onBlur}
+      value={value}
+      ref={ref}
+    />
+  )}
+/>
               </View>
-              {errors.password && <Text style={{color:'red'}}>{errors.password.message}</Text>}
+              {errors.password && touchedFields.password && <Text style={{color:'red'}}>{errors.password.message}</Text>}
               <Text
                 style={{
                   alignSelf: "flex-end",
