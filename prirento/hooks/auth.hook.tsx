@@ -84,7 +84,7 @@ const signout =async ()=>{
     }
   } catch (error) {
     console.log(error)
-    Alert.alert("Some thing went wrong ,Try again later.")
+    Alert.alert(JSON.stringify(error))
   }
 
 
