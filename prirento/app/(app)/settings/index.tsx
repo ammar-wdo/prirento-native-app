@@ -1,10 +1,10 @@
 import { Platform, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import React from "react";
-import { SafeAreaView } from "react-native-safe-area-context";
+import * as IntentLauncher from 'expo-intent-launcher';
 import SettingsElement from "@/components/settings-element";
 import { Stack, useRouter } from "expo-router";
 import { Colors } from "@/constants/Colors";
-import { useAuth } from "@/hooks/auth.hook";
+
 import { Ionicons } from "@expo/vector-icons";
 import { useModal } from "@/hooks/modal-hook";
 import ExitModal from "@/components/exit-modal";
@@ -14,32 +14,39 @@ import * as Application from 'expo-application';
 
 
 
+
+
 const index = () => {
+
   const router = useRouter();
 
 const {logout,setLogout} = useModal()
 
 
 
-const onPress= () => {
+const onPress = async () => {
   if (Platform.OS === 'android') {
-    const bundleIdentifier = Application.applicationId;
-    if (Platform.Version >= 26) {
-      startActivityAsync(
-        ActivityAction.APP_NOTIFICATION_SETTINGS
-     
+
+    // Use a generalized settings intent for compatibility with Expo Go
+    try {
+      await IntentLauncher.startActivityAsync(
+        IntentLauncher.ActivityAction.APP_NOTIFICATION_SETTINGS, {
+          data: `package:${Application.applicationId}`
+        }
       );
-    } else {
-      startActivityAsync(
-        ActivityAction.APPLICATION_DETAILS_SETTINGS
-       
-      );
+    } catch (e) {
+      console.error('Failed to open general settings:', e);
+    }
+  } else if (Platform.OS === 'ios') {
+    // For iOS, this opens the app-specific settings page
+    try {
+      await Linking.openURL('app-settings:');
+    } catch (e) {
+      console.error('Failed to open app settings:', e);
     }
   }
-  if (Platform.OS === 'ios') {
-    Linking.openURL('app-settings:');
-  }
-}
+};
+
 
   return (
     <View style={{ padding: 12, flex: 1, backgroundColor: "white" }}>
