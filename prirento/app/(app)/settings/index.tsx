@@ -57,10 +57,10 @@ const onPress = async () => {
           headerLeft:()=><Ionicons size={20} style={{marginLeft:12,padding:12}} name="arrow-back" onPress={()=>router.push('/(app)')} />,
           headerBackTitleVisible:false
         }} />
-      <SettingsElement
+      {Platform.OS === 'ios' && <SettingsElement
         title="Notifications"
         push={onPress}
-      />
+      />}
       <SettingsElement
         title="Terms & Conditions"
         push={() => router.push("https://www.prirento.ae/terms-and-conditions")}

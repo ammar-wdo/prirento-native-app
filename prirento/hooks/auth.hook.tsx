@@ -83,8 +83,8 @@ const signout =async ()=>{
     await AsyncStorage.removeItem('user')
     }
   } catch (error) {
-    console.log(error)
-    Alert.alert(JSON.stringify(error))
+    console.warn(error)
+    Alert.alert(JSON.stringify({token:user?.token,url:REMOVE_PUSH_TOKEN}))
   }
 
 
