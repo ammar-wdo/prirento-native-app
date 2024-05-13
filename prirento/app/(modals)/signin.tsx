@@ -73,6 +73,7 @@ const Signin = () => {
   name="email"
   render={({ field: { onChange, onBlur, value, ref } }) => (
     <TextInput
+    
       placeholder="Email"
       style={styles.input}
       onChangeText={onChange}
@@ -92,6 +93,7 @@ const Signin = () => {
   name="password"
   render={({ field: { onChange, onBlur, value, ref } }) => (
     <TextInput
+    secureTextEntry
       placeholder="Password"
       style={styles.input}
       onChangeText={onChange}

@@ -8,18 +8,27 @@
       "distribution": "internal",
       "android": {
         "buildType": "apk"
+
       },
+
       "env": {
-        "EXPO_PUBLIC_BACKEND_URL": "https://prirento-company-dashboard.vercel.app"
-      }
+        "EXPO_PUBLIC_BACKEND_URL": "https://dashboard.prirento.ae"
+      },
+      "channel": "development"
     },
     "preview": {
       "distribution": "internal",
       "android": {
         "buildType": "apk"
-      }
+      },
+      "env": {
+        "EXPO_PUBLIC_BACKEND_URL": "https://dashboard.prirento.ae"
+      },
+      "channel": "preview"
     },
-    "production": {}
+    "production": {
+      "channel": "production"
+    }
   },
   "submit": {
     "production": {}
