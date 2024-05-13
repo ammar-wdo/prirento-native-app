@@ -17,7 +17,8 @@
     ],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.ammar1990.prirento"
+      "bundleIdentifier": "com.ammar1990.prirento",
+      "buildNumber": "2"
     },
     "android": {
       "adaptiveIcon": {
