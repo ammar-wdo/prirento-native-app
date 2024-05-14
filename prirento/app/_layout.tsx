@@ -1,4 +1,5 @@
-import { Redirect, Slot, Stack, useRouter,SplashScreen } from "expo-router";
+import { Redirect, Slot, Stack, useRouter } from "expo-router";
+import * as SplashScreen from 'expo-splash-screen';
 
 import { AuthProvider, useAuth } from "@/hooks/auth.hook";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";

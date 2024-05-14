@@ -25,7 +25,7 @@ import BookingCardComponent from "@/components/bookings-card";
 import { getCurrentMonthYear } from "@/lib/utils";
 import BarChartComponent from "@/components/bar-charts";
 import BarChartComponentTwo from "@/components/bar-chart-two";
-import { SplashScreen } from "expo-router";
+import * as SplashScreen from 'expo-splash-screen';
 import ErrorComponent from "@/components/error-component";
 import { useAuth } from "@/hooks/auth.hook";
 import LogoutComponent from "@/components/logout-component";
@@ -76,16 +76,23 @@ export default function TabOneScreen() {
 
 
   useEffect(()=>{
+    const hideSplash = async()=>{
+      try {
+        await SplashScreen.hideAsync()
+      } catch (error) {
+        console.log(error)
+      }
+    }
     if(!BookingsInfoLoading && !recentIsLoading && !recentBookingsLoading)
     {
-      setTimeout(()=>{ SplashScreen.hideAsync();},2000)
+      setTimeout(()=>{ hideSplash()},2000)
     }
   },[BookingsInfoLoading,recentIsLoading,recentBookingsLoading])
 
   const monthAndDate = getCurrentMonthYear();
 
   if (BookingsInfoLoading || recentIsLoading || recentBookingsLoading)
-  
+
     return (
       <View style={{ flex: 1 }}>
         <CustomHeader />

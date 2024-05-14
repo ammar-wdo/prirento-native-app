@@ -18,11 +18,21 @@
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.ammar1990.prirento",
-      "buildNumber": "2"
+      "buildNumber": "2",
+      "splash": {
+        "image": "./assets/images/splash.png",
+        "resizeMode": "cover",
+        "backgroundColor": "#052206"
+      }
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/icon.png",
+        "backgroundColor": "#052206"
+      },
+      "splash": {
+        "image": "./assets/images/splash.png",
+        "resizeMode": "cover",
         "backgroundColor": "#052206"
       },
       "package": "com.ammar1990.prirento",

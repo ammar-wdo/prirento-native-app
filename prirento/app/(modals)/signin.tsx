@@ -18,8 +18,8 @@ import { FontAwesome5, Ionicons } from "@expo/vector-icons";
 import CustomButton from "@/components/custom-button";
 import { useLogin } from "@/hooks/login.hook";
 import { useAuth } from "@/hooks/auth.hook";
-import { Link, Redirect, SplashScreen } from "expo-router";
-import { StatusBar } from "expo-status-bar";
+import { Link, Redirect } from "expo-router";
+import * as SplashScreen from 'expo-splash-screen';
 
 const Signin = () => {
   const { errors, handleSubmit, onSubmit, register, setValue, isSubmitting,touchedFields ,control} =
@@ -27,9 +27,19 @@ const Signin = () => {
   const { user, loading } = useAuth();
 
   useEffect(()=>{
+
+const hideSplash = async()=>{
+  try {
+    await SplashScreen.hideAsync()
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+
     if(!loading && !user)
     {
-      setTimeout(()=>{ SplashScreen.hideAsync();},2000)
+      setTimeout(()=>{ hideSplash()},2000)
     }
   },[loading,user])
 
