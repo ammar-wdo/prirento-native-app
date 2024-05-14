@@ -14,7 +14,7 @@ import {
   useRecentBookingsQuery,
   useRecentCarsQuery,
 } from "@/hooks/queries.hook";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useQueryClient } from "@tanstack/react-query";
 import RecentCarCard from "@/components/recent-car-card";
 import { Colors } from "@/constants/Colors";
@@ -74,9 +74,18 @@ export default function TabOneScreen() {
     }
   };
 
+
+  useEffect(()=>{
+    if(!BookingsInfoLoading && !recentIsLoading && !recentBookingsLoading)
+    {
+      setTimeout(()=>{ SplashScreen.hideAsync();},2000)
+    }
+  },[BookingsInfoLoading,recentIsLoading,recentBookingsLoading])
+
   const monthAndDate = getCurrentMonthYear();
 
   if (BookingsInfoLoading || recentIsLoading || recentBookingsLoading)
+  
     return (
       <View style={{ flex: 1 }}>
         <CustomHeader />
@@ -88,7 +97,7 @@ export default function TabOneScreen() {
       </View>
     );
 
-  SplashScreen.hideAsync();
+ 
 
   if (
     (!recentData?.success && !!recentData?.logout) ||

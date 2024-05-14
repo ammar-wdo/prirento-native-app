@@ -10,7 +10,7 @@ import {
   View,
 } from "react-native";
 import { Controller } from 'react-hook-form'
-import React from "react";
+import React, { useEffect } from "react";
 import { Edges, SafeAreaView } from "react-native-safe-area-context";
 import { Colors } from "@/constants/Colors";
 import { FontAwesome5, Ionicons } from "@expo/vector-icons";
@@ -26,12 +26,19 @@ const Signin = () => {
     useLogin();
   const { user, loading } = useAuth();
 
+  useEffect(()=>{
+    if(!loading && !user)
+    {
+      setTimeout(()=>{ SplashScreen.hideAsync();},2000)
+    }
+  },[loading,user])
+
   if (!!loading) return null;
 
   if (!!user) return <Redirect href="/(app)" />;
 
 
-  SplashScreen.hideAsync()
+
 
   return (
     
