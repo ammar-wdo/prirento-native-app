@@ -12,7 +12,7 @@
       },
 
       "env": {
-        "EXPO_PUBLIC_BACKEND_URL": "https://dashboard.prirento.ae"
+        "EXPO_PUBLIC_BACKEND_URL": "https://dashboard.prirento.com"
       },
       "channel": "development"
     },
@@ -22,7 +22,7 @@
         "buildType": "apk"
       },
       "env": {
-        "EXPO_PUBLIC_BACKEND_URL": "https://dashboard.prirento.ae"
+        "EXPO_PUBLIC_BACKEND_URL": "https://dashboard.prirento.com"
       },
       "channel": "preview"
     },

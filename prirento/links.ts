@@ -1,7 +1,7 @@
 
 
 export const MAIN_BACKEND = process.env.EXPO_PUBLIC_BACKEND_URL
-export const GET_AUTH = MAIN_BACKEND + '/api/native/auth'
+export const GET_AUTH = MAIN_BACKEND + "/api/native/auth"
 export const GET_BOOKINS_INFO = MAIN_BACKEND + '/api/native/bookings/info'
 export const GET_RECENT_BOOKINGS = MAIN_BACKEND + '/api/native/bookings?take=10'
 export const GET_BOOKINGS = MAIN_BACKEND + '/api/native/bookings'

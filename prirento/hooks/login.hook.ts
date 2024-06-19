@@ -53,7 +53,7 @@ export const useLogin = () => {
       signin(res.user)
       // router.push('/(app)/(home)')
     } catch (error) {
-        console.warn(error)
+        console.log(JSON.stringify(error))
         Alert.alert("Error", "An error occurred while attempting to log in. Please try again later.");
     }
   };

@@ -63,11 +63,11 @@ const onPress = async () => {
       />}
       <SettingsElement
         title="Terms & Conditions"
-        push={() => router.push("https://www.prirento.ae/terms-and-conditions")}
+        push={() => router.push("https://www.prirento.com/terms-and-conditions")}
       />
       <SettingsElement
         title="Privacy Policy"
-        push={() => router.push("https://www.prirento.ae/privacy-policy")}
+        push={() => router.push("https://www.prirento.com/privacy-policy")}
       />
    
       <TouchableOpacity

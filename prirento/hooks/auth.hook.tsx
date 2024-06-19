@@ -84,7 +84,7 @@ const signout =async ()=>{
     }
   } catch (error) {
     console.warn(error)
-    Alert.alert(JSON.stringify({token:user?.token,url:REMOVE_PUSH_TOKEN}))
+    Alert.alert(JSON.stringify("Something wnet wron ,Try again later"))
   }
 
 
